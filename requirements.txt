@@ -1,5 +1,5 @@
 jira==3.5.2
-python-dotenv==1.0.0
+python-dotenv==0.13.0
 streamlit==1.28.2
 azure-identity
 azure-keyvault-secrets

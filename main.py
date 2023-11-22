@@ -61,7 +61,7 @@ story_points_field = 'customfield_10004'
 if st.button('Jira Process'):
     st.session_state['jira_process'].project_input = project_input 
     epic_issue = st.session_state['jira_process'].create_epic()
-    st.success(f'Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})')
+    st.success(f"Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})")
 
     # Add logic to create features and stories as needed
     features = [
@@ -117,10 +117,10 @@ if st.button('Jira Process'):
 
     for feature in features:
         feature_issue = st.session_state['jira_process'].create_feature(feature['role'], feature['summary'], feature['assignee'])
-        st.success(f'Feature Created: [{feature_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{feature_issue.key}): {feature_issue.fields.summary}')
+        st.success(f"Feature Created: [{feature_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{feature_issue.key}): {feature_issue.fields.summary}")
         for story in feature.get('stories', []):
             story_issue = st.session_state['jira_process'].create_story(story, feature_issue)
-            st.success(f'Story Created: [{story_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{story_issue.key}): {story_issue.fields.summary}')
+            st.success(f"Story Created: [{story_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{story_issue.key}): {story_issue.fields.summary}")
     
     st.success('Process Complete')
     st.session_state['process_complete'] = True

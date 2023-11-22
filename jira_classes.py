@@ -89,14 +89,14 @@ class JiraProcess:
         story_dict = {
             'project': {'key': self.project_key},
             'summary': story_title + story_fields['summary'],
-            'description': story_fields.get('description', '') + f'\n\nStory Points: {story_fields.get("story_points", '...')}',
+            'description': story_fields.get('description', '') + f"\n\nStory Points: {story_fields.get('story_points', '...')}",
             'issuetype': {'name': 'Story'},
             'assignee': {'accountId': feature.fields.assignee.accountId},
             'labels': [self.project_input['sub_domain'], self.project_input['sub_project']],
             'parent': {'key': self.epic.key}
         }
         story = self.jira.create_issue(fields=story_dict)
-        jira.create_issue_link('Relates', story.key, feature.key)
+        self.jira.create_issue_link('Relates', story.key, feature.key)
         # story.update(fields={'customfield_10004': story_fields.get('story_points', 1)}) # dit veld mag niet aangepast worden?
 
         self.stories.append(story)
