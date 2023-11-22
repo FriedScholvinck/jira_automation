@@ -11,10 +11,12 @@ JIRA_PROJECT_KEY='your-project-key' (e.g. 'DSO')
 ```
 
 ## Development
-
+Run the following command to start the streamlit app locally.
+```
+streamlit run main.py
+```
 
 ## Deployment
-streamlit cloud
+The app is deployed on Streamlit Cloud, which is connected to my GitHub account. Every time a new commit is pushed to the main branch, the app is automatically deployed.
 
-
-
+During deployment on Streamlit Cloud, you can provide environment variables.

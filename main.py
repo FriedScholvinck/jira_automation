@@ -39,11 +39,19 @@ quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=True)
 
 # team roles with dropdown for team members
 roles = {
-    'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Fried')),
-    'business_analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-    'informatie_analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Johan')),
+    'business_analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Khalid')),
+    'informatie_analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Koen')),
     'data_engineer': st.selectbox('Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-    'bi_specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'bi_specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Jamal')),
+}
+
+icons = {
+    'product_owner': '👑',
+    'business_analist': '📝',
+    'informatie_analist': '👨‍💻',
+    'data_engineer': '🛠️',
+    'bi_specialist': '📊'
 }
 
 project_input = {
@@ -61,9 +69,8 @@ story_points_field = 'customfield_10004'
 if st.button('Jira Process'):
     st.session_state['jira_process'].project_input = project_input 
     epic_issue = st.session_state['jira_process'].create_epic()
-    st.success(f"Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})")
+    st.success(f"Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})", icon=icons['product_owner'])
 
-    # Add logic to create features and stories as needed
     features = [
         {
             'role': 'business_analist',
@@ -71,15 +78,68 @@ if st.button('Jira Process'):
             'assignee': roles['business_analist'],
             'stories': [
                 {
-                    'summary': 'Test story 1',
+                    'summary': f'Ophalen en documenteren requirements voor {name}',
+                    'description': 'Requirements ophalen en documenteren.',
                     story_points_field: 4,
+                },
+                {
+                    'summary': f'Dashboard mockup bespreken met stakeholders',
+                    'description': 'Functioneel ontwerp opstellen en voorleggen aan stakeholders.',
+                    story_points_field: 2,
+                },
+                {
+                    'summary': f'Acceptatiecriteria opstellen.',
+                    'description': 'Acceptatiecriteria opstellen.',
+                    story_points_field: 4,
+                },
+                {
+                    'summary': 'Presenteren dashboard aan stakeholders',
+                    'description': 'Dashboard presenteren aan stakeholders.',
+                    story_points_field: 2,
                 }
             ]
         },
         {
             'role': 'information_analist',
             'summary': f'Informatiemodellen voor {name} opstellen',
-            'assignee': roles['informatie_analist']
+            'assignee': roles['informatie_analist'],
+            'stories': [
+                {
+                    'summary': f'Conceptueel model opstellen',
+                    'description': 'Vanuit de requirements een conceptueel model opstellen.',
+                    story_points_field: 1,
+                },
+                {
+                    'summary': f'EDA uitvoeren',
+                    'description': 'Eerste verkenning en mapping van de data.',
+                    story_points_field: 2,
+                },
+                {
+                    'summary': f'Logisch model opstellen',
+                    'description': 'Vanuit het conceptueel model en de data een logisch model opstellen.',
+                    story_points_field: 4,
+                },
+                {
+                    'summary': f'Documentatie',
+                    'description': 'Het informatiemodel documenteren.',
+                    story_points_field: 2,
+                },
+                {
+                    'summary': 'Validatie data pipeline.',
+                    'description': 'Het testen van de data in zilver en goud.',
+                    story_points_field: 1,
+                },
+                {
+                    'summary': 'Troubleshooten data pipeline',
+                    'description': 'Het troubleshooten van de data pipeline.',
+                    story_points_field: 2,
+                },
+                {
+                    'summary': 'Fixen data pipeline',
+                    'description': 'Het fixen van de data pipeline.',
+                    story_points_field: 1,
+                }
+            ]
         },
         {
             'role': 'data_engineer',
@@ -87,17 +147,17 @@ if st.button('Jira Process'):
             'assignee': roles['data_engineer'],
             'stories': [
                 {
-                    'summary': f'Data inladen (brons) voor {name}',
+                    'summary': f'Data inladen (brons)',
                     story_points_field: 4,
                     'description': 'Bron inladen (via landingzone of direct) in de bronze laag van Databricks.'
                 },
                 {
-                    'summary': f'Data verwerken (zilver) voor {name}',
+                    'summary': f'Data verwerken (zilver)',
                     story_points_field: 4,
                     'description': 'Data verwerken en transformaties toepassen in de bronzen laag van Databricks.'
                 },
                 {
-                    'summary': f'Data klaarzetten (goud) voor {name}',
+                    'summary': f'Data klaarzetten (goud)',
                     story_points_field: 2,
                 }
             ]
@@ -108,8 +168,24 @@ if st.button('Jira Process'):
             'assignee': roles['bi_specialist'],
             'stories': [
                 {
-                    'summary': f'Ontwikkeling dashboard {name}',
+                    'summary': 'EDA',
+                    'description': 'Dataverkenning in Databricks aan de hand van de conceptuele en logische informatiemodellen van de informatieanalist.',
+                    story_points_field: 1,
+                },
+                {
+                    'summary': 'Dashboard ontwikkelen v0.1',
+                    'description': 'Eerste versie van het dashboard ontwikkelen in Tableau / Power BI.',
                     story_points_field: 4,
+                },
+                {
+                    'summary': 'Dashboard testen',
+                    'description': 'Dashboard testen met stakeholders.',
+                    story_points_field: 2,
+                },
+                {
+                    'summary': 'Dashboard documenteren',
+                    'description': 'Dashboard documenteren.',
+                    story_points_field: 1,
                 }
             ]
         }
@@ -117,10 +193,10 @@ if st.button('Jira Process'):
 
     for feature in features:
         feature_issue = st.session_state['jira_process'].create_feature(feature['role'], feature['summary'], feature['assignee'])
-        st.success(f"Feature Created: [{feature_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{feature_issue.key}): {feature_issue.fields.summary}")
+        st.success(f"Feature Created: [{feature_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{feature_issue.key}): {feature_issue.fields.summary}", icon=icons[feature['role']])
         for story in feature.get('stories', []):
             story_issue = st.session_state['jira_process'].create_story(story, feature_issue)
-            st.success(f"Story Created: [{story_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{story_issue.key}): {story_issue.fields.summary}")
+            st.success(f"Story Created: [{story_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{story_issue.key}): {story_issue.fields.summary}", icon=icons[feature['role']])
     
     st.success('Process Complete')
     st.session_state['process_complete'] = True
