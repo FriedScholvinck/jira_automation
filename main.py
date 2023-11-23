@@ -131,7 +131,7 @@ if st.button('Jira Process'):
             ]
         },
         {
-            'role': 'information_analist',
+            'role': 'informatie_analist',
             'summary': f'Informatiemodellen voor {name} opstellen',
             'assignee': roles['informatie_analist'],
             'stories': [
