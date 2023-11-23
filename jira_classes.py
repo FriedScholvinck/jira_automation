@@ -16,6 +16,7 @@ class JiraProcess:
         self.epic = None
         self.features = []
         self.stories = []
+        self.story_points_field = 'customfield_10004'
         # self.validate_roles()
 
     def get_team_members(self):
@@ -93,11 +94,10 @@ class JiraProcess:
             'issuetype': {'name': 'Story'},
             'assignee': {'accountId': feature.fields.assignee.accountId},
             'labels': [self.project_input['sub_domain'], self.project_input['sub_project']],
-            'parent': {'key': self.epic.key}
+            'parent': {'key': self.epic.key},
+            self.story_points_field: story_fields.get(self.story_points_field, 1)
         }
         story = self.jira.create_issue(fields=story_dict)
         self.jira.create_issue_link('Relates', story.key, feature.key)
-        # story.update(fields={'customfield_10004': story_fields.get('story_points', 1)}) # dit veld mag niet aangepast worden?
-
         self.stories.append(story)
         return story

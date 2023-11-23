@@ -237,3 +237,4 @@ if st.session_state['process_complete']:
         if st.button('Verwijder alle issues'):
             deleted_issues = st.session_state['jira_process'].delete_all_issues()
             st.success(f'Issues {deleted_issues} verwijderd')
+            st.session_state['process_complete'] = False
