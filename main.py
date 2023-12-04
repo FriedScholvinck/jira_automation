@@ -5,6 +5,11 @@ from dotenv import load_dotenv
 
 from jira_classes import JiraProcess
 
+st.set_page_config(
+    page_title="MOSS+",
+    page_icon="❌",
+)
+
 import hmac
 
 def check_password():
@@ -35,7 +40,6 @@ if not check_password():
     st.stop()  # Do not continue if check_password is not True.
 
 
-
 # Load environment variables
 load_dotenv()
 domain = os.getenv('JIRA_DOMAIN')
@@ -49,32 +53,33 @@ if not domain and username and api_token and project_key:
 
 if not 'jira_process' in st.session_state:
     st.session_state['jira_process'] = JiraProcess(domain, username, api_token, project_key, {})
-    st.session_state['team_member_names'] = list(st.session_state['jira_process'].team_members.keys())
+    st.session_state['team_member_names'] = list(st.session_state['jira_process'].users_by_name.keys())
     st.session_state['process_complete'] = False
 
-st.set_page_config(
-    page_title="MOSS+",
-    page_icon="❌",
-)
+
 
 # Streamlit App
 st.title('MOSS+ Jira Process Creator')
 
+directies = ['Maatschappelijke Voorzieningen', 'Onderwijs', 'Subsidies', 'Sport en Bos']
+directies_kort = ['MV', 'ON', 'SUB', 'S&B']
+directies_dict = dict(zip(directies_kort, directies))
+
 name = st.text_input('Naam Dashboard', 'Test Dashboard')
-sub_domain = st.radio('Domein', ['MV', 'ON', 'SUB', 'S&B'], index=3, horizontal=True)
-sub_project = st.text_input('Afkorting Project', 'TP1')
+directie = st.radio('MOSS+ Directie', directies, index=3, horizontal=True)
+sub_project = st.text_input('Afkorting Project (wordt weergegeven in de titel)', 'TP1')
 description = st.text_area('Omschrijving', 'Dit is een test project om het proces van datateam MOSS+ te automatiseren in Jira.')
-year = st.radio('Jaar', ['24', '25'], index=0, horizontal=True)
+year = st.radio('Jaar', ['2024', '2025'], index=0, horizontal=True)
 quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=True)
 
 
 # team roles with dropdown for team members
 roles = {
-    'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Johan')),
-    'business_analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Khalid')),
-    'informatie_analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Koen')),
+    'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Fried')),
+    'business_analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'informatie_analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
     'data_engineer': st.selectbox('Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-    'bi_specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Jamal')),
+    'bi_specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
 }
 
 icons = {
@@ -87,7 +92,7 @@ icons = {
 
 project_input = {
     'name': name,
-    'sub_domain': sub_domain,
+    'directie': directie,
     'sub_project': sub_project,
     'description': description,
     'year': year,

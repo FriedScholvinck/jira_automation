@@ -10,16 +10,22 @@ class JiraProcess:
         self.jira_url = f'https://{domain}.atlassian.net'
         self.jira = JIRA(options={'server': self.jira_url}, basic_auth=(username, api_token))
         self.project_key = project_key
+        self.project = self.jira.project(project_key)
         self.project_input = project_input
-        self.users = []
-        self.team_members = self.get_team_members()
+        self.users = self.get_users()
+        self.users_by_name = self.get_users_by_name()
         self.epic = None
         self.features = []
         self.stories = []
-        self.story_points_field = 'customfield_10004'
-        # self.validate_roles()
+        self.directie_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Directie'][0]
+        self.story_points_field = [field['id'] for field in self.jira.fields() if field['name'] == 'Story Points'][0]
 
-    def get_team_members(self):
+    def get_users(self):
+        ''' Returns a list of all 'active' users in the Jira project.
+
+        Returns:
+            list[jira.User]: list of jira.User objectsa
+        '''
         inactive_users = [
             'Cees',
             'Claire',
@@ -32,53 +38,58 @@ class JiraProcess:
             'Michael',
             'Nenad',
             'Paul',
-            'Remko',
             'Rob',
             'Ron',
             'Stefan'
         ]
-        self.users = [user for user in self.jira.search_assignable_users_for_projects('', self.project_key) if user.active and user.displayName.split(' ')[0] not in inactive_users]
+        users = [user for user in self.jira.search_assignable_users_for_projects('', self.project_key) if user.displayName.split(' ')[0] not in inactive_users]
+        
+        # add all first names as attribute to user object
+        for user in users:
+            user.first_name = user.displayName.split(' ')[0]
+        
+        return users
+
+    def get_users_by_name(self):
         return {user.displayName.split(' ')[0]: TeamMember(user.displayName, user.accountId) for user in self.users}
 
-    def validate_roles(self):
-        for role in self.project_input.get('roles').values():
-            assert role in self.team_members.keys()
 
     def delete_all_issues(self):
-        deleted_issues = []
-        if self.epic:
-            deleted_issues.append(self.epic.key)
-            self.epic.delete()
-        for feature in self.features:
-            deleted_issues.append(feature.key)
-            feature.delete()
-        for story in self.stories:
-            deleted_issues.append(story.key)
-            story.delete()
+        ''' Deletes all issues that have been created in the process. 
+        
+        Returns:
+            list: list of deleted issues
+        '''
+
+        deleted_issues = self.features + self.stories + [self.epic] if self.epic else self.features + self.stories
+        for issue in deleted_issues:
+            issue.delete()
         return deleted_issues
 
     def create_epic(self):
-        epic_title = f"[Epic {self.project_input['sub_domain']}_{self.project_input['sub_project']}_{self.project_input['year']}{self.project_input['quarter']}] "
+        epic_title = f"[Epic {self.project_input['sub_project']}_{self.project_input['quarter']}] "
         epic_dict = {
             'project': {'key': self.project_key},
             'summary': epic_title + self.project_input['name'],
             'description': self.project_input['description'],
             'issuetype': {'name': 'Epic'},
-            'assignee': {'accountId': self.team_members[self.project_input['roles']['product_owner']].account_id},
-            'labels': [self.project_input['sub_domain'], self.project_input['sub_project']]
+            'assignee': {'accountId': self.users_by_name[self.project_input['roles']['product_owner']].account_id},
+            'labels': [self.project_input['sub_project']],
+            self.directie_field: {'value': self.project_input['directie']}
         }
         self.epic = self.jira.create_issue(fields=epic_dict)
         return self.epic
 
     def create_feature(self, role, summary, assignee):
-        feature_title = f"[Feature {self.project_input['sub_domain']}_{self.project_input['sub_project']}_{self.project_input['year']}{self.project_input['quarter']}] "
+        feature_title = f"[Feature {self.project_input['sub_project']}_{self.project_input['quarter']}] "
         feature_dict = {
             'project': {'key': self.project_key},
             'summary': feature_title + summary,
             'description': self.project_input['description'],
             'issuetype': {'name': 'Feature'},
-            'assignee': {'accountId': self.team_members[assignee].account_id},
-            'labels': [self.project_input['sub_domain'], self.project_input['sub_project']],
+            'assignee': {'accountId': self.users_by_name[assignee].account_id},
+            'labels': [self.project_input['sub_project']],
+            self.directie_field: {'value': self.project_input['directie']},
             'parent': {'key': self.epic.key}
         }
         feature = self.jira.create_issue(fields=feature_dict)
@@ -86,14 +97,15 @@ class JiraProcess:
         return feature
 
     def create_story(self, story_fields, feature):
-        story_title = f"[Story {self.project_input['sub_domain']}_{self.project_input['sub_project']}_{self.project_input['year']}{self.project_input['quarter']}] "
+        story_title = f"[Story {self.project_input['sub_project']}_{self.project_input['quarter']}] "
         story_dict = {
             'project': {'key': self.project_key},
             'summary': story_title + story_fields['summary'],
             'description': story_fields.get('description', '') + f"\n\nStory Points: {story_fields.get('story_points', '...')}",
             'issuetype': {'name': 'Story'},
             'assignee': {'accountId': feature.fields.assignee.accountId},
-            'labels': [self.project_input['sub_domain'], self.project_input['sub_project']],
+            'labels': [self.project_input['sub_project']],
+            self.directie_field: {'value': self.project_input['directie']},
             'parent': {'key': self.epic.key},
             self.story_points_field: story_fields.get(self.story_points_field, 1)
         }
