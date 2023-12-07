@@ -1,3 +1,4 @@
+import hmac
 import os
 
 import streamlit as st
@@ -7,10 +8,9 @@ from jira_classes import JiraProcess
 
 st.set_page_config(
     page_title="MOSS+",
-    page_icon="❌",
+    page_icon='assets/amsterdam_logo.png',
 )
 
-import hmac
 
 def check_password():
     """Returns `True` if the user had the correct password."""
@@ -35,12 +35,6 @@ def check_password():
         st.error("😕 Password incorrect")
     return False
 
-
-if not check_password():
-    st.stop()  # Do not continue if check_password is not True.
-
-
-# Load environment variables
 load_dotenv()
 domain = os.getenv('JIRA_DOMAIN')
 username = os.getenv('JIRA_USERNAME')
@@ -74,20 +68,20 @@ quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=True)
 
 
 # team roles with dropdown for team members
+rollen = ['Business Analist', 'Informatie Analist', 'Data Engineer', 'BI-specialist']
 roles = {
-    'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Fried')),
-    'business_analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-    'informatie_analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-    'data_engineer': st.selectbox('Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-    'bi_specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    # 'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Fried')),
+    'Business Analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'Informatie Analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'Data Engineer': st.selectbox('Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'BI-specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
 }
 
 icons = {
-    'product_owner': '👑',
-    'business_analist': '📝',
-    'informatie_analist': '👨‍💻',
-    'data_engineer': '🛠️',
-    'bi_specialist': '📊'
+    'Business Analist': '📝',
+    'Informatie Analist': '👨‍💻',
+    'Data Engineer': '🛠️',
+    'BI-specialist': '📊'
 }
 
 project_input = {
@@ -100,131 +94,132 @@ project_input = {
     'roles': roles
 }
 
-story_points_field = 'customfield_10004'
-
+if not check_password():
+    st.stop()  # Do not continue if check_password is not True.
+    
 if st.button('Jira Process'):
     st.session_state['jira_process'].project_input = project_input 
     epic_issue = st.session_state['jira_process'].create_epic()
-    st.success(f"Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})", icon=icons['product_owner'])
+    st.success(f"Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})", icon=icons['Business Analist'])
 
     features = [
         {
-            'role': 'business_analist',
+            'role': 'Business Analist',
             'summary': f'Requirements opstellen voor {name}',
-            'assignee': roles['business_analist'],
+            'assignee': roles['Business Analist'],
             'stories': [
                 {
                     'summary': f'Ophalen en documenteren requirements voor {name}',
                     'description': 'Requirements ophalen en documenteren.',
-                    story_points_field: 4,
+                    st.session_state['jira_process'].story_points_field: 4,
                 },
-                {
-                    'summary': f'Dashboard mockup bespreken met stakeholders',
-                    'description': 'Functioneel ontwerp opstellen en voorleggen aan stakeholders.',
-                    story_points_field: 2,
-                },
-                {
-                    'summary': f'Acceptatiecriteria opstellen.',
-                    'description': 'Acceptatiecriteria opstellen.',
-                    story_points_field: 4,
-                },
-                {
-                    'summary': 'Presenteren dashboard aan stakeholders',
-                    'description': 'Dashboard presenteren aan stakeholders.',
-                    story_points_field: 2,
-                }
+                # {
+                #     'summary': f'Dashboard mockup bespreken met stakeholders',
+                #     'description': 'Functioneel ontwerp opstellen en voorleggen aan stakeholders.',
+                #     st.session_state['jira_process'].story_points_field: 2,
+                # },
+                # {
+                #     'summary': f'Acceptatiecriteria opstellen.',
+                #     'description': 'Acceptatiecriteria opstellen.',
+                #     st.session_state['jira_process'].story_points_field: 4,
+                # },
+                # {
+                #     'summary': 'Presenteren dashboard aan stakeholders',
+                #     'description': 'Dashboard presenteren aan stakeholders.',
+                #     st.session_state['jira_process'].story_points_field: 2,
+                # }
             ]
         },
-        {
-            'role': 'informatie_analist',
-            'summary': f'Informatiemodellen voor {name} opstellen',
-            'assignee': roles['informatie_analist'],
-            'stories': [
-                {
-                    'summary': f'Conceptueel model opstellen',
-                    'description': 'Vanuit de requirements een conceptueel model opstellen.',
-                    story_points_field: 1,
-                },
-                {
-                    'summary': f'EDA uitvoeren',
-                    'description': 'Eerste verkenning en mapping van de data.',
-                    story_points_field: 2,
-                },
-                {
-                    'summary': f'Logisch model opstellen',
-                    'description': 'Vanuit het conceptueel model en de data een logisch model opstellen.',
-                    story_points_field: 4,
-                },
-                {
-                    'summary': f'Documentatie',
-                    'description': 'Het informatiemodel documenteren.',
-                    story_points_field: 2,
-                },
-                {
-                    'summary': 'Validatie data pipeline.',
-                    'description': 'Het testen van de data in zilver en goud.',
-                    story_points_field: 1,
-                },
-                {
-                    'summary': 'Troubleshooten data pipeline',
-                    'description': 'Het troubleshooten van de data pipeline.',
-                    story_points_field: 2,
-                },
-                {
-                    'summary': 'Fixen data pipeline',
-                    'description': 'Het fixen van de data pipeline.',
-                    story_points_field: 1,
-                }
-            ]
-        },
-        {
-            'role': 'data_engineer',
-            'summary': f'Ontwikkelen data pipeline voor {name}',
-            'assignee': roles['data_engineer'],
-            'stories': [
-                {
-                    'summary': f'Data inladen (brons)',
-                    story_points_field: 4,
-                    'description': 'Bron inladen (via landingzone of direct) in de bronze laag van Databricks.'
-                },
-                {
-                    'summary': f'Data verwerken (zilver)',
-                    story_points_field: 4,
-                    'description': 'Data verwerken en transformaties toepassen in de bronzen laag van Databricks.'
-                },
-                {
-                    'summary': f'Data klaarzetten (goud)',
-                    story_points_field: 2,
-                }
-            ]
-        },
-        {
-            'role': 'bi_specialist',
-            'summary': f'Ontwikkeling dashboard {name}',
-            'assignee': roles['bi_specialist'],
-            'stories': [
-                {
-                    'summary': 'EDA',
-                    'description': 'Dataverkenning in Databricks aan de hand van de conceptuele en logische informatiemodellen van de informatieanalist.',
-                    story_points_field: 1,
-                },
-                {
-                    'summary': 'Dashboard ontwikkelen v0.1',
-                    'description': 'Eerste versie van het dashboard ontwikkelen in Tableau / Power BI.',
-                    story_points_field: 4,
-                },
-                {
-                    'summary': 'Dashboard testen',
-                    'description': 'Dashboard testen met stakeholders.',
-                    story_points_field: 2,
-                },
-                {
-                    'summary': 'Dashboard documenteren',
-                    'description': 'Dashboard documenteren.',
-                    story_points_field: 1,
-                }
-            ]
-        }
+        # {
+        #     'role': 'Informatie Analist',
+        #     'summary': f'Informatiemodellen voor {name} opstellen',
+        #     'assignee': roles['Informatie Analist'],
+        #     'stories': [
+        #         {
+        #             'summary': f'Conceptueel model opstellen',
+        #             'description': 'Vanuit de requirements een conceptueel model opstellen.',
+        #             st.session_state['jira_process'].story_points_field: 1,
+        #         },
+        #         {
+        #             'summary': f'EDA uitvoeren',
+        #             'description': 'Eerste verkenning en mapping van de data.',
+        #             st.session_state['jira_process'].story_points_field: 2,
+        #         },
+        #         {
+        #             'summary': f'Logisch model opstellen',
+        #             'description': 'Vanuit het conceptueel model en de data een logisch model opstellen.',
+        #             st.session_state['jira_process'].story_points_field: 4,
+        #         },
+        #         {
+        #             'summary': f'Documentatie',
+        #             'description': 'Het informatiemodel documenteren.',
+        #             st.session_state['jira_process'].story_points_field: 2,
+        #         },
+        #         {
+        #             'summary': 'Validatie data pipeline.',
+        #             'description': 'Het testen van de data in zilver en goud.',
+        #             st.session_state['jira_process'].story_points_field: 1,
+        #         },
+        #         {
+        #             'summary': 'Troubleshooten data pipeline',
+        #             'description': 'Het troubleshooten van de data pipeline.',
+        #             st.session_state['jira_process'].story_points_field: 2,
+        #         },
+        #         {
+        #             'summary': 'Fixen data pipeline',
+        #             'description': 'Het fixen van de data pipeline.',
+        #             st.session_state['jira_process'].story_points_field: 1,
+        #         }
+        #     ]
+        # },
+        # {
+        #     'role': 'Data Engineer',
+        #     'summary': f'Ontwikkelen data pipeline voor {name}',
+        #     'assignee': roles['Data Engineer'],
+        #     'stories': [
+        #         {
+        #             'summary': f'Data inladen (brons)',
+        #             st.session_state['jira_process'].story_points_field: 4,
+        #             'description': 'Bron inladen (via landingzone of direct) in de bronze laag van Databricks.'
+        #         },
+        #         {
+        #             'summary': f'Data verwerken (zilver)',
+        #             st.session_state['jira_process'].story_points_field: 4,
+        #             'description': 'Data verwerken en transformaties toepassen in de bronzen laag van Databricks.'
+        #         },
+        #         {
+        #             'summary': f'Data klaarzetten (goud)',
+        #             st.session_state['jira_process'].story_points_field: 2,
+        #         }
+        #     ]
+        # },
+        # {
+        #     'role': 'BI-specialist',
+        #     'summary': f'Ontwikkeling dashboard {name}',
+        #     'assignee': roles['BI-specialist'],
+        #     'stories': [
+        #         {
+        #             'summary': 'EDA',
+        #             'description': 'Dataverkenning in Databricks aan de hand van de conceptuele en logische informatiemodellen van de informatieanalist.',
+        #             st.session_state['jira_process'].story_points_field: 1,
+        #         },
+        #         {
+        #             'summary': 'Dashboard ontwikkelen v0.1',
+        #             'description': 'Eerste versie van het dashboard ontwikkelen in Tableau / Power BI.',
+        #             st.session_state['jira_process'].story_points_field: 4,
+        #         },
+        #         {
+        #             'summary': 'Dashboard testen',
+        #             'description': 'Dashboard testen met stakeholders.',
+        #             st.session_state['jira_process'].story_points_field: 2,
+        #         },
+        #         {
+        #             'summary': 'Dashboard documenteren',
+        #             'description': 'Dashboard documenteren.',
+        #             st.session_state['jira_process'].story_points_field: 1,
+        #         }
+        #     ]
+        # }
     ]
 
     for feature in features:
@@ -236,10 +231,11 @@ if st.button('Jira Process'):
     
     st.success('Process Complete')
     st.session_state['process_complete'] = True
+    st.balloons()
 
 if st.session_state['process_complete']:
     if st.session_state['jira_process'].epic:
         if st.button('Verwijder alle issues'):
             deleted_issues = st.session_state['jira_process'].delete_all_issues()
-            st.success(f'Issues {deleted_issues.key} verwijderd')
+            st.success(f'Issues {[issue.key for issue in deleted_issues]} verwijderd.')
             st.session_state['process_complete'] = False

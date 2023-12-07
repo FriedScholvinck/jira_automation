@@ -19,6 +19,7 @@ class JiraProcess:
         self.stories = []
         self.directie_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Directie'][0]
         self.story_points_field = [field['id'] for field in self.jira.fields() if field['name'] == 'Story Points'][0]
+        self.rol_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Rol'][0]
 
     def get_users(self):
         ''' Returns a list of all 'active' users in the Jira project.
@@ -73,9 +74,10 @@ class JiraProcess:
             'summary': epic_title + self.project_input['name'],
             'description': self.project_input['description'],
             'issuetype': {'name': 'Epic'},
-            'assignee': {'accountId': self.users_by_name[self.project_input['roles']['product_owner']].account_id},
+            'assignee': {'accountId': self.users_by_name[self.project_input['roles']['Business Analist']].account_id},
             'labels': [self.project_input['sub_project']],
-            self.directie_field: {'value': self.project_input['directie']}
+            self.directie_field: {'value': self.project_input['directie']},
+            self.rol_field: {'value': 'Business Analist'}
         }
         self.epic = self.jira.create_issue(fields=epic_dict)
         return self.epic
@@ -90,6 +92,7 @@ class JiraProcess:
             'assignee': {'accountId': self.users_by_name[assignee].account_id},
             'labels': [self.project_input['sub_project']],
             self.directie_field: {'value': self.project_input['directie']},
+            self.rol_field: {'value': role},
             'parent': {'key': self.epic.key}
         }
         feature = self.jira.create_issue(fields=feature_dict)
@@ -105,9 +108,10 @@ class JiraProcess:
             'issuetype': {'name': 'Story'},
             'assignee': {'accountId': feature.fields.assignee.accountId},
             'labels': [self.project_input['sub_project']],
-            self.directie_field: {'value': self.project_input['directie']},
             'parent': {'key': self.epic.key},
-            self.story_points_field: story_fields.get(self.story_points_field, 1)
+            self.directie_field: {'value': self.project_input['directie']},
+            self.story_points_field: story_fields.get(self.story_points_field, 1),
+            self.rol_field: {'value': story_fields.get('role', 'Business Analist')}
         }
         story = self.jira.create_issue(fields=story_dict)
         self.jira.create_issue_link('Relates', story.key, feature.key)
