@@ -4,7 +4,6 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 
-from classes import Epic, Feature, Story
 from jira_classes import JiraProcess
 
 st.set_page_config(
@@ -12,8 +11,6 @@ st.set_page_config(
     page_icon='assets/amsterdam_logo.png',
 )
 
-# load and apply a custom CSS file
-# st.markdown(f"<style>{open('custom.css', 'r').read()}</style>", unsafe_allow_html=True)
 
 def check_password():
     """Returns `True` if the user had the correct password."""
@@ -32,7 +29,7 @@ def check_password():
 
     # Show input for password.
     st.text_input(
-        "Vul het wachtwoord in om het proces te voltooien", type="password", on_change=password_entered, key="password"
+        "Password", type="password", on_change=password_entered, key="password"
     )
     if "password_correct" in st.session_state:
         st.error("😕 Password incorrect")
@@ -54,42 +51,30 @@ if not 'jira_process' in st.session_state:
     st.session_state['process_complete'] = False
 
 
+
 # Streamlit App
+st.title('MOSS+ Jira Process Creator')
+
 directies = ['Maatschappelijke Voorzieningen', 'Onderwijs', 'Subsidies', 'Sport en Bos']
 directies_kort = ['MV', 'ON', 'SUB', 'S&B']
 directies_dict = dict(zip(directies_kort, directies))
 
-sidebar = st.sidebar
-sidebar.header('MOSS+ Jira Process Creator')
-name = sidebar.text_input('Epic', 'Test Dashboard')
-directie = sidebar.radio('MOSS+ Directie', directies, index=3, horizontal=False)
-sub_project = sidebar.text_input('Afkorting Project (Jira Label)', 'Test1')
-description = st.text_area(
-    'Omschrijving',
-    open('description.txt', 'r').read() if os.path.exists('description.txt') else f'Requirements {name}',
-    height=300
-)
-
-with sidebar.container(border=True):
-    st.info('Verwachte opleverdatum')
-    year = st.radio('Jaar', ['2024', '2025'], horizontal=False)
-    quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=False)
+name = st.text_input('Naam Dashboard', 'Test Dashboard')
+directie = st.radio('MOSS+ Directie', directies, index=3, horizontal=True)
+sub_project = st.text_input('Afkorting Project (wordt weergegeven in de titel)', 'TP1')
+description = st.text_area('Omschrijving', 'Dit is een test project om het proces van datateam MOSS+ te automatiseren in Jira.')
+year = st.radio('Jaar', ['2024', '2025'], index=0, horizontal=True)
+quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=True)
 
 
 # team roles with dropdown for team members
 rollen = ['Business Analist', 'Informatie Analist', 'Data Engineer', 'BI-specialist']
-# with st.container(border=True):
-col1, col2, col3, col4 = st.columns(4)
-with col1: ba = st.selectbox('📝 Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-with col2: ia = st.selectbox('👨‍💻 Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-with col3: de = st.selectbox('🛠️ Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-with col4: bi = st.selectbox('📊 BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-        
 roles = {
-    'Business Analist': ba[0],
-    'Informatie Analist': ia[0],
-    'Data Engineer': de[0],
-    'BI-specialist': bi[0]
+    # 'product_owner': st.selectbox('Product Owner', st.session_state['team_member_names'], index=st.session_state['team_member_names'].index('Fried')),
+    'Business Analist': st.selectbox('Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'Informatie Analist': st.selectbox('Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'Data Engineer': st.selectbox('Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+    'BI-specialist': st.selectbox('BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
 }
 
 icons = {
@@ -109,50 +94,10 @@ project_input = {
     'roles': roles
 }
 
-# st.divider()
-st.info('De volgende Jira Issues worden aangemaakt:')
-with st.expander(f'Epic: {name} - {sub_project}'):
-    epic = Epic(
-        f'{name} - {sub_project}',
-        st.write('Omschrijving', description),
-        directie
-    )
-
-with st.container(border=True):
-    st.warning(f"Business Analist ({roles['Business Analist']})")
-    epic.features.append(
-        Feature(
-            st.text_input('Feature Titel', f'Requirements opstellen voor {name}'),
-            st.text_input('Feature Beschrijving', 'Requirements ophalen en documenteren.'),
-            directie
-        )
-    )
-    with st.expander(f'Bijbehorende Stories'):
-        epic.features[-1].stories.extend([
-            Story(
-                st.text_input('Story 1', f'Ophalen en documenteren requirements voor {name}', label_visibility='hidden'),
-                st.text_area('Beschrijving', 'Requirements ophalen en documenteren.'),
-                directie,
-                st.slider('Story Points', 1, 8, 4, key='story_points_1')
-            ),
-            Story(
-                st.text_input('Story 2', f'Dashboard mockup bespreken met stakeholders'),
-                st.text_area('Beschrijving', 'Functioneel ontwerp opstellen en voorleggen aan stakeholders.'),
-                directie,
-                st.slider('Story Points', 1, 8, 2, key='story_points_2')
-            )
-        ])
-
-
-
-total_story_points = sum([story.story_points for feature in epic.features for story in feature.stories])
-st.metric('Totaal aantal Story Points', total_story_points)
-
-
 if not check_password():
     st.stop()  # Do not continue if check_password is not True.
     
-if st.button('Maak Jira Issues'):
+if st.button('Jira Process'):
     st.session_state['jira_process'].project_input = project_input 
     epic_issue = st.session_state['jira_process'].create_epic()
     st.success(f"Epic Created: [{epic_issue.key}]({st.session_state['jira_process'].jira_url}/browse/{epic_issue.key})", icon=icons['Business Analist'])

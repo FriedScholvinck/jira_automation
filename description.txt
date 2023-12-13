@@ -1,0 +1,5 @@
+Requirements (functioneel en technisch)
+* Wat zijn de behoeftes van de Business
+* KPI's
+* Scope
+* Planning
