@@ -13,7 +13,7 @@ JIRA_PROJECT_KEY='your-project-key' (e.g. 'DSO')
 ## Development
 Run the following command to start the streamlit app locally.
 ```
-streamlit run main.py
+streamlit run app.py
 ```
 
 ## Deployment

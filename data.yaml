@@ -1,0 +1,28 @@
+epic:
+  - summary: Epic 1 Summary
+    description: Epic 1 Description
+    directie: Epic 1 Directie
+    labels: [label1]
+    features:
+      - summary: Feature 1 Summary
+        description: Feature 1 Description
+        directie: Feature 1 Directie
+        role: Feature 1 Role
+        stories:
+          - summary: Story 1 Summary
+            description: Story 1 Description
+            directie: Story 1 Directie
+            story_points: 5
+          - summary: Story 2 Summary
+            description: Story 2 Description
+            directie: Story 2 Directie
+            story_points: 8
+      - summary: Feature 2 Summary
+        description: Feature 2 Description
+        directie: Feature 2 Directie
+        role: Feature 2 Role
+        stories:
+          - summary: Story 3 Summary
+            description: Story 3 Description
+            directie: Story 3 Directie
+            story_points: 3

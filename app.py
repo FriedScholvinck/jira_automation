@@ -1,7 +1,9 @@
 import hmac
 import os
+from collections import OrderedDict
 
 import streamlit as st
+import yaml
 from dotenv import load_dotenv
 
 from classes import Epic, Feature, Story
@@ -10,7 +12,30 @@ from jira_classes import JiraProcess
 st.set_page_config(
     page_title="MOSS+",
     page_icon='assets/amsterdam_logo.png',
+    layout="wide",
 )
+
+directies = ['Maatschappelijke Voorzieningen', 'Onderwijs', 'Subsidies', 'Sport en Bos']
+
+# base dict for roles and assignments, which will be updated with the selected team members
+roles = OrderedDict([
+    ('Business Analist', 'Fried'),
+    ('Informatie Analist', 'Fried'),
+    ('Data Engineer', 'Fried'),
+    ('BI-specialist', 'Fried')
+])
+
+# load default input (way of working) from yaml file
+data = yaml.safe_load(open('data.yaml', 'r'))
+
+# generically create Epic, Feature and Story objects from the yaml file
+for epic_data in data.get('epic', []):
+    epic = Epic(**epic_data)
+    features = []
+    for feature_data in epic_data.get('features', []):
+        feature = Feature(**feature_data)
+        feature.stories = [Story(**story_data) for story_data in feature_data.get('stories', [])]
+    epic.features = features
 
 # load and apply a custom CSS file
 # st.markdown(f"<style>{open('custom.css', 'r').read()}</style>", unsafe_allow_html=True)
@@ -38,35 +63,36 @@ def check_password():
         st.error("😕 Password incorrect")
     return False
 
+# load credentials from .env file
 load_dotenv()
 domain = os.getenv('JIRA_DOMAIN')
 username = os.getenv('JIRA_USERNAME')
 api_token = os.getenv('JIRA_API_TOKEN')
 project_key = os.getenv('JIRA_PROJECT_KEY')
 
+# check credentials
 if not domain and username and api_token and project_key:
     st.error('Jira credentials niet goed geconfigureerd in .env file.')
     st.stop()
 
+# initialize JiraProcess object in session state, otherwise it will be created on every page refresh (whenever a button is clicked)
 if not 'jira_process' in st.session_state:
     st.session_state['jira_process'] = JiraProcess(domain, username, api_token, project_key, {})
     st.session_state['team_member_names'] = list(st.session_state['jira_process'].users_by_name.keys())
     st.session_state['process_complete'] = False
 
-
 # Streamlit App
-directies = ['Maatschappelijke Voorzieningen', 'Onderwijs', 'Subsidies', 'Sport en Bos']
-directies_kort = ['MV', 'ON', 'SUB', 'S&B']
-directies_dict = dict(zip(directies_kort, directies))
-
 sidebar = st.sidebar
 sidebar.header('MOSS+ Jira Process Creator')
-name = sidebar.text_input('Epic', 'Test Dashboard')
+name = sidebar.text_input('Epic', epic.summary)
 directie = sidebar.radio('MOSS+ Directie', directies, index=3, horizontal=False)
-sub_project = sidebar.text_input('Afkorting Project (Jira Label)', 'Test1')
+label_toggle = sidebar.toggle('Afkorting als Jira Label', value=True)
+if label_toggle:
+    label = sidebar.text_input('Projectlabel', epic.labels[0])
+
 description = st.text_area(
     'Omschrijving',
-    open('description.txt', 'r').read() if os.path.exists('description.txt') else f'Requirements {name}',
+    epic.description,
     height=300
 )
 
@@ -76,72 +102,39 @@ with sidebar.container(border=True):
     quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=False)
 
 
-# team roles with dropdown for team members
-rollen = ['Business Analist', 'Informatie Analist', 'Data Engineer', 'BI-specialist']
-# with st.container(border=True):
-col1, col2, col3, col4 = st.columns(4)
-with col1: ba = st.selectbox('📝 Business Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-with col2: ia = st.selectbox('👨‍💻 Information Analyst', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-with col3: de = st.selectbox('🛠️ Data Engineer', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
-with col4: bi = st.selectbox('📊 BI Specialist', st.session_state['team_member_names'], st.session_state['team_member_names'].index('Fried')),
+
+cols = st.columns(len(roles))
+for i, c in enumerate(cols):
+    with c: roles[list(roles.items())[i][0]] = st.selectbox(f'{list(roles.items())[i][0]}', st.session_state['team_member_names'], st.session_state['team_member_names'].index(list(roles.items())[i][1])),
+
+
+epic.labels = [label] if label_toggle else None
+
+
+# st.info('De volgende Jira Issues worden aangemaakt:')
+st.divider()
+with st.expander(f'Epic: {epic.summary}'):
+    epic
+
+for feature in epic.features:
+    with st.container(border=True):
+        feature.summary = st.text_input(f"Feature voor {feature.role} ({roles[feature.role][0]})", feature.summary, key=f'feature_{feature.role}')
+        feature.description = st.text_area('Beschrijving', feature.description, key=f'feature_description_{feature.role}')
+
+        for story in feature.stories:
+            with st.expander(f'{story.summary} ({story.story_points})'):
+                if st.toggle('Neem deze story niet mee', value=True, key='toggle_1'):
+                    story.summary = st.text_input('Titel', story.summary, label_visibility='hidden', key='story_1')
+                    story.description = st.text_area('Beschrijving', story.description)
+                    story.story_points = st.slider('Story Points', 1, 8, story.story_points, key='story_points_1')
+                    
+                    # je kan assignee en rol nog aanpassen
+                    story.assignee = st.selectbox('Assignee', st.session_state['team_member_names'], st.session_state['team_member_names'].index(roles[story.role][0]))
+                    story.role = st.selectbox('Rol', list(roles.keys()), list(roles.keys()).index(feature.role))
+                    feature.stories.append(story)
+
+
         
-roles = {
-    'Business Analist': ba[0],
-    'Informatie Analist': ia[0],
-    'Data Engineer': de[0],
-    'BI-specialist': bi[0]
-}
-
-icons = {
-    'Business Analist': '📝',
-    'Informatie Analist': '👨‍💻',
-    'Data Engineer': '🛠️',
-    'BI-specialist': '📊'
-}
-
-project_input = {
-    'name': name,
-    'directie': directie,
-    'sub_project': sub_project,
-    'description': description,
-    'year': year,
-    'quarter': quarter,
-    'roles': roles
-}
-
-# st.divider()
-st.info('De volgende Jira Issues worden aangemaakt:')
-with st.expander(f'Epic: {name} - {sub_project}'):
-    epic = Epic(
-        f'{name} - {sub_project}',
-        st.write('Omschrijving', description),
-        directie
-    )
-
-with st.container(border=True):
-    st.warning(f"Business Analist ({roles['Business Analist']})")
-    epic.features.append(
-        Feature(
-            st.text_input('Feature Titel', f'Requirements opstellen voor {name}'),
-            st.text_input('Feature Beschrijving', 'Requirements ophalen en documenteren.'),
-            directie
-        )
-    )
-    with st.expander(f'Bijbehorende Stories'):
-        epic.features[-1].stories.extend([
-            Story(
-                st.text_input('Story 1', f'Ophalen en documenteren requirements voor {name}', label_visibility='hidden'),
-                st.text_area('Beschrijving', 'Requirements ophalen en documenteren.'),
-                directie,
-                st.slider('Story Points', 1, 8, 4, key='story_points_1')
-            ),
-            Story(
-                st.text_input('Story 2', f'Dashboard mockup bespreken met stakeholders'),
-                st.text_area('Beschrijving', 'Functioneel ontwerp opstellen en voorleggen aan stakeholders.'),
-                directie,
-                st.slider('Story Points', 1, 8, 2, key='story_points_2')
-            )
-        ])
 
 
 

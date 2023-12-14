@@ -9,6 +9,7 @@ from jira_classes import JiraProcess
 st.set_page_config(
     page_title="MOSS+",
     page_icon='assets/amsterdam_logo.png',
+    layout="wide",
 )
 
 
