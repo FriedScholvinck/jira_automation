@@ -1,20 +1,24 @@
-# roles to choose from:
-# - Business Analist
-# - Informatie Analist
-# - Data Engineer
-# - BI-specialist
-
-# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder.
+# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder of in voorbeeld_data.yaml om uiteindelijk goed te werken in de tool.
 
 epic:
-  - summary: Epic 1 Summary
-    description: Epic 1 Description
-    label: test_label
+  - summary: Nieuw Dashboard KPIs
+    description: > # gebruik > voor een multiline description
+      Management Dashboard voor de directie met inzicht in belangrijke KPI's.
+
+        - Doel: 
+        - KPI's:
+        - Scope:
+        - Stakeholders:
+        - Planning:
+      
+    label: KPIs
     role: 'Business Analist'
+
     features:
+      # Feature(s) voor Business Analist
       - summary: Feature 1 Summary
         description: Feature 1 Description
-        role: Business Analist
+        role: Business Analist # keuze uit Business Analist, Informatie Analist, Data Engineer, BI-specialist
         stories:
           - summary: Story 1 Summary
             description: Story 1 Description
@@ -22,10 +26,12 @@ epic:
           - summary: Story 2 Summary
             description: Story 2 Description
             story_points: 8
+
+      # Feature(s) voor Informatie Analist
       - summary: Feature 2 Summary
         description: Feature 2 Description
         role: Informatie Analist
         stories:
           - summary: Story 3 Summary
             description: Story 3 Description
-            story_points: 3
+            story_points: 30

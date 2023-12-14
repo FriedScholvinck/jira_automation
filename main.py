@@ -5,8 +5,7 @@ import streamlit as st
 import yaml
 from dotenv import load_dotenv
 
-from classes import Epic, Feature, Story
-from jira_classes import JiraProcess
+from custom_classes import Epic, Feature, Story, JiraProcess
 from utils import check_password
 
 st.set_page_config(
