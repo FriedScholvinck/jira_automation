@@ -1,3 +1,23 @@
+
+class Story:
+    def __init__(self, **kwargs):
+        self.issuetype = {'name': 'Story'}
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+class Feature:
+    def __init__(self, **kwargs):
+        self.issuetype = {'name': 'Feature'}
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+class Epic:
+    def __init__(self, **kwargs):
+        self.issuetype = {'name': 'Epic'}
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+# old stuff
 # class Story:
 #     def __init__(self, summary, description, directie, story_points, role=None, assignee=None):
 #         self.issuetype = {'name': 'Story'}
@@ -29,23 +49,3 @@
 #         self.directie = directie
 #         self.labels = []
 #         self.features = []
-
-
-
-class Story:
-    def __init__(self, **kwargs):
-        self.issuetype = {'name': 'Story'}
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-class Feature:
-    def __init__(self, **kwargs):
-        self.issuetype = {'name': 'Feature'}
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-class Epic:
-    def __init__(self, **kwargs):
-        self.issuetype = {'name': 'Epic'}
-        for key, value in kwargs.items():
-            setattr(self, key, value)

@@ -9,23 +9,29 @@
 epic:
   - summary: Epic 1 Summary
     description: Epic 1 Description
+    directie: Epic 1 Directie
     label: test_label
     role: 'Business Analist'
     features:
       - summary: Feature 1 Summary
         description: Feature 1 Description
+        directie: Feature 1 Directie
         role: Business Analist
         stories:
           - summary: Story 1 Summary
             description: Story 1 Description
+            directie: Story 1 Directie
             story_points: 5
           - summary: Story 2 Summary
             description: Story 2 Description
+            directie: Story 2 Directie
             story_points: 8
       - summary: Feature 2 Summary
         description: Feature 2 Description
+        directie: Feature 2 Directie
         role: Informatie Analist
         stories:
           - summary: Story 3 Summary
             description: Story 3 Description
+            directie: Story 3 Directie
             story_points: 3
