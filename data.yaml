@@ -2,7 +2,7 @@
 # sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
 
 epic:
-  - summary: Nieuw Dashboard KPIs
+  - summary: Dashboard KPIs
     description: > # gebruik > voor een multiline description
       Management Dashboard voor de directie met inzicht in belangrijke KPI's.
 
@@ -17,7 +17,7 @@ epic:
 
     stories:
       # Stories voor Business Analist
-      - summary: Requirements en Prerequisites voor 
+      - summary: Requirements en Prerequisites
         description: >
           Business Analyse voor het dashboard.
             - Doel: 

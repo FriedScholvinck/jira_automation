@@ -70,16 +70,17 @@ label_toggle = sidebar.toggle('Afkorting als Jira Label', value=True)
 if label_toggle:
     label = sidebar.text_input('Projectlabel', epic.label)
 
-description = st.text_area(
-    'Omschrijving',
-    epic.description.replace('directie', directie),
-    height=300
-)
 
 with sidebar.container(border=True):
     st.info('Verwachte opleverdatum')
     year = st.radio('Jaar', ['2024', '2025'], horizontal=False)
     quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=False)
+
+description = st.text_area(
+    'Omschrijving',
+    epic.description.replace('directie', directie) + '\n\nOplevering: ' + f'{year} {quarter}',
+    height=400
+)
 
 # roles horizontally aligned, with a selectbox for each role
 cols = st.columns(len(roles))
@@ -102,7 +103,7 @@ with st.expander(f'Epic: {epic.summary} ({epic.label}))'):
 
 for story in epic.stories:
     with st.container(border=True):
-        story.summary = st.text_input(f"Story voor {story.role} ({roles[story.role][0]})", story.summary, key=f'story_{story.summary}')
+        story.summary = st.text_input(f"Story voor {story.role} ({roles[story.role][0]})", story.summary + f' ({epic.summary})', key=f'story_{story.summary}')
         story.description = st.text_area('Beschrijving', story.description, key=f'story_description_{story.summary}')
         story.directie = directie
         story.assignee = roles[story.role][0]
