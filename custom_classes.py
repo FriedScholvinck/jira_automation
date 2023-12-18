@@ -1,6 +1,14 @@
 from jira import JIRA
 
 
+
+class SubTask:
+    ''' Custom Sub-task class to be used in the process. '''
+    def __init__(self, **kwargs):
+        self.issuetype = {'name': 'Sub-task'}
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
 class Story:
     ''' Custom Story class to be used in the process. '''
     def __init__(self, **kwargs):
@@ -22,6 +30,13 @@ class Epic:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+class Initiative:
+    ''' Custom Initiative class (tailor-made for us) to be used in the process. '''
+    def __init__(self, **kwargs):
+        self.issuetype = {'name': 'Initiatief (SAFe Epic)'} # this is a custom type with hierarchy level 2 to be used as 'project' within the Jira project / workspace
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
 
 class TeamMember:
     def __init__(self, name, account_id):
@@ -38,9 +53,6 @@ class JiraProcess:
         self.users = self.get_users()
         self.users_by_name = self.get_users_by_name()
         self.issues = []
-        self.epic = None
-        self.features = []
-        self.stories = []
         self.directie_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Directie'][0]
         self.story_points_field = [field['id'] for field in self.jira.fields() if field['name'] == 'Story Points'][0]
         self.rol_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Rol'][0]
@@ -86,9 +98,12 @@ class JiraProcess:
             list: list of deleted issue keys
         '''
         deleted_issue_keys = []
-        for issue in self.issues:
+
+        # delete issues in reversed order because of parent-child hierarchy
+        for issue in reversed(self.issues):
             try:
                 issue.delete(deleteSubtasks=True)
+                print(f'Deleted issue {issue.key}')
             except:
                 print(f'Could not delete issue {issue.key}')
             deleted_issue_keys.append(issue.key)
@@ -111,15 +126,17 @@ class JiraProcess:
             self.rol_field: {'value': issue.role} # not manadatory in project, but will always be filled in this process
         }
         if hasattr(issue, 'parent'):
+            issue_dict['parent'] = {'key': issue.parent}
+
             # let op, hiervoor moeten de issues in de 'appropriate hierarchy' staan in Jira
-            # dat is niet altijd het geval omdat Jira niet is gemaakt voor SAFe, waarin stories onder features hangen
+            # dat is niet altijd het geval omdat Jira niet is gemaakt voor SAFe, waarin stories onder features hangen (hiervoor hebben we Initiatief (SAFe Epic) gemaakt met hierarchy level 2)
             parent_hierarchy_level = self.jira.issue(issue.parent).fields.issuetype.hierarchyLevel
-            current_issue_type = issue.issue_type['name']
+            current_issue_type = issue.issuetype['name']
             current_hierarchy_level = [issue_type.hierarchyLevel for issue_type in self.jira.issue_types() if issue_type.name == current_issue_type][0]
             if parent_hierarchy_level > current_hierarchy_level:
                 issue_dict['parent'] = {'key': issue.parent}
 
-            # of zo via relates, maar liever niet (topdesk melding van gemaakt)
+            # of zo via relates, maar liever niet
             #     self.jira.create_issue_link('Relates', story.key, feature.key)
 
 

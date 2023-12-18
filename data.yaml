@@ -1,4 +1,5 @@
 # Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder of in voorbeeld_data.yaml om uiteindelijk goed te werken in de tool.
+# sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
 
 epic:
   - summary: Nieuw Dashboard KPIs
@@ -12,26 +13,122 @@ epic:
         - Planning:
       
     label: KPIs
-    role: 'Business Analist'
+    role: Business Analist
 
-    features:
-      # Feature(s) voor Business Analist
-      - summary: Feature 1 Summary
-        description: Feature 1 Description
+    stories:
+      # Stories voor Business Analist
+      - summary: Requirements en Prerequisites voor 
+        description: >
+          Business Analyse voor het dashboard.
+            - Doel: 
+            - Scope:
+            - Stakeholders:
+            - Planning:
+
+          Privacy en Security voor het dashboard.
         role: Business Analist # keuze uit Business Analist, Informatie Analist, Data Engineer, BI-specialist
-        stories:
-          - summary: Story 1 Summary
-            description: Story 1 Description
-            story_points: 5
-          - summary: Story 2 Summary
-            description: Story 2 Description
-            story_points: 8
+        story_points: 8
+        subtasks:
+          - summary: Functionele Requirements opstellen
+            description: > 
+              Functionele requirements opstellen voor het dashboard.
+                - Doel:
+                - Scope:
+                - Stakeholders:
+                - Planning:
+          - summary: Privacy en Security
+            description: >
+              Doorloop stappen in het Privacy en Security proces.
+                - Quickscan
+                - Privacy Impact Assessment?
 
-      # Feature(s) voor Informatie Analist
-      - summary: Feature 2 Summary
-        description: Feature 2 Description
+      # Stories voor Informatie Analist
+      - summary: Informatiemodellen
+        description: >
+          Requirements:
+            - Functioneel Informatiemodel
+            - Conceptueel Informatiemodel
+            - Logisch Informatiemodel
         role: Informatie Analist
-        stories:
-          - summary: Story 3 Summary
-            description: Story 3 Description
-            story_points: 30
+        story_points: 8
+        subtasks:
+          - summary: Technische Requirements opstellen
+            description: >
+              Technische Requirements opstellen voor het dashboard.
+                - Data:
+                - Scope:
+                - Stakeholders:
+                - Planning:
+          - summary: Conceptueel / Vraaggerelateerd Informatiemodel opstellen
+            description: >
+              Conceptueel Informatiemodel moet bestaan uit de volgende entiteiten:
+                - Entiteit 1
+                - Entiteit 2
+                - Entiteit 3
+          - summary: Logisch / Brongerelateerd Informatiemodel opstellen
+            description: >
+              Logisch Informatiemodel moet bestaan uit de volgende entiteiten:
+                - Entiteit 1
+                - Entiteit 2
+                - Entiteit 3
+          - summary: EDA uitvoeren
+            description: >
+              Exploratory Data Analysis uitvoeren op de volgende databronnen:
+                - Databron 1
+                - Databron 2
+                - Databron 3
+
+      - summary: Testen Dashboard
+        description: Doorloop alle stappen in het testproces van een dashboard.
+        role: Informatie Analist
+        story_points: 8
+        subtasks:
+          - summary: Testplan opstellen
+            description: x
+          - summary: Testscenario's opstellen
+            description: x
+          - summary: Testscenario's uitvoeren
+            description: x
+          - summary: Testrapport opstellen
+            description: x
+
+
+      # Stories voor Data Engineer
+      - summary: Brons, Zilver, Goud pipeline
+        description: >
+          Data pipeline in Databricks opzetten voor de volgende databronnen:
+            - Databron 1
+            - Databron 2
+            - Databron 3
+        role: Data Engineer
+        story_points: 8
+        subtasks:
+          - summary: Data verkennen
+            description: EDA op databron en manier van inladen bepalen.
+          - summary: Data inladen (brons)
+            description: >
+              Ruwee data inladen in Databricks vanuit de bron.
+          - summary: Data opschonen (zilver)
+            description: >
+              Ruwe data opschonen en structureren in Databricks.
+          - summary: Data transformeren (goud)
+            description: >
+              Data transformeren naar het logisch informatiemodel in Databricks.
+
+      # Stories voor BI-specialist
+      - summary: Dashboard
+        description: >
+          Dashboard opzetten in Power BI / Tableau
+        role: BI-specialist
+        story_points: 8
+        subtasks:
+          - summary: Dashboard opzetten
+            description: >
+              Dashboard opzetten in Power BI / Tableau
+          - summary: Dashboard testen
+            description: >
+              Dashboard testen in Power BI / Tableau
+          - summary: Dashboard opleveren
+            description: >
+              Dashboard opleveren in Power BI / Tableau
+          
