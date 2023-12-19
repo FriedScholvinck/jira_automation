@@ -94,26 +94,91 @@ epic:
 
 
       # Stories voor Data Engineer
-      - summary: Brons, Zilver, Goud pipeline
-        description: >
-          Data pipeline in Databricks opzetten voor de volgende databronnen:
-            - Databron 1
-            - Databron 2
-            - Databron 3
+      - summary: Data inladen (t/m brons)
+        description: Werk op een nieuwe branch in de repository (vanuit `dev`)!
         role: Data Engineer
         story_points: 8
         subtasks:
-          - summary: Data verkennen
-            description: EDA op databron en manier van inladen bepalen.
-          - summary: Data inladen (brons)
+          - summary: EDA (verkenning en opzetten structuur)
             description: >
-              Ruwee data inladen in Databricks vanuit de bron.
-          - summary: Data opschonen (zilver)
+              EDA op databron en manier van inladen bepalen.
+              Werk in folder in repository:
+                -root
+                  -project (bv 'bezettingsdashboard')
+                    -bronsysteem (bv 'amis')
+                      -1_bronze.py (databricks notebook)
+                      -2_silver.py (databricks notebook)
+                      -3_gold.py (databricks notebook)
+
+          - summary: Ruwe data inladen/wegschrijven in originele format (landingzone)
             description: >
-              Ruwe data opschonen en structureren in Databricks.
-          - summary: Data transformeren (goud)
+              Ruwe data inladen in Databricks landingzone vanuit de bron.
+          - summary: Valideren schema
             description: >
-              Data transformeren naar het logisch informatiemodel in Databricks.
+              Schema van de ruwe data valideren.
+          - summary: Type casting
+            description: >
+              Type casting toepassen op de ruwe data.
+          - summary: Indexeren (indien nodig)
+          - summary: DQ checks
+            description: >
+              Data Quality checks toepassen op de ruwe data met behulp van dq-suite van data management.
+          - summary: Historisering toepassen (brons)
+            description: >
+              Inladen package: `%run ../historisering`
+              Inladen package: `pip install moss-package`
+              Functie aanroepen vanuit 1_bronze `toepassen_historisering()`
+              Ingebouwde check voor unieke business keys (indexen) zit in de historiseringsfuncties.
+          
+      - summary: Data opschonen en verwerken (zilver)
+        description: >
+          Ruwe data opschonen.
+        role: Data Engineer
+        story_points: 4
+        subtasks:
+          - summary: Dimensietabellen maken (indien nodig)
+            description: Indien het bronsysteem geen dimensietabellen heeft, moeten deze gemaakt worden.
+          - summary: Historisering toepassen (indien nodig)
+          - summary: Aliasing
+          - summary: Toepassing business logica
+            description: Aanmaken van nieuwe kolommen met business logica.
+          # - summary: Primary/Foreign Keys koppelen
+          - summary: Data opschonen
+            description: >
+              - trimmen (bv postcode)
+              - missing values
+              - spaties
+              - etc.
+          - summary: Structureren tabellen
+            description: >
+              - sorteren rijen
+              - sorteren kolommen
+          - summary: Partitioneren (optioneel)
+
+      - summary: Data verrijken (goud)
+        description: Toepassen datamodel + joinen + aggregaties + etc.
+        role: Data Engineer
+        story_points: 4
+        subtasks:
+          - summary: Datamodel toepassen
+            description: >
+              - dimensietabellen koppelen
+              - feitentabellen koppelen
+          - summary: Business aggregaties
+            description: >
+              - filteren / slicen
+              - aliasing
+
+      - summary: Pipeline naar dev
+        description: Pull Request naar dev branch
+        role: Data Engineer
+        story_points: 2
+      
+      - summary: Pipeline naar prod
+        description: CICD / Asset Bundle naar production workspace
+        role: Data Engineer
+        story_points: 2
+
 
       # Stories voor BI-specialist
       - summary: Dashboard

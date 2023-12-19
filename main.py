@@ -103,7 +103,7 @@ with st.expander(f'Epic: {epic.summary} ({epic.label}))'):
 
 for story in epic.stories:
     with st.container(border=True):
-        story.summary = st.text_input(f"Story voor {story.role} ({roles[story.role][0]})", story.summary + f' ({epic.summary})', key=f'story_{story.summary}')
+        story.summary = st.text_input(f"Story voor {story.role} ({roles[story.role][0]})", story.summary, key=f'story_{story.summary}')
         story.description = st.text_area('Beschrijving', story.description, key=f'story_description_{story.summary}')
         story.directie = directie
         story.assignee = roles[story.role][0]
@@ -116,7 +116,8 @@ for story in epic.stories:
                 if st.checkbox('Include Sub-task', value=True, key=f'subtask_toggle_{subtask.summary}'):
                     subtask.directie = directie
                     subtask.summary = st.text_input('Titel', subtask.summary, label_visibility='hidden', key=f'subtask_summary_{subtask.summary}')
-                    subtask.description = st.text_area('Beschrijving', subtask.description, key=f'subtask_description_{subtask.summary}')
+                    if hasattr(subtask, 'description'):
+                        subtask.description = st.text_area('Beschrijving', subtask.description, key=f'subtask_description_{subtask.summary}')
                     subtask.label = label if label_toggle else None
                     
                     # je kan assignee en rol nog aanpassen

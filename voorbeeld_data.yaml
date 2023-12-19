@@ -1,37 +1,25 @@
-# roles to choose from:
-# - Business Analist
-# - Informatie Analist
-# - Data Engineer
-# - BI-specialist
-
-# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder.
+# Let op: de structuur van de yaml moet exact overeenkomen met het voorbeeld hieronder.
+# Eén epic, met daaronder meerdere stories, met daaronder meerdere subtasks
 
 epic:
-  - summary: Epic 1 Summary
-    description: Epic 1 Description
-    directie: Epic 1 Directie
-    label: test_label
-    role: 'Business Analist'
-    features:
-      - summary: Feature 1 Summary
-        description: Feature 1 Description
-        directie: Feature 1 Directie
-        role: Business Analist
-        stories:
-          - summary: Story 1 Summary
-            description: Story 1 Description
-            directie: Story 1 Directie
-            story_points: 5
-          - summary: Story 2 Summary
-            description: Story 2 Description
-            directie: Story 2 Directie
-            story_points: 8
-      - summary: Feature 2 Summary
-        description: Feature 2 Description
-        directie: Feature 2 Directie
+  - summary: Titel Epic
+    description: Omschrijving Epic
+    label: LBL # default afkorting van de epic (projectcode)
+    role: Business Analist # business analist is 'eigenaar' van het project
+    stories:
+
+      - summary: Titel Story
+        description: Omschrijving Story
+        role: Business Analist # keuze uit Business Analist, Informatie Analist, Data Engineer, BI-specialist (zie main.py)
+        story_points: 5
+        subtasks:
+          - summary: Titel Subtask
+            description: Omschrijving Subtask # description bij subtask niet verplicht
+          - summary: Titel Subtask
+    
+      - summary: Titel Story 2
+        description: Omschrijving Story 2
         role: Informatie Analist
-        stories:
-          - summary: Story 3 Summary
-            description: Story 3 Description
-            directie: Story 3 Directie
-            story_points: 3
+        story_points: 8
+        subtasks:
+          - summary: Titel Subtask
