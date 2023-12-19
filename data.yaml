@@ -53,30 +53,9 @@ epic:
         story_points: 8
         subtasks:
           - summary: Technische Requirements opstellen
-            description: >
-              Technische Requirements opstellen voor het dashboard.
-                - Data:
-                - Scope:
-                - Stakeholders:
-                - Planning:
-          - summary: Conceptueel / Vraaggerelateerd Informatiemodel opstellen
-            description: >
-              Conceptueel Informatiemodel moet bestaan uit de volgende entiteiten:
-                - Entiteit 1
-                - Entiteit 2
-                - Entiteit 3
-          - summary: Logisch / Brongerelateerd Informatiemodel opstellen
-            description: >
-              Logisch Informatiemodel moet bestaan uit de volgende entiteiten:
-                - Entiteit 1
-                - Entiteit 2
-                - Entiteit 3
           - summary: EDA uitvoeren
-            description: >
-              Exploratory Data Analysis uitvoeren op de volgende databronnen:
-                - Databron 1
-                - Databron 2
-                - Databron 3
+          - summary: Conceptueel / Vraaggerelateerd Informatiemodel opstellen
+          - summary: Logisch / Brongerelateerd Informatiemodel opstellen
 
       - summary: Testen Dashboard
         description: Doorloop alle stappen in het testproces van een dashboard.
@@ -173,27 +152,57 @@ epic:
         description: Pull Request naar dev branch
         role: Data Engineer
         story_points: 2
+        subtasks:
+          - summary: Maak en test job in Databrics Worflows
+          - summary: Include yaml file van job in repository
+          - summary: Pull Request naar dev branch
+          - summary: Check CI/CD pipeline
       
       - summary: Pipeline naar prod
         description: CICD / Asset Bundle naar production workspace
         role: Data Engineer
         story_points: 2
+        subtasks:
+          - summary: Test pipeline in dev
+          - summary: Merge naar main branch
+          - summary: Check CI/CD pipeline op prd
 
 
       # Stories voor BI-specialist
-      - summary: Dashboard
-        description: >
-          Dashboard opzetten in Power BI / Tableau
+      - summary: EDA & Ontwerp
+        description: Samen met informatieanalist en data engineer.
+        role: BI-specialist
+        story_points: 3
+        subtasks:
+          - summary: Identificatie feiten + dimensies
+          - summary: Verdeel/Groepeer de belangrijkste feiten en dimensies op een begrijpelijke manier.
+          - summary: Check datakwaliteit feiten en dimensies
+          - summary: Check definitielijst en conceptueel data model
+          - summary: Ruwe schets van het dashboard
+
+      - summary: Dashboard ontwikkeling
+        description: Ontwikkeling van de eerste versie van het dashboard in Tableau of Power BI.
         role: BI-specialist
         story_points: 8
         subtasks:
-          - summary: Dashboard opzetten
-            description: >
-              Dashboard opzetten in Power BI / Tableau
-          - summary: Dashboard testen
-            description: >
-              Dashboard testen in Power BI / Tableau
-          - summary: Dashboard opleveren
-            description: >
-              Dashboard opleveren in Power BI / Tableau
-          
+          - summary: Schets omzetten in eerste ontwerp in Power BI / Tableau
+          - summary: Publiceer dashboard in een test omgeving waar testers bij kunnen.
+
+      - summary: Dashboard naar productie brengen
+        description: Afhankelijk van data pipeline op prd workspace in Databricks!
+        story_points: 6
+        role: BI-specialist
+        subtasks:
+          - summary: Verwerk de laatste feedback
+          - summary: Valideer cijfers op dashboard met brondata
+          - summary: Controleer alle filters en functionaliteit
+          - summary: Publiceer dashboard in productieomgeving
+          - summary: Gebruikersdemo
+      
+      - summary: Dashboard documentatie
+        description: Documenteren in Confluence
+        story_points: 2
+        role: BI-specialist
+        subtasks:
+          - summary: Schrijf interne documentatie voor het onderhouden en doorontwikkelen van het dashboard
+          - summary: Deel documentatie met team
