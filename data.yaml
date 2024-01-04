@@ -43,33 +43,64 @@ epic:
                 - Privacy Impact Assessment?
 
       # Stories voor Informatie Analist
-      - summary: Informatiemodellen
-        description: >
-          Requirements:
-            - Functioneel Informatiemodel
-            - Conceptueel Informatiemodel
-            - Logisch Informatiemodel
+      - summary: Conceptueel informatiemodel (CIM) ontwerpen
+        description: > 
+          Als informatie analist wil ik de requirements vertalen naar een conceptueel informatiemodelmodel, voorafgaand aan het verkennen van de data.
         role: Informatie Analist
-        story_points: 8
+        story_points: 2
         subtasks:
-          - summary: Technische Requirements opstellen
-          - summary: EDA uitvoeren
-          - summary: Conceptueel / Vraaggerelateerd Informatiemodel opstellen
-          - summary: Logisch / Brongerelateerd Informatiemodel opstellen
+          - summary: Requirements naar model vertalen
+            description: "Als informatie analist wil ik de requirements vertalen naar een conceptueel datamodel, voordat ik met de data aan de slag ga. Definition of done: er is een visueel conceptueel datamodel gemaakt conform de standaard vanuit Datamanagement. "
+          - summary: Feedback verwerken
+            description: "Definition of done: de stakeholder heeft akkoord gegeven op het model (alle relevante entiteiten zijn opgenomen en de attributen en relaties zijn compleet en correct)."
 
-      - summary: Testen Dashboard
-        description: Doorloop alle stappen in het testproces van een dashboard.
+      - summary: Dataverkenning doen (mapping & aliasing)
+        description: > 
+          Als informatie analist wil ik de data inhoudelijk verkennen, de betekenis ervan begrijpen en waar nodig de naamgeving aanpassen naar de gebruikelijke conventies binnen de Gemeente Amsterdam.
         role: Informatie Analist
-        story_points: 8
+        story_points: 3
         subtasks:
-          - summary: Testplan opstellen
-            description: x
-          - summary: Testscenario's opstellen
-            description: x
-          - summary: Testscenario's uitvoeren
-            description: x
-          - summary: Testrapport opstellen
-            description: x
+          - summary: Dataverkenning en mapping
+            description: "Als informatie analist wil ik begrijpen wat de data inhoudelijk vertegenwoordigt, om te zien of deze de vragen uit de  requirements beantwoordt, voor zover dit niet al in Purview is vastgelegd. Definition of done: er is een tabel* met als kolommen 'Bron', 'Originele naam', 'Omschrijving' en 'Alias' waarbij elke rij een kolom uit een bron vertegenwoordigt. *Nog te beslissen of dit Databricks, Azure DevOps of Confluence wordt."
+          - summary: Naamgeving
+            description: "Als informatie analist wil dat de kolomnamen in de tabellen duidelijk te interpreteren zijn, door ze waar nodig een alias te geven die conform de naamgevingconventies van de Gemeente Amsterdam is. Deze naamgeving maakt dat het logisch model inhoudelijk makkelijker te interpreteren is. Definition of done: een lijst met alle kolomnamen per bron en eventuele aanpasingen daaraan."
+
+      - summary: Logisch informatiemodel (LIM) ontwerpen
+        description: Als informatie analist wil ik het conceptueel informatiemodel vertalen naar een logisch informatiemodel.
+        role: Informatie Analist
+        story_points: 3
+        subtasks:
+          - summary: Logisch informatiemodel ontwerpen
+            description: "Als informatie analist wil ik de requirements via het conceptueel model en de mapping vertalen naar een logisch model, zodat de data engineer dit als fysiek datamodel in de pipeline kan realiseren. Definition of done: een visueel logisch datamodel conform de principes van dimensioneel modelleren."
+
+      - summary: Testen datakwaliteit bron
+        description: > 
+          Als informatie analist wil ik met de stakeholder vaststellen welke eisen we aan de kwaliteit van de data in de bron stellen. Definition of done: een lijst met kwaliteitseisen per entiteit die geimplementeerd is in een monitoringsysteem.
+        role: Informatie Analist
+        story_points: 4
+        subtasks:
+          - summary: Requirements datakwaliteit vaststellen met stakeholder
+            description: >  
+            Als informatie analist wil ik met de stakeholder vaststellen welke eisen we aan de kwaliteit van de data in de bron stellen. Definition of done: een lijst met kwaliteitseisen per entiteit.
+          - summary: Requirements vertalen naar monitoring
+            description: > 
+            Als informatie analist wil ik de requirements voor datakwaliteit vertalen naar logische statements waarmee de kwaliteit te meten is (bijvoorbeeld: een primary key is nooit NULL). Definition of done: requirements zijn vertaald en geimplementeerd in een monitoringsysteem.
+          - summary: Valideren & troubleshooten datakwaliteit bron
+            description: >
+            Als informatie analist wil ik de datakwaliteit van de bron(nen) inzichtelijk maken voor de stakeholder om mogelijke actiepunten te ontdekken. Definition of done: een lijst met tekortkomingen aan de datakwaliteit en mogelijke verbeteracties.
+
+      - summary: Testen datakwaliteit model
+        description: >
+          Als informatie analist wil ik valideren dat de vertaling van het logische informatiemodel naar een fysiek datamodel in Databricks correct is. Definition of done: requirements voor correct modelleren zijn opgenomen in een monitoringsysteem.
+        role: Informatie Analist
+        story_points: 3
+        subtasks:
+
+          - summary: Requirements datakwaliteit model vertalen naar monitoring
+            description: >
+            Als informatie analist wil ik requirements aan de datakwaliteit van het logisch informatiemodel vertalen naar logica waarmee dit te monitoren is in Databricks en implementeer dit. Alternatief: ik selecteer de vooraf bedachte logica die toepasbaar is op mijn type model (bv. dimensioneel model, one big table etc.).
+          - summary: Valideren & troubleshooten datakwaliteit model
+            description: Als informatie analist wil ik eventuele tekortkomingen aan de modellering in kaart brengen en als actiepunten uitzetten naar de data engineer.
 
 
       # Stories voor Data Engineer
@@ -206,3 +237,4 @@ epic:
         subtasks:
           - summary: Schrijf interne documentatie voor het onderhouden en doorontwikkelen van het dashboard
           - summary: Deel documentatie met team
+          
