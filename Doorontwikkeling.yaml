@@ -29,8 +29,7 @@ epic:
         description: Doorloop alle stappen in het testproces van een dashboard.
         role: Informatie Analist
         story_points: 2
-        subtasks:
-          
+        
 
       # Stories voor Data Engineer
       - summary: Doorontwikkeling pipeline

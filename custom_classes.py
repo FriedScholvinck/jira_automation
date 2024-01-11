@@ -56,6 +56,8 @@ class JiraProcess:
         self.directie_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Directie'][0]
         self.story_points_field = [field['id'] for field in self.jira.fields() if field['name'] == 'Story Points'][0]
         self.rol_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Rol'][0]
+        # find all created labels
+        # self.labels = [label.name for label in self.jira.labels()]
 
     def get_users(self):
         ''' Returns a list of all 'active' users in the Jira project.

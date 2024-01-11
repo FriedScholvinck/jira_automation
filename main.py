@@ -189,9 +189,9 @@ for role in roles:
 
 
 
-# vraag om wachtwoord zodat we niet gespamd worden met Jira issues
-if not check_password(st):
-    st.stop()
+# # vraag om wachtwoord zodat we niet gespamd worden met Jira issues
+# if not check_password(st):
+#     st.stop()
 
 if st.button('Maak Jira Issues'):
     epic_issue = st.session_state['jira_process'].create_issue(epic)

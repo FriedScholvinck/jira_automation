@@ -261,17 +261,6 @@ epic:
         subtasks:
           - summary: Schets omzetten in eerste ontwerp in Power BI / Tableau
           - summary: Publiceer dashboard in een test omgeving waar testers bij kunnen.
-
-      - summary: Dashboard naar productie brengen
-        description: Afhankelijk van data pipeline op prd workspace in Databricks!
-        story_points: 6
-        role: BI-specialist
-        subtasks:
-          - summary: Verwerk de laatste feedback
-          - summary: Valideer cijfers op dashboard met brondata
-          - summary: Controleer alle filters en functionaliteit
-          - summary: Publiceer dashboard in productieomgeving
-          - summary: Gebruikersdemo
       
       - summary: Dashboard documentatie
         description: Documenteren in Confluence
@@ -280,4 +269,23 @@ epic:
         subtasks:
           - summary: Schrijf interne documentatie voor het onderhouden en doorontwikkelen van het dashboard
           - summary: Deel documentatie met team
+
+      - summary: Testen van het Dashboard
+        description: Testen van het dashboard
+        story_points: 2
+        role: BI-specialist
+        subtasks:
+          - summary: Valideer cijfers op dashboard met brondata
+          - summary: Controleer alle filters en functionaliteit
+          - summary: Documentatie controleren
+      
+      - summary: Dashboard naar productie brengen
+        description: Afhankelijk van data pipeline op prd workspace in Databricks!
+        story_points: 2
+        role: BI-specialist
+        subtasks:
+          - summary: Verwerk de laatste feedback
+          - summary: Publiceer dashboard in productieomgeving
+          - summary: Gebruikersdemo
+      
           
