@@ -16,31 +16,77 @@ epic:
     role: Business Analist
 
     stories:
-      # Stories voor Business Analist
-      - summary: Requirements en Prerequisites
-        description: >
-          Business Analyse voor het dashboard.
-            - Doel: 
-            - Scope:
-            - Stakeholders:
-            - Planning:
 
-          Privacy en Security voor het dashboard.
-        role: Business Analist # keuze uit Business Analist, Informatie Analist, Data Engineer, BI-specialist
-        story_points: 8
+# Stories voor Business Analist
+      - summary: Intake document valideren met business
+        description: Valideer met de business of het intakedocument compleet is.
+        role: Business Analist
+        story_points: 2
+
+      - summary: Functionele Requirements opstellen
+        description: >
+          Functionele requirements opstellen voor het informatieproduct.
+          - Doel:
+          - Scope:
+          - Stakeholders:
+          - Planning:
+          - Welke proces(sen) worden ondersteund
+          - Wat willen ze meten en over welke assen
+          enz, zie BA template voor verdere invulling in Confluence
+        role: Business Analist
+        story_points: 4
         subtasks:
-          - summary: Functionele Requirements opstellen
-            description: > 
-              Functionele requirements opstellen voor het dashboard.
-                - Doel:
-                - Scope:
-                - Stakeholders:
-                - Planning:
-          - summary: Privacy en Security
-            description: >
-              Doorloop stappen in het Privacy en Security proces.
-                - Quickscan
-                - Privacy Impact Assessment?
+          - summary: Functionele documentatie van de business
+            description: Voor het ontsluiten van de data is er connectiviteit nodig
+
+      - summary: Technische Requirements opstellen
+        description: >
+          Functionele requirements opstellen voor het informatieproduct.
+          - Welke bron wordt gebruikt:
+          - Toegang tot bron regelen:
+          - Welke data is er nodig (hoogover)
+          enz, zie BA template voor verdere invulling in Confluence
+        role: Business Analist
+        story_points: 4
+        subtasks:
+          - summary: Is connectiviteit geregeld
+            description: Voor het ontsluiten van de data is er connectiviteit nodig
+
+      - summary: Privacy en Security
+        description: >
+          Doorloop stappen in het Privacy en Security proces.
+          - Controleer Quickscan
+          - Controleer of DPIA nodig is
+          - Privacy Impact Assessment?
+        role: Business Analist
+        story_points: 4
+        subtasks:
+          - summary: Controleer Quickscan
+            description: Bepaal op basis van deze controle of een DPIA nodig is
+
+      - summary: Functionele testplan opstellen
+        description: >
+          Functionele testplan opstellen voor het informatieproduct.
+          - Testplan:
+          - welke functionaliteiten worden getest obv welke userstory's:
+        role: Business Analist
+        story_points: 2
+
+      - summary: Functionele testplan uitvoeren
+        description: >
+          Functionele testplan opstellen voor het informatieproduct.
+          - Testplan:
+          - welke functionaliteiten worden getest obv welke userstory's:
+        role: Business Analist
+        story_points: 2
+
+      - summary: Nazorg van informatieproduct
+        description: >
+          Wanneer het informatieproduct opgeleverd is, is het aan de business om met het informatieproduct aan de slag te gaan.
+          Gedurende 1 of 2 sprints houden wij tijd vrij om issues op te lossen en vragen te beantwoorden of andere vormen van ondersteuning.
+        story_points: 2
+        role: Business Analist
+      
 
       # Stories voor Informatie Analist
       - summary: Conceptueel informatiemodel (CIM) ontwerpen
@@ -83,8 +129,7 @@ epic:
             description: >  
             Als informatie analist wil ik met de stakeholder vaststellen welke eisen we aan de kwaliteit van de data in de bron stellen. Definition of done: een lijst met kwaliteitseisen per entiteit.
           - summary: Requirements vertalen naar monitoring
-            description: > 
-            Als informatie analist wil ik de requirements voor datakwaliteit vertalen naar logische statements waarmee de kwaliteit te meten is (bijvoorbeeld: een primary key is nooit NULL). Definition of done: requirements zijn vertaald en geimplementeerd in een monitoringsysteem.
+            description: "Als informatie analist wil ik de requirements voor datakwaliteit vertalen naar logische statements waarmee de kwaliteit te meten is (bijvoorbeeld: een primary key is nooit NULL). Definition of done: requirements zijn vertaald en geimplementeerd in een monitoringsysteem."
           - summary: Valideren & troubleshooten datakwaliteit bron
             description: >
             Als informatie analist wil ik de datakwaliteit van de bron(nen) inzichtelijk maken voor de stakeholder om mogelijke actiepunten te ontdekken. Definition of done: een lijst met tekortkomingen aan de datakwaliteit en mogelijke verbeteracties.
@@ -95,13 +140,11 @@ epic:
         role: Informatie Analist
         story_points: 3
         subtasks:
-
           - summary: Requirements datakwaliteit model vertalen naar monitoring
             description: >
             Als informatie analist wil ik requirements aan de datakwaliteit van het logisch informatiemodel vertalen naar logica waarmee dit te monitoren is in Databricks en implementeer dit. Alternatief: ik selecteer de vooraf bedachte logica die toepasbaar is op mijn type model (bv. dimensioneel model, one big table etc.).
           - summary: Valideren & troubleshooten datakwaliteit model
             description: Als informatie analist wil ik eventuele tekortkomingen aan de modellering in kaart brengen en als actiepunten uitzetten naar de data engineer.
-
 
       # Stories voor Data Engineer
       - summary: Data inladen (t/m brons)

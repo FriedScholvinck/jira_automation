@@ -101,36 +101,54 @@ with st.expander(f'Epic: {epic.summary} ({epic.label}))'):
     epic
 
 
-for story in epic.stories:
-    with st.container(border=True):
-        story.summary = st.text_input(f"Story voor {story.role} ({roles[story.role][0]})", story.summary, key=f'story_{story.summary}')
-        story.description = st.text_area('Beschrijving', story.description, key=f'story_description_{story.summary}')
-        story.directie = directie
-        story.assignee = roles[story.role][0]
-        story.label = label if label_toggle else None
-        story.story_points = st.slider('Story Points', 1, MAX_STORY_POINTS, story.story_points, key=f'story_points_{story.summary}')
-
-        subtasks_to_skip = []
-        for i, subtask in enumerate(story.subtasks):
-            with st.expander(f'{subtask.summary}'):
-                if st.checkbox('Include Sub-task', value=True, key=f'subtask_toggle_{subtask.summary}'):
-                    subtask.directie = directie
-                    subtask.summary = st.text_input('Titel', subtask.summary, label_visibility='hidden', key=f'subtask_summary_{subtask.summary}')
-                    if hasattr(subtask, 'description'):
-                        subtask.description = st.text_area('Beschrijving', subtask.description, key=f'subtask_description_{subtask.summary}')
-                    subtask.label = label if label_toggle else None
-                    
-                    # je kan assignee en rol nog aanpassen
-                    subtask.role = st.selectbox('Rol', list(roles.keys()), list(roles.keys()).index(story.role), key=f'subtask_role_{subtask.summary}')
-                    subtask.assignee = st.selectbox('Assignee', st.session_state['team_member_names'], st.session_state['team_member_names'].index(str(roles[subtask.role][0])), key=f'subtask_assignee_{subtask.summary}')
-                else:
-                    subtasks_to_skip.append(i)
-        story.subtasks = [subtask for i, subtask in enumerate(story.subtasks) if i not in subtasks_to_skip]
-
+# show metrics
 c1, c2, c3 = st.columns(3)
 with c1: st.metric('Aantal Stories', len(epic.stories))
 with c2: st.metric('Totaal Story Points', sum([story.story_points for story in epic.stories]))
 with c3: st.metric('Totaal Aantal Subtaken', sum([len(story.subtasks) for story in epic.stories]))
+
+# show stories per role in short version
+for role in roles:
+    st.subheader(f'Stories voor {role} ({roles[role][0]}) - {sum([story.story_points for story in epic.stories if story.role == role])}')
+    text = ''
+    for story in epic.stories:
+        if story.role == role:
+            text += f'- {story.summary} ({story.story_points})\n'
+    st.text(text)
+            
+
+
+st.divider()
+# only show detailed stories if toggle is on
+if st.toggle('Pas stories aan', value=False):
+
+    # show stories in detail and allow user to change them
+    stories_to_skip = []
+    for role in roles:
+        with st.container(border=True):
+            for i, story in enumerate([s for s in epic.stories if s.role == role]):
+                with st.expander(f'{story.summary} ({story.story_points})'):
+                    if st.checkbox('Exclude Story', value=True, key=f'story_toggle_{story.summary}'):
+                        story.role = st.selectbox('Rol', list(roles.keys()), list(roles.keys()).index(story.role), key=f'story_role_{story.summary}')
+                        story.summary = st.text_input(f"Story voor {story.role} ({roles[story.role][0]})", story.summary, key=f'story_{story.summary}')
+                        story.description = st.text_area('Beschrijving', story.description, key=f'story_description_{story.summary}')
+                        story.directie = directie
+                        # story.assignee = roles[story.role][0]
+                        story.assignee = st.selectbox('Assignee', st.session_state['team_member_names'], st.session_state['team_member_names'].index(str(roles[story.role][0])), key=f'story_assignee_{story.summary}')
+                        story.label = label if label_toggle else None
+                        story.story_points = st.slider('Story Points', 1, MAX_STORY_POINTS, story.story_points, key=f'story_points_{story.summary}')
+                    else:
+                        stories_to_skip.append(i)
+
+                    subtask_text = ''
+                    st.text('Subtaken')
+                    for subtask in story.subtasks:
+                        subtask_text += f'- {subtask.summary}\n'
+                    st.text(subtask_text)
+
+    epic.stories = [story for n, story in enumerate(epic.stories) if n not in stories_to_skip]
+
+
 
 # vraag om wachtwoord zodat we niet gespamd worden met Jira issues
 if not check_password(st):
