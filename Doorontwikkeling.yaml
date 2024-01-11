@@ -1,0 +1,179 @@
+# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder of in voorbeeld_data.yaml om uiteindelijk goed te werken in de tool.
+# sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
+
+epic:
+  - summary: Doorontwikkeling Informatieproduct
+    description: Het doorontwikkelen van een informatieproduct.
+    label: "Bestaat er al een label?"
+    role: Business Analist
+    stories:
+
+      # Stories voor Business Analist
+      - summary: Requirements en Prerequisites
+        description: xxx
+        role: Business Analist
+        story_points: 5
+        subtasks:
+          - summary: Functionele Requirements opstellen
+          - summary: Privacy en Security
+
+      # Stories voor Informatie Analist
+      - summary: Informatiemodellen
+        description:
+        role: Informatie Analist
+        story_points: 8
+        subtasks:
+          - summary: Technische Requirements opstellen
+          - summary: EDA uitvoeren
+          - summary: Conceptueel / Vraaggerelateerd Informatiemodel opstellen
+          - summary: Logisch / Brongerelateerd Informatiemodel opstellen
+
+      - summary: Testen Dashboard
+        description: Doorloop alle stappen in het testproces van een dashboard.
+        role: Informatie Analist
+        story_points: 8
+        subtasks:
+          - summary: Testplan opstellen
+            description: x
+          - summary: Testscenario's opstellen
+            description: x
+          - summary: Testscenario's uitvoeren
+            description: x
+          - summary: Testrapport opstellen
+            description: x
+
+
+      # Stories voor Data Engineer
+      - summary: Data inladen (t/m brons)
+        description: Werk op een nieuwe branch in de repository (vanuit `dev`)!
+        role: Data Engineer
+        story_points: 8
+        subtasks:
+          - summary: EDA (verkenning en opzetten structuur)
+            description: >
+              EDA op databron en manier van inladen bepalen.
+              Werk in folder in repository:
+                -root
+                  -project (bv 'bezettingsdashboard')
+                    -bronsysteem (bv 'amis')
+                      -1_bronze.py (databricks notebook)
+                      -2_silver.py (databricks notebook)
+                      -3_gold.py (databricks notebook)
+
+          - summary: Ruwe data inladen/wegschrijven in originele format (landingzone)
+            description: >
+              Ruwe data inladen in Databricks landingzone vanuit de bron.
+          - summary: Valideren schema
+            description: >
+              Schema van de ruwe data valideren.
+          - summary: Type casting
+            description: >
+              Type casting toepassen op de ruwe data.
+          - summary: Indexeren (indien nodig)
+          - summary: DQ checks
+            description: >
+              Data Quality checks toepassen op de ruwe data met behulp van dq-suite van data management.
+          - summary: Historisering toepassen (brons)
+            description: >
+              Inladen package: `%run ../historisering`
+              Inladen package: `pip install moss-package`
+              Functie aanroepen vanuit 1_bronze `toepassen_historisering()`
+              Ingebouwde check voor unieke business keys (indexen) zit in de historiseringsfuncties.
+          
+      - summary: Data opschonen en verwerken (zilver)
+        description: >
+          Ruwe data opschonen.
+        role: Data Engineer
+        story_points: 4
+        subtasks:
+          - summary: Dimensietabellen maken (indien nodig)
+            description: Indien het bronsysteem geen dimensietabellen heeft, moeten deze gemaakt worden.
+          - summary: Historisering toepassen (indien nodig)
+          - summary: Aliasing
+          - summary: Toepassing business logica
+            description: Aanmaken van nieuwe kolommen met business logica.
+          # - summary: Primary/Foreign Keys koppelen
+          - summary: Data opschonen
+            description: >
+              - trimmen (bv postcode)
+              - missing values
+              - spaties
+              - etc.
+          - summary: Structureren tabellen
+            description: >
+              - sorteren rijen
+              - sorteren kolommen
+          - summary: Partitioneren (optioneel)
+
+      - summary: Data verrijken (goud)
+        description: Toepassen datamodel + joinen + aggregaties + etc.
+        role: Data Engineer
+        story_points: 4
+        subtasks:
+          - summary: Datamodel toepassen
+            description: >
+              - dimensietabellen koppelen
+              - feitentabellen koppelen
+          - summary: Business aggregaties
+            description: >
+              - filteren / slicen
+              - aliasing
+
+      - summary: Pipeline naar dev
+        description: Pull Request naar dev branch
+        role: Data Engineer
+        story_points: 2
+        subtasks:
+          - summary: Maak en test job in Databrics Worflows
+          - summary: Include yaml file van job in repository
+          - summary: Pull Request naar dev branch
+          - summary: Check CI/CD pipeline
+      
+      - summary: Pipeline naar prod
+        description: CICD / Asset Bundle naar production workspace
+        role: Data Engineer
+        story_points: 2
+        subtasks:
+          - summary: Test pipeline in dev
+          - summary: Merge naar main branch
+          - summary: Check CI/CD pipeline op prd
+
+
+      # Stories voor BI-specialist
+      - summary: EDA & Ontwerp
+        description: Samen met informatieanalist en data engineer.
+        role: BI-specialist
+        story_points: 3
+        subtasks:
+          - summary: Identificatie feiten + dimensies
+          - summary: Verdeel/Groepeer de belangrijkste feiten en dimensies op een begrijpelijke manier.
+          - summary: Check datakwaliteit feiten en dimensies
+          - summary: Check definitielijst en conceptueel data model
+          - summary: Ruwe schets van het dashboard
+
+      - summary: Dashboard ontwikkeling
+        description: Ontwikkeling van de eerste versie van het dashboard in Tableau of Power BI.
+        role: BI-specialist
+        story_points: 8
+        subtasks:
+          - summary: Schets omzetten in eerste ontwerp in Power BI / Tableau
+          - summary: Publiceer dashboard in een test omgeving waar testers bij kunnen.
+
+      - summary: Dashboard naar productie brengen
+        description: Afhankelijk van data pipeline op prd workspace in Databricks!
+        story_points: 6
+        role: BI-specialist
+        subtasks:
+          - summary: Verwerk de laatste feedback
+          - summary: Valideer cijfers op dashboard met brondata
+          - summary: Controleer alle filters en functionaliteit
+          - summary: Publiceer dashboard in productieomgeving
+          - summary: Gebruikersdemo
+      
+      - summary: Dashboard documentatie
+        description: Documenteren in Confluence
+        story_points: 2
+        role: BI-specialist
+        subtasks:
+          - summary: Schrijf interne documentatie voor het onderhouden en doorontwikkelen van het dashboard
+          - summary: Deel documentatie met team

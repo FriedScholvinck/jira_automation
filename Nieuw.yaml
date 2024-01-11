@@ -1,0 +1,283 @@
+# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder of in voorbeeld_data.yaml om uiteindelijk goed te werken in de tool.
+# sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
+
+epic:
+  - summary: Nieuw Informatieproduct
+    description: > # gebruik > voor een multiline description
+      Management Dashboard voor de directie met inzicht in belangrijke KPI's.
+
+        - Doel: 
+        - KPI's:
+        - Scope:
+        - Stakeholders:
+        - Planning:
+      
+    label: KPIs
+    role: Business Analist
+
+    stories:
+
+# Stories voor Business Analist
+      - summary: Intake document valideren met business
+        description: Valideer met de business of het intakedocument compleet is.
+        role: Business Analist
+        story_points: 2
+
+      - summary: Functionele Requirements opstellen
+        description: >
+          Functionele requirements opstellen voor het informatieproduct.
+          - Doel:
+          - Scope:
+          - Stakeholders:
+          - Planning:
+          - Welke proces(sen) worden ondersteund
+          - Wat willen ze meten en over welke assen
+          enz, zie BA template voor verdere invulling in Confluence
+        role: Business Analist
+        story_points: 4
+        subtasks:
+          - summary: Functionele documentatie van de business
+            description: Voor het ontsluiten van de data is er connectiviteit nodig
+
+      - summary: Technische Requirements opstellen
+        description: >
+          Functionele requirements opstellen voor het informatieproduct.
+          - Welke bron wordt gebruikt:
+          - Toegang tot bron regelen:
+          - Welke data is er nodig (hoogover)
+          enz, zie BA template voor verdere invulling in Confluence
+        role: Business Analist
+        story_points: 4
+        subtasks:
+          - summary: Is connectiviteit geregeld
+            description: Voor het ontsluiten van de data is er connectiviteit nodig
+
+      - summary: Privacy en Security
+        description: >
+          Doorloop stappen in het Privacy en Security proces.
+          - Controleer Quickscan
+          - Controleer of DPIA nodig is
+          - Privacy Impact Assessment?
+        role: Business Analist
+        story_points: 4
+        subtasks:
+          - summary: Controleer Quickscan
+            description: Bepaal op basis van deze controle of een DPIA nodig is
+
+      - summary: Functionele testplan opstellen
+        description: >
+          Functionele testplan opstellen voor het informatieproduct.
+          - Testplan:
+          - welke functionaliteiten worden getest obv welke userstory's:
+        role: Business Analist
+        story_points: 2
+
+      - summary: Functionele testplan uitvoeren
+        description: >
+          Functionele testplan opstellen voor het informatieproduct.
+          - Testplan:
+          - welke functionaliteiten worden getest obv welke userstory's:
+        role: Business Analist
+        story_points: 2
+
+      - summary: Nazorg van informatieproduct
+        description: >
+          Wanneer het informatieproduct opgeleverd is, is het aan de business om met het informatieproduct aan de slag te gaan.
+          Gedurende 1 of 2 sprints houden wij tijd vrij om issues op te lossen en vragen te beantwoorden of andere vormen van ondersteuning.
+        story_points: 2
+        role: Business Analist
+      
+
+      # Stories voor Informatie Analist
+      - summary: Conceptueel informatiemodel (CIM) ontwerpen
+        description: > 
+          Als informatie analist wil ik de requirements vertalen naar een conceptueel informatiemodelmodel, voorafgaand aan het verkennen van de data.
+        role: Informatie Analist
+        story_points: 2
+        subtasks:
+          - summary: Requirements naar model vertalen
+            description: "Als informatie analist wil ik de requirements vertalen naar een conceptueel datamodel, voordat ik met de data aan de slag ga. Definition of done: er is een visueel conceptueel datamodel gemaakt conform de standaard vanuit Datamanagement. "
+          - summary: Feedback verwerken
+            description: "Definition of done: de stakeholder heeft akkoord gegeven op het model (alle relevante entiteiten zijn opgenomen en de attributen en relaties zijn compleet en correct)."
+
+      - summary: Dataverkenning doen (mapping & aliasing)
+        description: > 
+          Als informatie analist wil ik de data inhoudelijk verkennen, de betekenis ervan begrijpen en waar nodig de naamgeving aanpassen naar de gebruikelijke conventies binnen de Gemeente Amsterdam.
+        role: Informatie Analist
+        story_points: 3
+        subtasks:
+          - summary: Dataverkenning en mapping
+            description: "Als informatie analist wil ik begrijpen wat de data inhoudelijk vertegenwoordigt, om te zien of deze de vragen uit de  requirements beantwoordt, voor zover dit niet al in Purview is vastgelegd. Definition of done: er is een tabel* met als kolommen 'Bron', 'Originele naam', 'Omschrijving' en 'Alias' waarbij elke rij een kolom uit een bron vertegenwoordigt. *Nog te beslissen of dit Databricks, Azure DevOps of Confluence wordt."
+          - summary: Naamgeving
+            description: "Als informatie analist wil dat de kolomnamen in de tabellen duidelijk te interpreteren zijn, door ze waar nodig een alias te geven die conform de naamgevingconventies van de Gemeente Amsterdam is. Deze naamgeving maakt dat het logisch model inhoudelijk makkelijker te interpreteren is. Definition of done: een lijst met alle kolomnamen per bron en eventuele aanpasingen daaraan."
+
+      - summary: Logisch informatiemodel (LIM) ontwerpen
+        description: Als informatie analist wil ik het conceptueel informatiemodel vertalen naar een logisch informatiemodel.
+        role: Informatie Analist
+        story_points: 3
+        subtasks:
+          - summary: Logisch informatiemodel ontwerpen
+            description: "Als informatie analist wil ik de requirements via het conceptueel model en de mapping vertalen naar een logisch model, zodat de data engineer dit als fysiek datamodel in de pipeline kan realiseren. Definition of done: een visueel logisch datamodel conform de principes van dimensioneel modelleren."
+
+      - summary: Testen datakwaliteit bron
+        description: > 
+          Als informatie analist wil ik met de stakeholder vaststellen welke eisen we aan de kwaliteit van de data in de bron stellen. Definition of done: een lijst met kwaliteitseisen per entiteit die geimplementeerd is in een monitoringsysteem.
+        role: Informatie Analist
+        story_points: 4
+        subtasks:
+          - summary: Requirements datakwaliteit vaststellen met stakeholder
+            description: >  
+            Als informatie analist wil ik met de stakeholder vaststellen welke eisen we aan de kwaliteit van de data in de bron stellen. Definition of done: een lijst met kwaliteitseisen per entiteit.
+          - summary: Requirements vertalen naar monitoring
+            description: "Als informatie analist wil ik de requirements voor datakwaliteit vertalen naar logische statements waarmee de kwaliteit te meten is (bijvoorbeeld: een primary key is nooit NULL). Definition of done: requirements zijn vertaald en geimplementeerd in een monitoringsysteem."
+          - summary: Valideren & troubleshooten datakwaliteit bron
+            description: >
+            Als informatie analist wil ik de datakwaliteit van de bron(nen) inzichtelijk maken voor de stakeholder om mogelijke actiepunten te ontdekken. Definition of done: een lijst met tekortkomingen aan de datakwaliteit en mogelijke verbeteracties.
+
+      - summary: Testen datakwaliteit model
+        description: >
+          Als informatie analist wil ik valideren dat de vertaling van het logische informatiemodel naar een fysiek datamodel in Databricks correct is. Definition of done: requirements voor correct modelleren zijn opgenomen in een monitoringsysteem.
+        role: Informatie Analist
+        story_points: 3
+        subtasks:
+          - summary: Requirements datakwaliteit model vertalen naar monitoring
+            description: >
+            Als informatie analist wil ik requirements aan de datakwaliteit van het logisch informatiemodel vertalen naar logica waarmee dit te monitoren is in Databricks en implementeer dit. Alternatief: ik selecteer de vooraf bedachte logica die toepasbaar is op mijn type model (bv. dimensioneel model, one big table etc.).
+          - summary: Valideren & troubleshooten datakwaliteit model
+            description: Als informatie analist wil ik eventuele tekortkomingen aan de modellering in kaart brengen en als actiepunten uitzetten naar de data engineer.
+
+      # Stories voor Data Engineer
+      - summary: Data inladen (t/m brons)
+        description: Werk op een nieuwe branch in de repository (vanuit `dev`)!
+        role: Data Engineer
+        story_points: 8
+        subtasks:
+          - summary: EDA (verkenning en opzetten structuur)
+            description: >
+              EDA op databron en manier van inladen bepalen.
+              Werk in folder in repository:
+                -root
+                  -project (bv 'bezettingsdashboard')
+                    -bronsysteem (bv 'amis')
+                      -1_bronze.py (databricks notebook)
+                      -2_silver.py (databricks notebook)
+                      -3_gold.py (databricks notebook)
+
+          - summary: Ruwe data inladen/wegschrijven in originele format (landingzone)
+            description: >
+              Ruwe data inladen in Databricks landingzone vanuit de bron.
+          - summary: Valideren schema
+            description: >
+              Schema van de ruwe data valideren.
+          - summary: Type casting
+            description: >
+              Type casting toepassen op de ruwe data.
+          - summary: Indexeren (indien nodig)
+          - summary: DQ checks
+            description: >
+              Data Quality checks toepassen op de ruwe data met behulp van dq-suite van data management.
+          - summary: Historisering toepassen (brons)
+            description: >
+              Inladen package: `%run ../historisering`
+              Inladen package: `pip install moss-package`
+              Functie aanroepen vanuit 1_bronze `toepassen_historisering()`
+              Ingebouwde check voor unieke business keys (indexen) zit in de historiseringsfuncties.
+          
+      - summary: Data opschonen en verwerken (zilver)
+        description: >
+          Ruwe data opschonen.
+        role: Data Engineer
+        story_points: 4
+        subtasks:
+          - summary: Dimensietabellen maken (indien nodig)
+            description: Indien het bronsysteem geen dimensietabellen heeft, moeten deze gemaakt worden.
+          - summary: Historisering toepassen (indien nodig)
+          - summary: Aliasing
+          - summary: Toepassing business logica
+            description: Aanmaken van nieuwe kolommen met business logica.
+          # - summary: Primary/Foreign Keys koppelen
+          - summary: Data opschonen
+            description: >
+              - trimmen (bv postcode)
+              - missing values
+              - spaties
+              - etc.
+          - summary: Structureren tabellen
+            description: >
+              - sorteren rijen
+              - sorteren kolommen
+          - summary: Partitioneren (optioneel)
+
+      - summary: Data verrijken (goud)
+        description: Toepassen datamodel + joinen + aggregaties + etc.
+        role: Data Engineer
+        story_points: 4
+        subtasks:
+          - summary: Datamodel toepassen
+            description: >
+              - dimensietabellen koppelen
+              - feitentabellen koppelen
+          - summary: Business aggregaties
+            description: >
+              - filteren / slicen
+              - aliasing
+
+      - summary: Pipeline naar dev
+        description: Pull Request naar dev branch
+        role: Data Engineer
+        story_points: 2
+        subtasks:
+          - summary: Maak en test job in Databrics Worflows
+          - summary: Include yaml file van job in repository
+          - summary: Pull Request naar dev branch
+          - summary: Check CI/CD pipeline
+      
+      - summary: Pipeline naar prod
+        description: CICD / Asset Bundle naar production workspace
+        role: Data Engineer
+        story_points: 2
+        subtasks:
+          - summary: Test pipeline in dev
+          - summary: Merge naar main branch
+          - summary: Check CI/CD pipeline op prd
+
+
+      # Stories voor BI-specialist
+      - summary: EDA & Ontwerp
+        description: Samen met informatieanalist en data engineer.
+        role: BI-specialist
+        story_points: 3
+        subtasks:
+          - summary: Identificatie feiten + dimensies
+          - summary: Verdeel/Groepeer de belangrijkste feiten en dimensies op een begrijpelijke manier.
+          - summary: Check datakwaliteit feiten en dimensies
+          - summary: Check definitielijst en conceptueel data model
+          - summary: Ruwe schets van het dashboard
+
+      - summary: Dashboard ontwikkeling
+        description: Ontwikkeling van de eerste versie van het dashboard in Tableau of Power BI.
+        role: BI-specialist
+        story_points: 8
+        subtasks:
+          - summary: Schets omzetten in eerste ontwerp in Power BI / Tableau
+          - summary: Publiceer dashboard in een test omgeving waar testers bij kunnen.
+
+      - summary: Dashboard naar productie brengen
+        description: Afhankelijk van data pipeline op prd workspace in Databricks!
+        story_points: 6
+        role: BI-specialist
+        subtasks:
+          - summary: Verwerk de laatste feedback
+          - summary: Valideer cijfers op dashboard met brondata
+          - summary: Controleer alle filters en functionaliteit
+          - summary: Publiceer dashboard in productieomgeving
+          - summary: Gebruikersdemo
+      
+      - summary: Dashboard documentatie
+        description: Documenteren in Confluence
+        story_points: 2
+        role: BI-specialist
+        subtasks:
+          - summary: Schrijf interne documentatie voor het onderhouden en doorontwikkelen van het dashboard
+          - summary: Deel documentatie met team
+          
