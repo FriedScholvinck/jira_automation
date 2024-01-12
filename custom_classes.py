@@ -1,5 +1,7 @@
 from jira import JIRA
-
+import requests
+from requests.auth import HTTPBasicAuth
+import json
 
 
 class SubTask:
@@ -56,8 +58,14 @@ class JiraProcess:
         self.directie_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Directie'][0]
         self.story_points_field = [field['id'] for field in self.jira.fields() if field['name'] == 'Story Points'][0]
         self.rol_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Rol'][0]
-        # find all created labels
-        # self.labels = [label.name for label in self.jira.labels()]
+        # find all created labels (not yet in jira package)
+        self.auth = HTTPBasicAuth(username, api_token)
+        self.labels = self.make_regular_api_call('/rest/api/3/label').get('values', [])
+
+    def make_regular_api_call(self, endpoint):
+        ''' Makes a regular API call to Jira. '''
+        response = requests.get(f'{self.jira_url}{endpoint}', auth=self.auth)
+        return response.json()
 
     def get_users(self):
         ''' Returns a list of all 'active' users in the Jira project.

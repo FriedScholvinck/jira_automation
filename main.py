@@ -72,7 +72,13 @@ summary = sidebar.text_input('Epic (SAFe Feature)', epic.summary)
 directie = sidebar.radio('MOSS+ Directie', DIRECTIES, index=3, horizontal=False)
 label_toggle = sidebar.toggle('Afkorting als Jira Label', value=True)
 if label_toggle:
-    label = sidebar.text_input('Projectlabel', epic.label)
+    # label = sidebar.text_input('Projectlabel', epic.label)
+    # make dropdown input from available labels in jiraprocess.labels
+    label = sidebar.selectbox('Projectlabel', ['Anders, namelijk:'] + st.session_state['jira_process'].labels, index=0)
+    if label == 'Anders, namelijk:':
+        label = sidebar.text_input('Nieuw projectlabel', epic.label)
+
+
 
 
 with sidebar.container(border=True):

@@ -227,7 +227,7 @@ epic:
         role: Data Engineer
         story_points: 2
         subtasks:
-          - summary: Maak en test job in Databrics Worflows
+          - summary: Maak en test job in Databricks Worflows
           - summary: Include yaml file van job in repository
           - summary: Pull Request naar dev branch
           - summary: Check CI/CD pipeline
