@@ -5,17 +5,17 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-# - checkout: self
-# - task: UsePythonVersion@0
-#   inputs:
-#     versionSpec: '3.11.6'
-#     addToPath: true
+- checkout: self
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11.6'
+    addToPath: true
 
-# # Installing dependencies
-# - script: |
-#     python -m pip install --upgrade pip
-#     pip install -r requirements.txt
-#   displayName: 'Install dependencies'
+# Installing dependencies
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
 
 # Azure Resource Deployment
 - task: AzureResourceGroupDeployment@2
@@ -25,8 +25,8 @@ steps:
     resourceGroupName: 'rg-dpms-ont-weu-01'
     # location: 'westeurope'
     templateLocation: 'Linked artifact'
-    csmFile: 'dpms-rg.json'
-    # csmParametersFile: '<Path_to_ARM_Parameters>'
+    csmFile: 'azuredeploy.json'
+    csmParametersFile: 'azuredeploy.parameters.json'
     # overrideParameters: '-parameter1 value1 -parameter2 value2'
     deploymentMode: 'Incremental'
 
@@ -36,7 +36,7 @@ steps:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
     appType: 'webAppLinux'
     appName: 'moss-jira-app'
-    runtimeStack: 'PYTHON|3.11.6'
+    runtimeStack: 'PYTHON|3.11'
     package: '.'
     startUpCommand: 'streamlit run main.py'
 
