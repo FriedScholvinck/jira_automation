@@ -22,13 +22,13 @@ steps:
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'moss-rg'
+    resourceGroupName: 'rg-dpms-ont-weu-01'
     location: 'westeurope'
     templateLocation: 'Linked artifact'
-    csmFile: '<Path_to_ARM_Template>'
-    csmParametersFile: '<Path_to_ARM_Parameters>'
-    overrideParameters: '-parameter1 value1 -parameter2 value2'
-    deploymentMode: 'Incremental'
+    # csmFile: '<Path_to_ARM_Template>'
+    # csmParametersFile: '<Path_to_ARM_Parameters>'
+    # overrideParameters: '-parameter1 value1 -parameter2 value2'
+    # deploymentMode: 'Incremental'
 
 # Deploying to Azure App Service
 - task: AzureWebApp@1
