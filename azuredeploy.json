@@ -46,18 +46,24 @@
         },
         "linuxFxVersion": {
             "type": "string"
+        },
+        "costcenter": {
+            "type": "string"
+        },
+        "dataClassification": {
+            "type": "string"
         }
     },
     "variables": {},
     "resources": [
         {
-            "apiVersion": "2018-11-01",
+            "apiVersion": "2022-09-01",
             "name": "[parameters('name')]",
             "type": "Microsoft.Web/sites",
             "location": "[parameters('location')]",
             "tags": {
-                "costcenter": "76400163.4330",
-                "dataClassification": "BBN2"
+                "costcenter": "[parameters('costcenter')]",
+                "dataClassification": "[parameters('dataClassification')]"
             },
             "dependsOn": [
                 "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
@@ -98,8 +104,8 @@
             "location": "[parameters('location')]",
             "kind": "linux",
             "tags": {
-                "costcenter": "76400163.4330",
-                "dataClassification": "BBN2"
+                "costcenter": "[parameters('costcenter')]",
+                "dataClassification": "[parameters('dataClassification')]"
             },
             "dependsOn": [],
             "properties": {

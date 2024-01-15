@@ -46,6 +46,12 @@
       },
       "linuxFxVersion": {
         "value": "PYTHON|3.11"
+      },
+      "costcenter": {
+        "value": "76400163.4330"
+      },
+      "dataClassification": {
+        "value": "BBN2"
       }
     }
   }
