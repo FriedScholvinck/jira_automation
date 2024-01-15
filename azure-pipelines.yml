@@ -38,7 +38,7 @@ steps:
     appName: 'moss-jira-app'
     runtimeStack: 'PYTHON|3.11'
     package: '.'
-    startUpCommand: 'streamlit run main.py'
+    startUpCommand: 'streamlit run main.py --server.port $PORT'
 
 
 
