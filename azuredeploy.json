@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "subscriptionId": {
@@ -46,12 +46,6 @@
         },
         "linuxFxVersion": {
             "type": "string"
-        },
-        "costcenter": {
-            "type": "string"
-        },
-        "dataClassification": {
-            "type": "string"
         }
     },
     "variables": {},
@@ -62,8 +56,8 @@
             "type": "Microsoft.Web/sites",
             "location": "[parameters('location')]",
             "tags": {
-                "costcenter": "[parameters('costcenter')]",
-                "dataClassification": "[parameters('dataClassification')]"
+                "costcenter": "76400163.4330",
+                "dataClassification": "BBN2"
             },
             "dependsOn": [
                 "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
@@ -98,7 +92,7 @@
             ]
         },
         {
-            "apiVersion": "2018-11-01",
+            "apiVersion": "2020-12-01",
             "name": "[parameters('hostingPlanName')]",
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('location')]",
