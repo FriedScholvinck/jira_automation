@@ -21,9 +21,9 @@ steps:
 - task: AzureResourceGroupDeployment@2
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    action: 'Update Resource Group'
+    action: 'Create or Update Resource Group'
     resourceGroupName: 'rg-dpms-ont-weu-01'
-    location: 'westeurope'
+    # location: 'westeurope'
     templateLocation: 'Linked artifact'
     csmFile: 'dpms-rg.json'
     # csmParametersFile: '<Path_to_ARM_Parameters>'
