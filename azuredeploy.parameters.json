@@ -24,7 +24,7 @@
         "value": "moss-jira-app-oidc"
       },
       "alwaysOn": {
-        "value": true
+        "value": false
       },
       "ftpsState": {
         "value": "AllAllowed"
