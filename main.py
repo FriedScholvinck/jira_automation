@@ -5,7 +5,7 @@ import streamlit as st
 import yaml
 from dotenv import load_dotenv
 
-from custom_classes import JiraProcess, Epic, Feature, Story, SubTask
+from custom_classes import JiraProcess, Epic, Story, SubTask
 from utils import check_password
 
 st.set_page_config(
@@ -30,7 +30,7 @@ roles = OrderedDict([
 # data = yaml.safe_load(open(YAML_FILE, 'r'))
 
 # make the default input dynamic, based on the selected project type
-st.radio('Selecteer soort project', ['Test', 'Nieuw', 'Doorontwikkeling'], index=0, key='soort_project', horizontal=True)
+st.radio('Selecteer soort project', ['Test', 'Nieuw', 'Doorontwikkeling', 'Migratie'], index=0, key='soort_project', horizontal=True)
 data = yaml.safe_load(open(st.session_state['soort_project'] + '.yaml', 'r'))
 
 # generically create epic (SAFe Feature), Stories and Subtask objects from the yaml file
