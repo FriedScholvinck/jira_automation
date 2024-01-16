@@ -6,39 +6,36 @@ pool:
 
 steps:
 - checkout: self
-
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.11'
     addToPath: true
 
+# Installing dependencies
 - script: |
     python -m pip install --upgrade pip
     pip install -r requirements.txt
-  displayName: 'Install application dependencies'
+  displayName: 'Install dependencies'
 
-- task: ArchiveFiles@2
+# Azure Resource Deployment
+- task: AzureResourceGroupDeployment@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-  displayName: 'Archive files'
+    azureSubscription: 'ARM-CCC-DPMS-ont-01'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-dpms-ont-weu-01'
+    location: 'westeurope'
+    templateLocation: 'Linked artifact'
+    csmFile: 'azuredeploy.json'
+    csmParametersFile: 'azuredeploy.parameters.json'
+    # overrideParameters: '-parameter1 value1 -parameter2 value2'
+    deploymentMode: 'Incremental'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-  displayName: 'Publish Artifact'
-
+# Deploying to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    appName: 'moss-jira-app'
     appType: 'webAppLinux'
+    appName: 'moss-jira-app'
     runtimeStack: 'PYTHON|3.11'
-    package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    startUpCommand: 'streamlit run app/test.py' # Replace 'app.py' with your app's entry point
-  displayName: 'Deploy to Azure Web App'
+    # package: 'app/'
+    # startUpCommand: 'streamlit run test.py'
