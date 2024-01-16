@@ -35,7 +35,7 @@ steps:
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
     appType: 'webAppLinux'
-    appName: 'ARM-CCC-DPMS-ont-01'
+    appName: 'moss-jira-app'
     runtimeStack: 'PYTHON|3.11'
     package: 'app/'
     startUpCommand: 'streamlit run test.py'

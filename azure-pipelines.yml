@@ -36,7 +36,7 @@ steps:
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    appName: 'ARM-CCC-DPMS-ont-01'
+    appName: 'moss-jira-app'
     appType: 'webAppLinux'
     runtimeStack: 'PYTHON|3.11'
     package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
