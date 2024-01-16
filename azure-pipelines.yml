@@ -37,6 +37,7 @@ steps:
     appType: 'webAppLinux'
     appName: 'moss-jira-app'
     runtimeStack: 'PYTHON|3.11'
-    package: '.'
+    package: '$(System.DefaultWorkingDirectory)'
     # package: 'app/'
-    # startUpCommand: 'streamlit run test.py'
+    startUpCommand: 'streamlit run test.py'
+    
