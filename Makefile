@@ -1,5 +1,5 @@
 dev:
-	streamlit run main.py
+	streamlit run app/main.py
 
 build:
 	docker build -t moss-jira-app .

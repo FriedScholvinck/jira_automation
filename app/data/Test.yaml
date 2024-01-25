@@ -1,6 +1,4 @@
-# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder of in voorbeeld_data.yaml om uiteindelijk goed te werken in de tool.
-# sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
-
+# This is a test file to test the functionality of the application
 epic:
   - summary: Test Feature
     description: Test Omschrijving
