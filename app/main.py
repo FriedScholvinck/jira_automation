@@ -30,7 +30,8 @@ roles = OrderedDict([
 # data = yaml.safe_load(open(YAML_FILE, 'r'))
 
 # make the default input dynamic, based on the selected project type
-st.radio('Selecteer soort project', ['Test', 'Nieuw', 'Doorontwikkeling', 'Migratie'], index=0, key='soort_project', horizontal=True)
+yaml_files = [f.removesuffix('.yaml') for f in os.listdir('data')]
+st.radio('Selecteer soort project', yaml_files, index=0, key='soort_project', horizontal=True)
 data = yaml.safe_load(open('app/data/' + st.session_state['soort_project'] + '.yaml', 'r'))
 
 # generically create epic (SAFe Feature), Stories and Subtask objects from the yaml file

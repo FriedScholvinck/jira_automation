@@ -1,9 +1,18 @@
+# streamlit
+secrets.toml
+
+# Azure
+*.parameters.json
+
+# data
+Tool.yaml
+Migratie.yaml
+
+Makefile
+
 # IDE
 .vscode/
 .idea/
-
-# streamlit
-secrets.toml
 
 # OS
 .DS_Store
