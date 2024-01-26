@@ -14,7 +14,6 @@ st.set_page_config(
     layout="wide",
 )
 
-YAML_FILE = 'data.yaml'
 DIRECTIES = ['Maatschappelijke Voorzieningen', 'Onderwijs', 'Subsidies', 'Sport en Bos']
 MAX_STORY_POINTS = 8 # can be overwritten in the yaml file
 
@@ -26,11 +25,9 @@ roles = OrderedDict([
     ('BI-specialist', 'Fried')
 ])
 
-# load default input (way of working) from yaml file
-# data = yaml.safe_load(open(YAML_FILE, 'r'))
 
 # make the default input dynamic, based on the selected project type
-yaml_files = [f.removesuffix('.yaml') for f in os.listdir('data')]
+yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data')]
 st.radio('Selecteer soort project', yaml_files, index=0, key='soort_project', horizontal=True)
 data = yaml.safe_load(open('app/data/' + st.session_state['soort_project'] + '.yaml', 'r'))
 
