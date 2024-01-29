@@ -39,9 +39,6 @@ steps:
 #     # package: 'app/'
 #     startUpCommand: 'streamlit run test.py'
 
-- script: 'streamlit run app/main.py'
-  displayName: 'Run Streamlit app'
-
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -49,4 +46,5 @@ steps:
     appType: 'webAppLinux'
     WebAppName: 'moss-jira-app'
     packageForLinux: '$(System.DefaultWorkingDirectory)'
+    startupCommand: 'streamlit run app/main.py'
     
