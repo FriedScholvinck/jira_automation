@@ -26,16 +26,16 @@ steps:
   artifact: drop
   displayName: 'Publish Artifacts'
 
-- task: AzureRmWebAppDeployment@4
-  displayName: 'Deploy to Azure App Service'
+- task: AzureWebApp@1
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
     appType: 'webAppLinux'
     appName: 'moss-jira-app'
     runtimeStack: 'PYTHON|3.11'
     package: '$(Pipeline.Workspace)/drop/app.zip'  # Path to the artifact
-    enableCustomDeployment: true
     startUpCommand: 'streamlit run app/test.py'
+    # enableCustomDeployment: true
+
 
 
 # - task: AzureWebApp@1
