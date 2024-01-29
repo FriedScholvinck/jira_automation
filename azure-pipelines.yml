@@ -7,45 +7,11 @@ steps:
 - checkout: self
   persistCredentials: true
 
-# - task: UsePythonVersion@0
-#   inputs:
-#     versionSpec: '3.11'
-#     addToPath: true
-
-# # Installing dependencies
-# - script: |
-#     python -m pip install --upgrade pip
-#     pip install -r requirements.txt
-#   displayName: 'Install dependencies'
-
-# Azure Resource Deployment
-- task: AzureResourceGroupDeployment@2
+- task: AzureWebApp@1
   inputs:
     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'rg-dpms-ont-weu-01'
-    location: 'westeurope'
-    templateLocation: 'Linked artifact'
-    csmFile: 'azureresource.json'
-    # csmFile: 'azuredeploy.json'
-    # csmParametersFile: 'azuredeploy.parameters.json'
-    deploymentMode: 'Incremental'
-
-# # Deploying to Azure App Service
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-#     appType: 'webAppLinux'
-#     appName: 'moss-jira-app'
-#     runtimeStack: 'PYTHON|3.11'
-#     package: '$(System.DefaultWorkingDirectory)'
-#     startUpCommand: 'streamlit run app/main.py'
-#     # package: 'app/'
-
-# - task: AzureRmWebAppDeployment@4
-#   inputs:
-#     ConnectionType: 'AzureRM'
-#     azureSubscription: ARM-CCC-DPMS-ont-01
-#     appType: 'webAppLinux'
-#     WebAppName: 'moss-jira-app'
-#     packageForLinux: 'teammoss.azurecr.io/moss-jira-app:latest'
+    appType: 'webAppLinux'
+    appName: 'moss-jira-app'
+    runtimeStack: 'PYTHON|3.11'
+    package: '$(System.DefaultWorkingDirectory)'
+    startUpCommand: 'streamlit run app/main.py'
