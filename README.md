@@ -39,6 +39,15 @@ password="your-password"
 ```
 
 ## Development
+Run the project locally using python 3.11.6 or docker. If you have docker installed, simply run `docker compose up` and check the app on `http://localhost:8501/`.
+
+For local development, create a virtual environment and install the requirements. For example:
+```
+python -m venv .venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 Run the following command to start the streamlit app locally.
 ```
 streamlit run app/main.py
