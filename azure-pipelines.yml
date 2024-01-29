@@ -26,20 +26,21 @@ steps:
     resourceGroupName: 'rg-dpms-ont-weu-01'
     location: 'westeurope'
     templateLocation: 'Linked artifact'
-    csmFile: 'azuredeploy.json'
-    csmParametersFile: 'azuredeploy.parameters.json'
+    csmFile: 'azureresource.json'
+    # csmFile: 'azuredeploy.json'
+    # csmParametersFile: 'azuredeploy.parameters.json'
     deploymentMode: 'Incremental'
 
-# Deploying to Azure App Service
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    appType: 'webAppLinux'
-    appName: 'moss-jira-app'
-    runtimeStack: 'PYTHON|3.11'
-    package: '$(System.DefaultWorkingDirectory)'
-    startUpCommand: 'streamlit run app/main.py'
-    # package: 'app/'
+# # Deploying to Azure App Service
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
+#     appType: 'webAppLinux'
+#     appName: 'moss-jira-app'
+#     runtimeStack: 'PYTHON|3.11'
+#     package: '$(System.DefaultWorkingDirectory)'
+#     startUpCommand: 'streamlit run app/main.py'
+#     # package: 'app/'
 
 # - task: AzureRmWebAppDeployment@4
 #   inputs:
