@@ -1,5 +1,28 @@
 # Jira process automation voor datateam MOSS+
 
+This python app leverages the Jira API to automate the creation of Jira issues for a BI team that has a standard way of working. By using this tool, we are able to automatically create most of the stories and subtasks we need to finish a feature (Epic in Jira terms) and assign them to the right people. This saves us a lot of time and reduces the chance of human error. It also helps us to standardize our way of working.
+
+The project is specifically tailored to our infrastructure and way of working, as well as custom implementation of Jira and the SAFe framework. It can be adapted to other teams and projects, but that will require some work.
+
+Our default or standard issues for a project are not defined in the Python code, but in yaml format in the [data](app/data/) folder
+
+Python Streamlit is used as a frontend tool for the project, which enables the user to modify some default values and things like project codes, stakeholder departments, etc... This way, everyone in my team can interact with the Jira API in a user-friendly way, specifically tailored to our needs.
+
+## Project structure
+The project is structured as follows:
+```
+├── app
+│   ├── data
+│   │   ├── default_issues.yaml
+│   ├── main.py (streamlit app)
+│   ├── requirements.txt
+│   ├── custom_classes.txt (jira api functionality)
+│   └── utils.py
+├── .gitignore
+├── README.md
+└── requirements.txt
+```
+
 ## Getting Started
 Clone the repository to your local machine and add a `.env` file to the root of the project. The `.env` file should contain the following variables. The api token can be generated in your Jira account settings.
 
