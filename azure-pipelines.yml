@@ -18,17 +18,17 @@ steps:
 #     pip install -r requirements.txt
 #   displayName: 'Install dependencies'
 
-# # Azure Resource Deployment
-# - task: AzureResourceGroupDeployment@2
-#   inputs:
-#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-#     action: 'Create Or Update Resource Group'
-#     resourceGroupName: 'rg-dpms-ont-weu-01'
-#     location: 'westeurope'
-#     templateLocation: 'Linked artifact'
-#     csmFile: 'azuredeploy.json'
-#     csmParametersFile: 'azuredeploy.parameters.json'
-#     deploymentMode: 'Incremental'
+# Azure Resource Deployment
+- task: AzureResourceGroupDeployment@2
+  inputs:
+    azureSubscription: 'ARM-CCC-DPMS-ont-01'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-dpms-ont-weu-01'
+    location: 'westeurope'
+    templateLocation: 'Linked artifact'
+    csmFile: 'azuredeploy.json'
+    csmParametersFile: 'azuredeploy.parameters.json'
+    deploymentMode: 'Incremental'
 
 # Deploying to Azure App Service
 - task: AzureWebApp@1
