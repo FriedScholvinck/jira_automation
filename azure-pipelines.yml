@@ -1,56 +1,41 @@
 trigger:
 - main
 
-variables:
-  azureServiceConnection: 'ARM-CCC-DPMS-ont-01'
-  webAppName: 'moss-jira-app'
-  resourceGroupName: 'rg-dpms-ont-weu-01'
-  pythonVersion: '3.11.6'
-
 pool: Selfhosted Azure Devops Agents
 
 steps:
 - checkout: self
   persistCredentials: true
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(pythonVersion)'`
 - script: |
-    python -m venv antenv
-    source antenv/bin/activate
-    python -m pip install --upgrade pip
-    pip install setup streamlit
-    pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
-  workingDirectory: $(System.DefaultWorkingDirectory)
-    displayName: 'Install requirements'
-- upload: $(Build.ArtifactStagingDirectory)/
-  artifact: drop
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+  displayName: 'Install Dependencies'
 
-- task: UsePythonVersion@0
+- task: ArchiveFiles@2
+  displayName: 'Archive Artifacts'
   inputs:
-    versionSpec: '$(pythonVersion)'`
-    displayName: 'Set App Settings'
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+    replaceExistingArchive: true
+
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: drop
+  displayName: 'Publish Artifacts'
+
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Deploy to Azure App Service'
   inputs:
-    azureSubscription: $(azureServiceConnection)
-    appName: $(webAppName)
-    resourceGroupName: $(resourceGroupName)
-    slotName: 'production'
-    appSettings: |
-      [
-        {
-          "name": "ENABLE_ORYX_BUILD",
-          "value": 1
-        },
-        {
-          "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-          "value": 1
-        },
-        {
-          "name": "POST_BUILD_COMMAND",
-          "value": "python -m streamlit run app/test.py"
-        }
-      ]
+    azureSubscription: 'ARM-CCC-DPMS-ont-01'
+    appType: 'webAppLinux'
+    appName: 'moss-jira-app'
+    runtimeStack: 'PYTHON|3.11'
+    package: '$(Pipeline.Workspace)/drop/app.zip'  # Path to the artifact
+    enableCustomDeployment: true
+    startUpCommand: 'streamlit run app/test.py'
 
 
 # - task: AzureWebApp@1
