@@ -2,9 +2,9 @@ trigger:
 - main
 
 variables:
-  azureServiceConnection: ARM-CCC-DPMS-ont-01
-  webAppName: moss-jira-app
-  resourceGroupName: rg-dpms-ont-weu-01
+  azureServiceConnection: 'ARM-CCC-DPMS-ont-01'
+  webAppName: 'moss-jira-app'
+  resourceGroupName: 'rg-dpms-ont-weu-01'
   pythonVersion: '3.11.6'
 
 pool: Selfhosted Azure Devops Agents
