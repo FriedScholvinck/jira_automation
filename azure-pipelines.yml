@@ -24,10 +24,10 @@ steps:
       rootFolderOrFile: '$(Build.SourcesDirectory)'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/drop/app.zip' # Correct path to the artifact
       replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)
+  - publish: $(Build.ArtifactStagingDirectory)/drop
     artifact: drop
     displayName: 'Publish Artifacts'
 
@@ -36,6 +36,6 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscription)'
       appType: 'webApp'
-      webAppName: '$(appName)'
+      webAppName: '<YourAppName>' # Replace with your Azure App Service name
       package: '$(Pipeline.Workspace)/drop/app.zip'  # Correct path to the artifact
       enableCustomDeployment: true
