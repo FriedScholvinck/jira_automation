@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: Selfhosted Azure Devops Agents
 
 steps:
 - checkout: self
@@ -17,27 +17,37 @@ steps:
     pip install -r requirements.txt
   displayName: 'Install dependencies'
 
-# Azure Resource Deployment
-- task: AzureResourceGroupDeployment@2
-  inputs:
-    azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'rg-dpms-ont-weu-01'
-    location: 'westeurope'
-    templateLocation: 'Linked artifact'
-    csmFile: 'azuredeploy.json'
-    csmParametersFile: 'azuredeploy.parameters.json'
-    # overrideParameters: '-parameter1 value1 -parameter2 value2'
-    deploymentMode: 'Incremental'
+# # Azure Resource Deployment
+# - task: AzureResourceGroupDeployment@2
+#   inputs:
+#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
+#     action: 'Create Or Update Resource Group'
+#     resourceGroupName: 'rg-dpms-ont-weu-01'
+#     location: 'westeurope'
+#     templateLocation: 'Linked artifact'
+#     csmFile: 'azuredeploy.json'
+#     csmParametersFile: 'azuredeploy.parameters.json'
+#     deploymentMode: 'Incremental'
 
-# Deploying to Azure App Service
-- task: AzureWebApp@1
+# # Deploying to Azure App Service
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
+#     appType: 'webAppLinux'
+#     appName: 'moss-jira-app'
+#     runtimeStack: 'PYTHON|3.11'
+#     package: '$(System.DefaultWorkingDirectory)'
+#     # package: 'app/'
+#     startUpCommand: 'streamlit run test.py'
+
+- script: 'streamlit run app/main.py'
+  displayName: 'Run Streamlit app'
+
+- task: AzureRmWebAppDeployment@4
   inputs:
-    azureSubscription: 'ARM-CCC-DPMS-ont-01'
+    ConnectionType: 'AzureRM'
+    azureSubscription: ARM-CCC-DPMS-ont-01
     appType: 'webAppLinux'
-    appName: 'moss-jira-app'
-    runtimeStack: 'PYTHON|3.11'
-    package: '$(System.DefaultWorkingDirectory)'
-    # package: 'app/'
-    startUpCommand: 'streamlit run test.py'
+    WebAppName: 'moss-jira-app'
+    packageForLinux: '$(System.DefaultWorkingDirectory)'
     
