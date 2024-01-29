@@ -5,6 +5,16 @@ pool: Selfhosted Azure Devops Agents
 
 steps:
 - checkout: self
+
+- script: docker build -t moss-jira-app:latest .
+  displayName: 'Build image'
+
+# - script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) your-container-registry.azurecr.io
+#   displayName: 'Log in to container registry'
+
+- script: docker push teammoss.azurecr.io/moss-jira-app:latest
+  displayName: 'Push image to registry'
+
 # - task: UsePythonVersion@0
 #   inputs:
 #     versionSpec: '3.11'
@@ -45,9 +55,4 @@ steps:
     azureSubscription: ARM-CCC-DPMS-ont-01
     appType: 'webAppLinux'
     WebAppName: 'moss-jira-app'
-    packageForLinux: '$(System.DefaultWorkingDirectory)'
-    startupCommand: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-      streamlit run app/main.py
-    
+    packageForLinux: 'teammoss.azurecr.io/moss-jira-app:latest'
