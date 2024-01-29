@@ -1,17 +1,64 @@
 trigger:
 - main
 
+variables:
+  azureServiceConnection: ARM-CCC-DPMS-ont-01
+  webAppName: moss-jira-app
+  resourceGroupName: rg-dpms-ont-weu-01
+  #projectRoot: (System.DefaultWorkingDirectory)
+  pythonVersion: '3.11.6'
+
 pool: Selfhosted Azure Devops Agents
 
 steps:
 - checkout: self
   persistCredentials: true
 
-- task: AzureWebApp@1
+- task: UsePythonVersion@0
   inputs:
-    azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    appType: 'webAppLinux'
-    appName: 'moss-jira-app'
-    runtimeStack: 'PYTHON|3.11'
-    package: '$(System.DefaultWorkingDirectory)'
-    startUpCommand: 'streamlit run app/main.py'
+    versionSpec: '$(pythonVersion)'`
+- script: |
+    python -m venv antenv
+    source antenv/bin/activate
+    python -m pip install --upgrade pip
+    pip install setup streamlit
+    pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
+  workingDirectory: $(System.DefaultWorkingDirectory)
+    displayName: 'Install requirements'
+- upload: $(Build.ArtifactStagingDirectory)/
+  artifact: drop
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(pythonVersion)'`
+    displayName: 'Set App Settings'
+  inputs:
+    azureSubscription: $(azureServiceConnection)
+    appName: $(webAppName)
+    resourceGroupName: $(resourceGroupName)
+    slotName: 'production'
+    appSettings: |
+      [
+        {
+          "name": "ENABLE_ORYX_BUILD",
+          "value": 1
+        },
+        {
+          "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+          "value": 1
+        },
+        {
+          "name": "POST_BUILD_COMMAND",
+          "value": "python -m streamlit run app/test.py"
+        }
+      ]
+
+
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
+#     appType: 'webAppLinux'
+#     appName: 'moss-jira-app'
+#     runtimeStack: 'PYTHON|3.11'
+#     package: '$(System.DefaultWorkingDirectory)'
+#     startUpCommand: 'streamlit run app/test.py'
