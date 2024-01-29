@@ -1,8 +1,7 @@
 trigger:
 - main
 
-pool:
-  vmImage: Selfhosted Azure Devops Agents
+pool: Selfhosted Azure Devops Agents
 
 steps:
 - checkout: self
