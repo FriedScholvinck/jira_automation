@@ -51,3 +51,4 @@ The app is deployed on Streamlit Cloud, which is connected to my GitHub account.
 Provide environment variables during deployment on Streamlit Cloud.
 
 ### Azure
+For use in the infrastructure of the datateam, we deploy the app as a docker container on Azure through Azure Devops Pipelines.

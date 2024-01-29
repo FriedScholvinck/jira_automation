@@ -5,15 +5,30 @@ pool: Selfhosted Azure Devops Agents
 
 steps:
 - checkout: self
+  persistCredentials: true
+  clean: true
 
-- script: docker build -t moss-jira-app:latest .
-  displayName: 'Build image'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: ARM-CCC-DPMS-ont-01
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az acr login --name teammoss
+      az acr repository list --name teammoss
 
-# - script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) your-container-registry.azurecr.io
-#   displayName: 'Log in to container registry'
 
-- script: docker push teammoss.azurecr.io/moss-jira-app:latest
-  displayName: 'Push image to registry'
+# - script: docker build -t moss-jira-app:latest .
+#   displayName: 'Build image'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: ARM-CCC-DPMS-ont-01
+    command: 'buildAndPush'
+    Dockerfile: 'Dockerfile'
+    imageName: moss-jira-app
+    tags: 'latest'
+
 
 # - task: UsePythonVersion@0
 #   inputs:
