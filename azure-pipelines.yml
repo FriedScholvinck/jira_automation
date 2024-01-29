@@ -1,48 +1,46 @@
-trigger:
-- main
+variables:
+  azureSubscription: 'ARM-CCC-DPMS-ont-01'
+  appName: 'moss-jira-app'
 
-pool: Selfhosted Azure Devops Agents
+trigger:
+  - main
+
+pr:
+- '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 steps:
-- checkout: self
-  persistCredentials: true
+  - script: |
+      python -m venv venv
+      source venv/bin/activate
+      pip install -r requirements.txt
+    displayName: 'Install Dependencies'
 
-- script: |
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt
-  displayName: 'Install Dependencies'
+  - script: |
+      # Build your Python app here, e.g., collect static files or perform other necessary tasks
+      python manage.py collectstatic --noinput
+    displayName: 'Build Python App'
 
-- task: ArchiveFiles@2
-  displayName: 'Archive Artifacts'
-  inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
-    replaceExistingArchive: true
+  - task: ArchiveFiles@2
+    displayName: 'Archive Artifacts'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+      replaceExistingArchive: true
 
-- publish: $(Build.ArtifactStagingDirectory)
-  artifact: drop
-  displayName: 'Publish Artifacts'
+  - publish: $(Build.ArtifactStagingDirectory)
+    artifact: drop
+    displayName: 'Publish Artifacts'
 
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    appType: 'webAppLinux'
-    appName: 'moss-jira-app'
-    runtimeStack: 'PYTHON|3.11'
-    package: '$(Pipeline.Workspace)/drop/app.zip'  # Path to the artifact
-    startUpCommand: 'streamlit run app/test.py'
-    # enableCustomDeployment: true
-
-
-
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-#     appType: 'webAppLinux'
-#     appName: 'moss-jira-app'
-#     runtimeStack: 'PYTHON|3.11'
-#     package: '$(System.DefaultWorkingDirectory)'
-#     startUpCommand: 'streamlit run app/test.py'
+  - task: AzureRmWebAppDeployment@4
+    displayName: 'Deploy to Azure App Service'
+    inputs:
+      azureSubscription: '$(azureSubscription)'
+      appType: 'webApp'
+      webAppName: '$(appName)'
+      package: '$(Pipeline.Workspace)/drop/app.zip'  # Correct path to the artifact
+      enableCustomDeployment: true
