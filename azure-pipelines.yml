@@ -18,11 +18,6 @@ steps:
       pip install -r requirements.txt
     displayName: 'Install Dependencies'
 
-  - script: |
-      # Build your Python app here, e.g., collect static files or perform other necessary tasks
-      python manage.py collectstatic --noinput
-    displayName: 'Build Python App'
-
   - task: ArchiveFiles@2
     displayName: 'Archive Artifacts'
     inputs:
