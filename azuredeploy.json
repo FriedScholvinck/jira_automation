@@ -88,10 +88,10 @@
         "location": "[parameters('location')]",
   
         "dependsOn": [
-          "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+          "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
         ],
         "properties": {
-          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
           "siteConfig": {
             "linuxFxVersion": "[parameters('linuxFxVersion')]"
           }
