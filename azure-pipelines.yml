@@ -39,5 +39,5 @@ steps:
     runtimeStack: 'PYTHON|3.11'
     package: '$(System.DefaultWorkingDirectory)'
     # package: 'app/'
-    startUpCommand: 'streamlit run test.py'
+    startUpCommand: 'python -m streamlit hello'
     
