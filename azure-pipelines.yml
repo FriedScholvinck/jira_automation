@@ -6,10 +6,10 @@ pool:
 
 steps:
 - checkout: self
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.11'
-    addToPath: true
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '3.11'
+#     addToPath: true
 
 # # Installing dependencies
 # - script: |
@@ -39,5 +39,5 @@ steps:
     runtimeStack: 'PYTHON|3.11'
     package: '$(System.DefaultWorkingDirectory)'
     # package: 'app/'
-    startUpCommand: 'python -m streamlit hello'
+    startUpCommand: 'python -m streamlit hello --server.port 8000 --server.address 0.0.0.0'
     
