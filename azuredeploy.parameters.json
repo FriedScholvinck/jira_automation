@@ -6,7 +6,7 @@
       "value": "test-streamlit-app"
     },
     "location": {
-      "value": "[resourceGroup().location]"
+      "value": "westeurope"
     },
     "sku": {
       "value": "B1"
