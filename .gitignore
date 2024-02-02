@@ -1,8 +1,8 @@
 # streamlit
 secrets.toml
 
-# Azure
-*.parameters.json
+# Azure (for remote push to github)
+# *.parameters.json
 
 # data
 Tool.yaml

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+      "value": "test-streamlit-app"
+    },
+    "location": {
+      "value": "[resourceGroup().location]"
+    },
+    "sku": {
+      "value": "B1"
+    },
+    "linuxFxVersion": {
+      "value": "PYTHON|3.11"
+    },
+    "repoUrl": {
+      "value": "https://CloudCompetenceCenter@dev.azure.com/CloudCompetenceCenter/Datateam%20Moss/_git/jira_process"
+    },
+    "repoBranch": {
+      "value": "main"
+    }
+  }
+}
