@@ -2,32 +2,35 @@ trigger:
   - main
   
 pool: Selfhosted Azure Devops Agents
-  # vmImage: 'ubuntu-latest'
 
-steps:
-- checkout: self
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.11'
-    addToPath: true
 
-# Installing dependencies
-- script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
+jobs:
+  - job: Deployment
+    displayName: 'Deploy Streamlit App'
+    steps:
+    - checkout: self
+      persistCredentials: true
+      clean: true
+    
+    # - task: AzureKeyVault@2
+    #   displayName: 'Get Key Vault Secrets'
+    #   inputs:
+    #     azureSubscription: ${{ parameters.serviceConnection }}
+    #     KeyVaultName: ${{ parameters.KeyVaultName }}
+    #     SecretsFilter: '*'- task: UsePythonVersion@0
+  
 
-# Azure Resource Deployment
-- task: AzureResourceGroupDeployment@2
-  inputs:
-    azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'rg-dpms-ont-weu-01'
-    location: 'westeurope'
-    templateLocation: 'Linked artifact'
-    csmFile: 'azuredeploy.json'
-    csmParametersFile: 'azuredeploy.parameters.json'
-    deploymentMode: 'Incremental'
+  # Azure Resource Deployment
+  - task: AzureResourceGroupDeployment@2
+    inputs:
+      azureSubscription: 'ARM-CCC-DPMS-ont-01'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'rg-dpms-ont-weu-01'
+      location: 'westeurope'
+      templateLocation: 'Linked artifact'
+      csmFile: 'azuredeploy.json'
+      csmParametersFile: 'azuredeploy.parameters.json'
+      deploymentMode: 'Incremental'
 
 # # Deploying to Azure App Service
 # - task: AzureWebApp@1
