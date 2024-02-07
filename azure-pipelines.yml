@@ -3,7 +3,6 @@ trigger:
   
 pool: Selfhosted Azure Devops Agents
 
-
 jobs:
   - job: Deployment
     displayName: 'Deploy Streamlit App'
@@ -11,16 +10,20 @@ jobs:
     - checkout: self
       persistCredentials: true
       clean: true
-    
-    # - task: AzureKeyVault@2
-    #   displayName: 'Get Key Vault Secrets'
-    #   inputs:
-    #     azureSubscription: ${{ parameters.serviceConnection }}
-    #     KeyVaultName: ${{ parameters.KeyVaultName }}
-    #     SecretsFilter: '*'- task: UsePythonVersion@0
-  
 
-    # Azure Resource Deployment
+    # Use Python version
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.11.4' # Specify the Python version you need
+        addToPath: true
+
+    # Install dependencies from requirements.txt
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      displayName: 'Install Python dependencies'
+
+    # Add your deployment steps here
     - task: AzureResourceGroupDeployment@2
       inputs:
         azureSubscription: 'ARM-CCC-DPMS-ont-01'
@@ -31,15 +34,3 @@ jobs:
         csmFile: 'azuredeploy.json'
         csmParametersFile: 'azuredeploy.parameters.json'
         deploymentMode: 'Incremental'
-
-    # Deploying to Azure App Service
-    - task: AzureWebApp@1
-      inputs:
-        azureSubscription: 'ARM-CCC-DPMS-ont-01'
-        appType: 'webAppLinux'
-        appName: 'test-streamlit-app'
-        runtimeStack: 'PYTHON|3.11'
-        package: '$(System.DefaultWorkingDirectory)'
-        # package: 'app/'
-        startUpCommand: 'python -m streamlit hello --server.port 8000 --server.address localhost'
-        
