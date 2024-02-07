@@ -32,14 +32,14 @@ jobs:
         csmParametersFile: 'azuredeploy.parameters.json'
         deploymentMode: 'Incremental'
 
-# # Deploying to Azure App Service
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-#     appType: 'webAppLinux'
-#     appName: 'test-streamlit-app'
-#     runtimeStack: 'PYTHON|3.11'
-#     package: '$(System.DefaultWorkingDirectory)'
-#     # package: 'app/'
-#     startUpCommand: 'python -m streamlit hello --server.port 8000 --server.address localhost'
-    
+    # Deploying to Azure App Service
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'ARM-CCC-DPMS-ont-01'
+        appType: 'webAppLinux'
+        appName: 'test-streamlit-app'
+        runtimeStack: 'PYTHON|3.11'
+        package: '$(System.DefaultWorkingDirectory)'
+        # package: 'app/'
+        startUpCommand: 'python -m streamlit hello --server.port 8000 --server.address localhost'
+        
