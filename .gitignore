@@ -1,9 +1,6 @@
 # streamlit
 secrets.toml
 
-# Azure (for remote push to github)
-# *.parameters.json
-
 # data
 Tool.yaml
 Migratie.yaml
@@ -22,12 +19,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-poetry.lock
-
 # C extensions
 *.so
 
 # Distribution / packaging
+.python_version
 .Python
 build/
 develop-eggs/
@@ -139,8 +135,6 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
 
 # mypy
 .mypy_cache/

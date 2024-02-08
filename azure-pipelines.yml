@@ -13,8 +13,10 @@ variables:
   runtime: PYTHON:3.11
 
 steps:
-  - checkout: self
-    persistCredentials: true
+  - task: Checkout@2 # Check out your repository explicitly
+
+  # - checkout: self
+    # persistCredentials: true
     # clean: true
 
   - task: UsePythonVersion@0
@@ -22,12 +24,15 @@ steps:
       versionSpec: '3.11'
       architecture: 'x64'
 
-  - script: echo $(Build.SourcesDirectory) 
-
+  - script: |  # Enhanced logging script
+    set -x  # Echo each command before execution
+    ls -al $(Build.SourcesDirectory)  # List directory contents with permissions
+    zip -rv deployment.zip * -x '*.git*'  # Zip manually, excluding .git (add more exclusions as needed)
+  
 
   - task: ArchiveFiles@2
     inputs:
-      rootFolder: '.'
+      rootFolder: '$(Build.SourcesDirectory)'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: 'deployment.zip'
