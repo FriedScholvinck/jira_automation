@@ -122,7 +122,7 @@
             "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
         ],
         "properties": {
-            "appCommandLine": "python3 -m streamlit run hello --server.port 8000 --server.address 0.0.0.0"
+            "appCommandLine": "pip install -r requirements.txt && python3 -m streamlit run hello --server.port 8000 --server.address 0.0.0.0"
         }
     }
     ]
