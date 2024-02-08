@@ -10,7 +10,7 @@ variables:
   region: europewest
   sku: B1
   appServicePlan: moss-jira-app-plan
-  runtime: 'PYTHON|3.9'
+  runtime: PYTHON:3.12
   startupCommand: python -m streamlit run hello --server.port 8000 --server.address 0.0.0.0
 
 steps:
