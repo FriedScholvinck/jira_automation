@@ -13,19 +13,39 @@ variables:
   runtime: PYTHON:3.11
 
 steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: $(azureSubscription)
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az webapp up \
-        --name $(appName) \
-        --resource-group $(resourceGroup) \
-        --plan $(appServicePlan) \
-        --sku $(sku) \
-        --location $(region) \
-        --runtime $(runtime) 
+  - checkout: self
+    persistCredentials: true
+    # clean: true
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: $(runtime)
+      architecture: 'x64'
+  
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolder: $(Build.SourcesDirectory)  # Where your project lives
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: 'deployment.zip'
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: $(azureSubscription)
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az webapp up \
+          --name $(appName) \
+          --resource-group $(resourceGroup) \
+          --location $(region) \
+          --sku $(sku) \
+          --plan $(appServicePlan) \
+          --runtime $(runtime) \
+          --log-level verbose
+
+          
+
 
 
 # jobs:
