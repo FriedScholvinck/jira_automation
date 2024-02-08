@@ -19,7 +19,7 @@ steps:
 
   - task: UsePythonVersion@0
     inputs:
-      versionSpec: $(runtime)
+      versionSpec: '3.11'
       architecture: 'x64'
   
   - task: ArchiveFiles@2
