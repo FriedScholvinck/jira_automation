@@ -26,14 +26,16 @@ steps:
       set -x
       ls -al $(Build.SourcesDirectory)
       zip -rv deployment.zip * -x '*.git*'
+      echo cwd
+      echo $(Build.SourcesDirectory)
 
   - task: ArchiveFiles@2
     inputs:
       rootFolder: '$(Build.SourcesDirectory)'
-      includeRootFolder: false
+      includeRootFolder: true
       archiveType: 'zip'
       archiveFile: 'deployment.zip'
-      verbose: true # Add verbose logging for debugging
+      verbose: true
   
   # - task: ArchiveFiles@2
   #   inputs:
