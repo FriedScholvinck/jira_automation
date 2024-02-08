@@ -27,7 +27,7 @@ steps:
         --sku $(sku) \
         --location $(region) \
         --runtime $(runtime) \
-        --startup-command $(startupCommand)
+#        --startup-command $(startupCommand)
 
 # jobs:
 #   - job: Deployment
