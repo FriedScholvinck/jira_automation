@@ -56,9 +56,7 @@ steps:
           --location $(region) \
           --sku $(sku) \
           --plan $(appServicePlan) \
-          --runtime $(runtime) \
-          --log-level verbose
-
+          --runtime $(runtime)
           
 
 
