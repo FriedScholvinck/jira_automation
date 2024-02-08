@@ -23,10 +23,9 @@ steps:
       architecture: 'x64'
 
   - script: |
-    set -x
-    ls -al $(Build.SourcesDirectory)
-    zip -rv deployment.zip * -x '*.git*'
-  
+      set -x
+      ls -al $(Build.SourcesDirectory)
+      zip -rv deployment.zip * -x '*.git*'
 
   - task: ArchiveFiles@2
     inputs:
