@@ -24,8 +24,8 @@ steps:
       versionSpec: '3.11'
       architecture: 'x64'
 
-  - script: |  # Enhanced logging script
-    set -x  # Echo each command before execution
+  - script: |
+    set -x
     ls -al $(Build.SourcesDirectory)
     zip -rv deployment.zip * -x '*.git*'
   
