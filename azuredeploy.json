@@ -47,7 +47,7 @@
       },
       "repoUrl": {
         "type": "string",
-        "defaultValue": "https://github.com/benalexkeen/streamlit-azure-app-services.git",
+        "defaultValue": "",
         "metadata": {
           "description": "Git Repo URL"
         }
@@ -122,7 +122,7 @@
             "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
         ],
         "properties": {
-            "appCommandLine": "python -m streamlit run hello --server.port 8000 --server.address 0.0.0.0"
+            "appCommandLine": "python3 -m streamlit run hello --server.port 8000 --server.address 0.0.0.0"
         }
     }
     ]
