@@ -26,8 +26,8 @@ steps:
 
   - script: |  # Enhanced logging script
     set -x  # Echo each command before execution
-    ls -al $(Build.SourcesDirectory)  # List directory contents with permissions
-    zip -rv deployment.zip * -x '*.git*'  # Zip manually, excluding .git (add more exclusions as needed)
+    ls -al $(Build.SourcesDirectory)
+    zip -rv deployment.zip * -x '*.git*'
   
 
   - task: ArchiveFiles@2
