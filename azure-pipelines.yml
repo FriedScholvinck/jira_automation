@@ -13,13 +13,8 @@ variables:
   runtime: PYTHON:3.11
 
 steps:
-  - task: Checkout@2 # Check out your repository explicitly
-    inputs:
-      persistCredentials: true
-      clean: true
-
-  # - checkout: self
-    # persistCredentials: true
+  - checkout: self
+    persistCredentials: true
     # clean: true
 
   - task: UsePythonVersion@0
