@@ -7,7 +7,7 @@ variables:
   azureSubscription: ARM-CCC-DPMS-ont-01
   appName: test-streamlit-app
   resourceGroup: rg-dpms-ont-weu-01
-  region: europewest
+  region: westeurope
   sku: B1
   appServicePlan: moss-jira-app-plan
   runtime: PYTHON:3.12
