@@ -21,13 +21,24 @@ steps:
     inputs:
       versionSpec: '3.11'
       architecture: 'x64'
-  
+
+  - script: echo $(Build.SourcesDirectory) 
+
+
   - task: ArchiveFiles@2
     inputs:
-      rootFolder: $(Build.SourcesDirectory)  # Where your project lives
+      rootFolder: '.'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: 'deployment.zip'
+      verbose: true # Add verbose logging for debugging
+  
+  # - task: ArchiveFiles@2
+  #   inputs:
+  #     rootFolder: '.'
+  #     includeRootFolder: false
+  #     archiveType: 'zip'
+  #     archiveFile: 'deployment.zip'
 
   - task: AzureCLI@2
     inputs:
