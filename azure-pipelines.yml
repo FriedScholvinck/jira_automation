@@ -3,37 +3,75 @@ trigger:
   
 pool: Selfhosted Azure Devops Agents
 
-jobs:
-  - job: Deployment
-    displayName: 'Deploy Streamlit App'
-    steps:
-    - checkout: self
-      persistCredentials: true
-      # clean: true
+variables:
+  azureSubscription: ARM-CCC-DPMS-ont-01
+  appName: test-streamlit-app
+  resourceGroup: rg-dpms-ont-weu-01
+  region: europewest
+  sku: B1
+  appServicePlan: moss-jira-app-plan
+  srcPath: .
+  runtime: 'PYTHON|3.9'
+  startupCommand: python -m streamlit run hello --server.port 8000 --server.address 0.0.0.0
 
-    # # Use Python version
-    # - task: UsePythonVersion@0
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az webapp up \
+        --name $(appName) \
+        --resource-group $(resourceGroup) \
+        --plan $(appServicePlan) \
+        --sku $(sku) \
+        --location $(region) \
+        --src-path $(srcPath) \
+        --runtime $(runtime) \
+        --startup-command $(startupCommand)
+
+# jobs:
+#   - job: Deployment
+#     displayName: 'Deploy Streamlit App'
+#     steps:
+#     - checkout: self
+#       persistCredentials: true
+#       clean: true
+
+#     # Use Python version
+#     - task: UsePythonVersion@0
+#       inputs:
+#         versionSpec: '3.9'
+#         addToPath: true
+
+#     # Install dependencies from requirements.txt
+#     - script: |
+#         python3 -m venv .venv
+#         source venv/bin/activate
+#         python3 -m pip install --upgrade pip
+#         pip3 install -r requirements.txt
+#       displayName: 'Install Python dependencies'
+
+#     - task: AzureCLI@2
+#       inputs:
+#         azureSubscription: 'ARM-CCC-DPMS-ont-01'
+#         scriptType: 'bash'
+#         scriptLocation: 'inlineScript'
+#         inlineScript: |
+#             az webapp up --name test-streamlit-app --resource-group rg-dpms-ont-weu-01 --location europewest --src-path . --runtime "PYTHON|3.11"
+
+
+    # # Add your deployment steps here
+    # - task: AzureResourceGroupDeployment@2
     #   inputs:
-    #     versionSpec: '3.9'
-    #     addToPath: true
-
-    # # Install dependencies from requirements.txt
-    # - script: |
-    #     python3 -m venv .venv
-    #     source venv/bin/activate
-    #     python3 -m pip install --upgrade pip
-    #     pip3 install -r requirements.txt
-    #   displayName: 'Install Python dependencies'
-
-
-    # Add your deployment steps here
-    - task: AzureResourceGroupDeployment@2
-      inputs:
-        azureSubscription: 'ARM-CCC-DPMS-ont-01'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'rg-dpms-ont-weu-01'
-        location: 'westeurope'
-        templateLocation: 'Linked artifact'
-        csmFile: 'azuredeploy.json'
-        csmParametersFile: 'azuredeploy.parameters.json'
-        deploymentMode: 'Incremental'
+    #     azureSubscription: 'ARM-CCC-DPMS-ont-01'
+    #     action: 'Create Or Update Resource Group'
+    #     resourceGroupName: 'rg-dpms-ont-weu-01'
+    #     location: 'westeurope'
+    #     templateLocation: 'Linked artifact'
+    #     csmFile: 'azuredeploy.json'
+    #     csmParametersFile: 'azuredeploy.parameters.json'
+    #     deploymentMode: 'Incremental'
+    #     # set working directory
+    #     workingDirectory: $(System.DefaultWorkingDirectory)/streamlit-azure-deployment
