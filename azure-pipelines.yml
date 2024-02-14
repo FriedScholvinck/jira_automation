@@ -17,7 +17,7 @@ resources:
   repositories:
   - repository: jira_process
     type: git
-    name: CloudCompetenceCenter/Datateam%20Moss
+    name: 'https://CloudCompetenceCenter@dev.azure.com/CloudCompetenceCenter/Datateam%20Moss/_git/jira_process'
 
 steps:
 - checkout: myRepo
