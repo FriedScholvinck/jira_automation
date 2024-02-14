@@ -17,7 +17,7 @@ resources:
   repositories:
   - repository: myRepo
     type: git
-    name: 'CloudCompetenceCenter/Datateam Moss/jira_process'
+    name: 'Datateam Moss/jira_process'
     ref: $(Build.SourceBranch)
 
 
