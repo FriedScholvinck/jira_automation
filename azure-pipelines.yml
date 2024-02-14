@@ -1,107 +1,30 @@
 trigger:
   - main
-
-pool: Selfhosted Azure Devops Agents
-
+  
+pool:
+  vmImage: ubuntu-latest
+  
 variables:
   azureSubscription: ARM-CCC-DPMS-ont-01
-  appName: test-streamlit-app
+  appName: moss-jira-app
   resourceGroup: rg-dpms-ont-weu-01
   region: westeurope
   sku: B1
   appServicePlan: moss-jira-app-plan
   runtime: PYTHON:3.11
 
+resources:
+  repositories:
+  - repository: jira_process
+    type: git
+    name: CloudCompetenceCenter/Datateam%20Moss
+
 steps:
-  - checkout: self
-    persistCredentials: true
-    # clean: true
+- checkout: myRepo
 
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.11'
-      architecture: 'x64'
-
-  - script: |
-      set -x
-      ls -al $(Build.SourcesDirectory)
-      zip -rv deployment.zip * -x '*.git*'
-      echo cwd
-      echo $(Build.SourcesDirectory)
-
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolder: '$(Build.SourcesDirectory)'
-      includeRootFolder: true
-      archiveType: 'zip'
-      archiveFile: 'deployment.zip'
-      verbose: true
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: $(azureSubscription)
+    appName: $(appName)
+    package: '$(System.DefaultWorkingDirectory)'
   
-  # - task: ArchiveFiles@2
-  #   inputs:
-  #     rootFolder: '.'
-  #     includeRootFolder: false
-  #     archiveType: 'zip'
-  #     archiveFile: 'deployment.zip'
-
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: $(azureSubscription)
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az webapp up \
-          --name $(appName) \
-          --resource-group $(resourceGroup) \
-          --location $(region) \
-          --sku $(sku) \
-          --plan $(appServicePlan) \
-          --runtime $(runtime)
-          
-
-
-
-# jobs:
-#   - job: Deployment
-#     displayName: 'Deploy Streamlit App'
-#     steps:
-#     - checkout: self
-#       persistCredentials: true
-#       clean: true
-
-#     # Use Python version
-#     - task: UsePythonVersion@0
-#       inputs:
-#         versionSpec: '3.9'
-#         addToPath: true
-
-#     # Install dependencies from requirements.txt
-#     - script: |
-#         python3 -m venv .venv
-#         source venv/bin/activate
-#         python3 -m pip install --upgrade pip
-#         pip3 install -r requirements.txt
-#       displayName: 'Install Python dependencies'
-
-#     - task: AzureCLI@2
-#       inputs:
-#         azureSubscription: 'ARM-CCC-DPMS-ont-01'
-#         scriptType: 'bash'
-#         scriptLocation: 'inlineScript'
-#         inlineScript: |
-#             az webapp up --name test-streamlit-app --resource-group rg-dpms-ont-weu-01 --location europewest --src-path . --runtime "PYTHON|3.11"
-
-
-    # # Add your deployment steps here
-    # - task: AzureResourceGroupDeployment@2
-    #   inputs:
-    #     azureSubscription: 'ARM-CCC-DPMS-ont-01'
-    #     action: 'Create Or Update Resource Group'
-    #     resourceGroupName: 'rg-dpms-ont-weu-01'
-    #     location: 'westeurope'
-    #     templateLocation: 'Linked artifact'
-    #     csmFile: 'azuredeploy.json'
-    #     csmParametersFile: 'azuredeploy.parameters.json'
-    #     deploymentMode: 'Incremental'
-    #     # set working directory
-    #     workingDirectory: $(System.DefaultWorkingDirectory)/streamlit-azure-deployment
