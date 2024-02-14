@@ -20,7 +20,7 @@ resources:
     name: 'https://CloudCompetenceCenter@dev.azure.com/CloudCompetenceCenter/Datateam%20Moss/_git/jira_process'
 
 steps:
-- checkout: myRepo
+- checkout: jira_process
 
 - task: AzureWebApp@1
   inputs:
