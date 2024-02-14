@@ -15,12 +15,14 @@ variables:
 
 resources:
   repositories:
-  - repository: jira_process
+  - repository: myRepo
     type: git
-    name: 'CloudCompetenceCenter/Datateam%20Moss'
+    name: CloudCompetenceCenter/Datateam Moss/jira_process
+    ref: main
+
 
 steps:
-- checkout: jira_process
+- checkout: myRepo
 
 - task: AzureWebApp@1
   inputs:
