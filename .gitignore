@@ -4,6 +4,7 @@ secrets.toml
 # data
 Tool.yaml
 Migratie.yaml
+Test.yaml
 
 Makefile
 

@@ -28,6 +28,11 @@ roles = OrderedDict([
 
 # make the default input dynamic, based on the selected project type
 yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data')] + ['Upload eigen .yaml file']
+
+# do not include voorbeeld_data.yaml in the list of yaml files
+if 'voorbeeld_data' in yaml_files:
+    yaml_files.remove('voorbeeld_data')
+
 st.radio('Selecteer soort project', yaml_files, index=0, key='soort_project', horizontal=True)
 
 # possible ot upload own .yaml file
