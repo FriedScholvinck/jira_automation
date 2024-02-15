@@ -27,9 +27,27 @@ roles = OrderedDict([
 
 
 # make the default input dynamic, based on the selected project type
-yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data')]
+yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data')] + ['Upload eigen .yaml file']
 st.radio('Selecteer soort project', yaml_files, index=0, key='soort_project', horizontal=True)
-data = yaml.safe_load(open('app/data/' + st.session_state['soort_project'] + '.yaml', 'r'))
+
+# possible ot upload own .yaml file
+if st.session_state['soort_project'] == 'Upload eigen .yaml file':
+    # set default data when not yet uploaded
+    data = yaml.safe_load(open('app/data/voorbeeld_data.yaml', 'r'))
+    
+    # make button to download example template
+    st.download_button(
+        label="Download voorbeeld .yaml file",
+        data=open('app/data/voorbeeld_data.yaml', 'rb').read(),
+        file_name='voorbeeld_data.yaml',
+        mime='text/yaml'
+    )
+
+    uploaded_file = st.file_uploader("Upload eigen .yaml file", type=["yaml", "yml"])
+    if uploaded_file is not None:
+        data = yaml.safe_load(uploaded_file)
+else:
+    data = yaml.safe_load(open('app/data/' + st.session_state['soort_project'] + '.yaml', 'r'))
 
 # generically create epic (SAFe Feature), Stories and Subtask objects from the yaml file
 for epic_data in data.get('epic', []):
