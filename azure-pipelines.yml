@@ -1,18 +1,19 @@
 trigger:
   branches:
     include:
-    - main
+      - dev
+      - main
   
 pool: Selfhosted Azure Devops Agents
   
 variables:
   azureSubscription: ARM-CCC-DPMS-ont-01
-  appName: moss-jira-app
+  appName:
+    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}:
+      - test-streamlit-app
+    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+      - moss-jira-app
   resourceGroup: rg-dpms-ont-weu-01
-  region: westeurope
-  sku: B1
-  appServicePlan: moss-jira-app-plan
-  runtime: PYTHON:3.11
 
 steps:
 - task: AzureCLI@2
