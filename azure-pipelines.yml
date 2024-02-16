@@ -1,8 +1,9 @@
 trigger:
-  - main
+  branches:
+    include:
+    - main
   
-pool:
-  vmImage: ubuntu-latest
+pool: Selfhosted Azure Devops Agents
   
 variables:
   azureSubscription: ARM-CCC-DPMS-ont-01
@@ -13,20 +14,11 @@ variables:
   appServicePlan: moss-jira-app-plan
   runtime: PYTHON:3.11
 
-resources:
-  repositories:
-  - repository: myRepo
-    type: git
-    name: 'Datateam Moss/jira_process'
-    ref: $(Build.SourceBranch)
-
-
 steps:
-- checkout: myRepo
-
-- task: AzureWebApp@1
+- task: AzureCLI@2
   inputs:
     azureSubscription: $(azureSubscription)
-    appName: $(appName)
-    package: '$(System.DefaultWorkingDirectory)'
-  
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az webapp restart --name $(appName) --rg $(resourceGroup)
