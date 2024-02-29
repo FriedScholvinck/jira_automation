@@ -117,12 +117,13 @@ description = st.text_area(
 # definition of done checklist
 if hasattr(epic, 'checklist_text'):
     if st.toggle('Show Definition of Done', value=False):
-        if '---' in epic.checklist_text:
-            lines = epic.checklist_text.split('---')[1:]
-        else:
-            lines = epic.checklist_text.split('\n---\n')
-        for line in lines:
-            st.text('\n-'.join(line.split('-')))
+        st.text(epic.checklist_text)
+        # if '---' in epic.checklist_text:
+        #     lines = epic.checklist_text.split('---')[1:]
+        # else:
+        #     lines = epic.checklist_text.split('\n---\n')
+        # for line in lines:
+        #     st.text('\n-'.join(line.split('-')))
 
 
 # roles horizontally aligned, with a selectbox for each role

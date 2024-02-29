@@ -8,8 +8,10 @@ epic:
     role: Business Analist # business analist is 'eigenaar' van het project
     checklist_text: >
       # Definition of Done
-      - voorbeeld item 1
-      - voorbeeld item 2
+        --- Requirements
+          - Example requirement
+        --- Documentation
+          - Example documentation
     stories:
 
       - summary: Titel Story
