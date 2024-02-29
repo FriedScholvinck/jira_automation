@@ -10,7 +10,7 @@ variables:
   azureSubscription: ARM-CCC-DPMS-ont-01
   appName:
     ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}:
-      - test-streamlit-app
+      - moss-jira-app
     ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
       - moss-jira-app
   resourceGroup: rg-dpms-ont-weu-01

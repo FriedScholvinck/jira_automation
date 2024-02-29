@@ -46,7 +46,7 @@ class TeamMember:
         self.account_id = account_id
 
 class JiraProcess:
-    def __init__(self, domain, username, api_token, project_key, project_input):
+    def __init__(self, domain, username, api_token, project_key, project_input, custom_fields: list = ['MOSS+ Directie', 'Story Points', 'MOSS+ Rol', 'Checklist Text']):
         self.jira_url = f'https://{domain}.atlassian.net'
         self.jira = JIRA(options={'server': self.jira_url}, basic_auth=(username, api_token))
         self.project_key = project_key
@@ -55,12 +55,23 @@ class JiraProcess:
         self.users = self.get_users()
         self.users_by_name = self.get_users_by_name()
         self.issues = []
-        self.directie_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Directie'][0]
-        self.story_points_field = [field['id'] for field in self.jira.fields() if field['name'] == 'Story Points'][0]
-        self.rol_field = [field['id'] for field in self.jira.fields() if field['name'] == 'MOSS+ Rol'][0]
+        self.custom_fields = self.get_custom_fields(custom_fields)
+        self.directie_field = self.custom_fields['MOSS+ Directie']
+        self.story_points_field = self.custom_fields['Story Points']
+        self.rol_field = self.custom_fields['MOSS+ Rol']
+        self.checklist_text_field = self.custom_fields['Checklist Text']
         # find all created labels (not yet in jira package)
         self.auth = HTTPBasicAuth(username, api_token)
         self.labels = self.make_regular_api_call('/rest/api/3/label').get('values', [])
+
+    def get_custom_fields(self, field_names: list = []):
+        ''' Gets all custom fields in the Jira project needed for this specific use case. '''
+        custom_fields = {}
+
+        for field in self.jira.fields():
+            if field['name'] in field_names:
+                custom_fields[field['name']] = field['id']
+        return custom_fields
 
     def make_regular_api_call(self, endpoint):
         ''' Makes a regular API call to Jira. '''
@@ -74,6 +85,7 @@ class JiraProcess:
             list[jira.User]: list of jira.User objects
         '''
         inactive_users = [
+            'Bastiaan',
             'Cees',
             'Claire',
             'Cloud',
@@ -152,6 +164,10 @@ class JiraProcess:
 
         if hasattr(issue, 'story_points'):
             issue_dict[self.story_points_field] = issue.story_points
+
+        # currently for definition of done in epic
+        if hasattr(issue, 'checklist_text'):
+            issue_dict[self.checklist_text_field] = issue.checklist_text
         return issue_dict
 
     def create_issue(self, issue):

@@ -1,11 +1,11 @@
 import os
+import re
 from collections import OrderedDict
 
 import streamlit as st
 import yaml
+from custom_classes import Epic, JiraProcess, Story, SubTask
 from dotenv import load_dotenv
-
-from custom_classes import JiraProcess, Epic, Story, SubTask
 from utils import check_password
 
 st.set_page_config(
@@ -113,6 +113,17 @@ description = st.text_area(
     epic.description.replace('directie', directie) + '\n\nOplevering: ' + f'{year} {quarter}',
     height=len(epic.description) * 2
 )
+
+# definition of done checklist
+if hasattr(epic, 'checklist_text'):
+    if st.toggle('Show Definition of Done', value=False):
+        if '---' in epic.checklist_text:
+            lines = epic.checklist_text.split('---')[1:]
+        else:
+            lines = epic.checklist_text.split('\n---\n')
+        for line in lines:
+            st.text('\n-'.join(line.split('-')))
+
 
 # roles horizontally aligned, with a selectbox for each role
 cols = st.columns(len(roles))

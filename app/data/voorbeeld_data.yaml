@@ -6,6 +6,10 @@ epic:
     description: Omschrijving Epic
     label: LBL # default afkorting van de epic (projectcode)
     role: Business Analist # business analist is 'eigenaar' van het project
+    checklist_text: >
+      # Definition of Done
+      - voorbeeld item 1
+      - voorbeeld item 2
     stories:
 
       - summary: Titel Story

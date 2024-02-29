@@ -4,16 +4,36 @@
 epic:
   - summary: Nieuw Informatieproduct
     description: > # gebruik > voor een multiline description
-      Management Dashboard voor de directie met inzicht in belangrijke KPI's.
+      Nieuw Informatieproduct met de volgende KPIs:
+      - [vul hier de KPIs in]
 
-        - Doel: 
-        - KPI's:
-        - Scope:
-        - Stakeholders:
-        - Planning:
-      
     label: KPIs
     role: Business Analist
+    checklist_text: >
+      # Definition of Done
+      --- Requirements
+      - Business waarde en waarde voor stad/BOB geverifieerd door Product Owner
+      - Privacy & Security eisen zijn gewaarborgd
+      - Afnemers zijn vastgelegd via Datacontracten en Data Sharing Agreement(s)
+      --- Medaillionarchitectuur is gevolgd
+      - Brons
+      - Zilver
+      - Goud
+      --- DevOps principes zijn gevolgd
+      - Databricks job/pipeline naar ontwikkelomgeving
+      - Databricks job/pipeline naar productieomgeving
+      -? Dataset naar de referentiedatabase
+      --- Dashboard
+      -? Dashboard mockup
+      -? MVP ontwikkeld
+      -? Dashboard naar productie
+      --- Testen
+      - Peerreview code
+      - Product is getest door het team
+      - Output is geaccordeerd door Product Owner
+      --- Documentatie
+      - Definities zijn akkoord en geregistreerd in Purview en Unity Catalog
+      - Documentatie is toegankelijk in ADO/Confluence
 
     stories:
 
