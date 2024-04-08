@@ -18,4 +18,4 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az webapp restart --name $(appName) --rg $(resourceGroup)
+      az webapp restart --name $(appName) --resource-group $(resourceGroup)
