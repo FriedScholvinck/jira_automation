@@ -130,9 +130,6 @@ if hasattr(epic, 'checklist_text'):
         #     lines = epic.checklist_text.split('\n---\n')
         # for line in lines:
         #     st.text('\n-'.join(line.split('-')))
-if hasattr(story, 'checklist_text'):
-    st.text(story.checklist_text)
-
 
 # roles horizontally aligned, with a selectbox for each role
 cols = st.columns(len(roles))
@@ -155,7 +152,7 @@ st.divider()
 # if you want to connect stories to an existing epic
 existing_epic_toggle = sidebar.toggle('Gebruik bestaande epic', value=False)
 if existing_epic_toggle:
-    existing_epic_key = sidebar.text_input('Bestaande epic key')
+    existing_epic_key = sidebar.text_input('Bestaande epic key', 'SISA-453')
 
 # show metrics
 c1, c2, c3 = st.columns(3)

@@ -8,11 +8,7 @@ pool: Selfhosted Azure Devops Agents
   
 variables:
   azureSubscription: ARM-CCC-DPMS-ont-01
-  appName:
-    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}:
-      - moss-jira-app
-    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-      - moss-jira-app
+  appName: moss-jira-app
   resourceGroup: rg-dpms-ont-weu-01
 
 steps:
