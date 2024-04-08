@@ -67,10 +67,18 @@ for epic_data in data.get('epic', []):
 # load credentials from .env file
 if os.path.exists('.env'):
     load_dotenv()
+else:
+    st.error('No .env file found with Jira credentials.')
+    st.stop()
 domain = os.getenv('JIRA_DOMAIN')
 username = os.getenv('JIRA_USERNAME')
 api_token = os.getenv('JIRA_API_TOKEN')
 project_key = os.getenv('JIRA_PROJECT_KEY')
+
+# domain = st.secrets['JIRA_DOMAIN']
+# username = st.secrets['JIRA_USERNAME']
+# api_token = st.secrets['JIRA_API_TOKEN']
+# project_key = st.secrets['JIRA_PROJECT_KEY']
 
 # load and apply a custom CSS file
 # st.markdown(f"<style>{open('custom.css', 'r').read()}</style>", unsafe_allow_html=True)
@@ -101,8 +109,6 @@ if label_toggle:
         label = sidebar.text_input('Nieuw projectlabel', epic.label)
 
 
-
-
 with sidebar.container(border=True):
     st.info('Verwachte opleverdatum')
     year = st.radio('Jaar', ['2024', '2025'], horizontal=False)
@@ -124,6 +130,8 @@ if hasattr(epic, 'checklist_text'):
         #     lines = epic.checklist_text.split('\n---\n')
         # for line in lines:
         #     st.text('\n-'.join(line.split('-')))
+if hasattr(story, 'checklist_text'):
+    st.text(story.checklist_text)
 
 
 # roles horizontally aligned, with a selectbox for each role
@@ -144,6 +152,10 @@ st.divider()
 # with st.expander(f'Epic: {epic.summary} ({epic.label}))'):
 #     epic
 
+# if you want to connect stories to an existing epic
+existing_epic_toggle = sidebar.toggle('Gebruik bestaande epic', value=False)
+if existing_epic_toggle:
+    existing_epic_key = sidebar.text_input('Bestaande epic key')
 
 # show metrics
 c1, c2, c3 = st.columns(3)
@@ -234,8 +246,13 @@ if not check_password(st):
     st.stop()
 
 if st.button('Maak Jira Issues'):
-    epic_issue = st.session_state['jira_process'].create_issue(epic)
-    st.success(f'Epic [{epic_issue.key}]({epic_issue.permalink()}): {epic.summary}')
+    if existing_epic_toggle:
+        epic_issue = epic
+        epic_issue.key = existing_epic_key
+        st.success(f'Gebruik bestaande epic {existing_epic_key}')
+    else:
+        epic_issue = st.session_state['jira_process'].create_issue(epic)
+        st.success(f'Epic [{epic_issue.key}]({epic_issue.permalink()}): {epic.summary}')
     
     # give each story the story key as parent and create the story issues
     for story in epic.stories:
