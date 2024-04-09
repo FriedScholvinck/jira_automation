@@ -10,7 +10,8 @@ from utils import check_password
 
 st.set_page_config(
     page_title="MOSS+",
-    page_icon='app/assets/amsterdam_logo.png',
+    page_icon='assets/amsterdam_logo.png',
+    # page_icon='app/assets/amsterdam_logo.png',
     layout="wide",
 )
 
@@ -19,10 +20,10 @@ MAX_STORY_POINTS = 8 # can be overwritten in the yaml file
 
 # base dict for roles and assignments, which will be updated with the selected team members
 roles = OrderedDict([
-    ('Business Analist', 'Fried'),
-    ('Informatie Analist', 'Fried'),
-    ('Data Engineer', 'Fried'),
-    ('BI-specialist', 'Fried')
+    ('Business Analist', 'Nick'),
+    ('Informatie Analist', 'Koen'),
+    ('Data Engineer', 'Robbin'),
+    ('BI-specialist', 'Miguel')
 ])
 
 

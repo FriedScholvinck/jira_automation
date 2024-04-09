@@ -47,4 +47,4 @@ EXPOSE 8501
 
 
 # Run the application.
-CMD streamlit run app/main.py
+CMD streamlit run app/main.py --browser.serverAddress localhost
