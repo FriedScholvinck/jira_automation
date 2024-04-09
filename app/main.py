@@ -10,7 +10,7 @@ from utils import check_password
 
 st.set_page_config(
     page_title="MOSS+",
-    page_icon='assets/amsterdam_logo.png',
+    page_icon='app/assets/amsterdam_logo.png',
     layout="wide",
 )
 
