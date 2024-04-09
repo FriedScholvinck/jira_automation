@@ -67,9 +67,9 @@ for epic_data in data.get('epic', []):
 # load credentials from .env file
 if os.path.exists('.env'):
     load_dotenv()
-else:
-    st.error('No .env file found with Jira credentials.')
-    st.stop()
+# else:
+#     st.error('No .env file found with Jira credentials.')
+#     st.stop()
 domain = os.getenv('JIRA_DOMAIN')
 username = os.getenv('JIRA_USERNAME')
 api_token = os.getenv('JIRA_API_TOKEN')

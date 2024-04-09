@@ -45,5 +45,6 @@ COPY . .
 # Expose the port that the application listens on.
 EXPOSE 8501
 
+
 # Run the application.
 CMD streamlit run app/main.py
