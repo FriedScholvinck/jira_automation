@@ -1,0 +1,302 @@
+# Let op: het format van de yaml moet exact overeenkomen met het voorbeeld hieronder of in voorbeeld_data.yaml om uiteindelijk goed te werken in de tool.
+# sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
+
+epic:
+  - summary: Nieuw Informatieproduct
+    description: > # gebruik > voor een multiline description
+      Nieuw Informatieproduct met de volgende KPIs:
+      - [vul hier de KPIs in]
+
+    label: KPIs
+    role: Business Analist
+    checklist_text: > # max 20 regels in gratis versie
+      # Definition of Done
+        - Business waarde en waarde voor stad/BOB geverifieerd door Product Owner
+        - Duidelijk omschreven informatiebehoefte (SMART)
+        - Privacy & Security eisen zijn gewaarborgd
+        - Connectiviteit Databricks naar bronnen is geregeld
+        - Bronhouders en afnemers zijn vastgelegd via Datacontracten en Data Sharing Agreements
+
+        - Functionele en technische requirements zijn vastgelegd
+        - Functioneel Datamodel beschikbaar
+        - Conceptueel Datamodel beschikbaar
+        - Logisch Datamodel beschikbaar
+        
+        - Brons
+        - Zilver
+        - Goud
+        - Dataset naar de referentiedatabase
+        - Datacontract is gemaakt en ingeleverd
+
+        - Databricks job naar ontwikkelomgeving
+        - Databricks job naar productieomgeving
+        
+        - Dashboard MVP
+        - Dashboard definitief
+
+        - Definities zijn akkoord en geregistreerd in Purview en Unity Catalog
+        - Documentatie is toegankelijk in ADO en Confluence
+
+    stories:
+
+      # Stories voor Business Analist
+      - summary: Intake document valideren met business
+        description: "Valideer met de business of het intakedocument compleet is. Is het project levensvatbaar?"
+        role: Business Analist
+        story_points: 2
+        checklist_text: >
+          # Subtaken
+            - Business waarde en waarde voor stad/BOB geverifieerd door Product Owner
+            - Intakedocument compleet
+
+      - summary: Functionele Requirements opstellen
+        description: >
+          Functionele requirements opstellen voor het informatieproduct.
+          - Doel:
+          - Scope:
+          - Stakeholders:
+          - Planning:
+          - Welke proces(sen) worden ondersteund
+          - Wat willen ze meten en over welke assen
+          enz, zie BA template voor verdere invulling in Confluence
+        role: Business Analist
+        story_points: 4
+        checklist_text: >
+          # Subtaken
+            - Doel
+            - Scope
+            - Stakeholders
+            - Planning
+            - Proces(sen)
+            - Metingen
+
+      - summary: Technische Requirements opstellen
+        description: >
+          Technische requirements opstellen voor het informatieproduct.
+          - Welke bron wordt gebruikt:
+          - Toegang tot bron regelen:
+          - Welke data is er nodig (hoogover)
+          enz, zie BA template voor verdere invulling in Confluence
+        role: Business Analist
+        story_points: 4
+        checklist_text: >
+          # Subtaken
+            - Bron
+            - Toegang
+            - Data
+
+      - summary: Privacy en Security
+        description: >
+          Doorloop stappen in het Privacy en Security proces
+            - privacy: https://tamtam.amsterdam.nl/do/page?id=6484236-70616765
+            - security: https://tamtam.amsterdam.nl/do/page?id=7247600-70616765"
+        role: Business Analist
+        story_points: 4
+        checklist_text: >
+          # Subtaken
+            - Security (BIO) Quickscan
+            - Privacy Quickscan
+            - DPIA?
+            - Datacontract
+            - Metadata
+
+      - summary: Nazorg van informatieproduct
+        description: >
+          Wanneer het informatieproduct opgeleverd is, is het aan de business om met het informatieproduct aan de slag te gaan.
+          Gedurende 1 of 2 sprints houden wij tijd vrij om issues op te lossen en vragen te beantwoorden of andere vormen van ondersteuning.
+        story_points: 2
+        role: Business Analist
+      
+
+      # Stories voor Informatie Analist
+      - summary: Conceptueel informatiemodel (CIM) ontwerpen
+        description: "Als informatieanalist wil ik de requirements vertalen naar een conceptueel informatiemodelmodel, voorafgaand aan het verkennen van de data: https://tamtam.amsterdam.nl/do/page?id=7105448-70616765."
+        role: Informatie Analist
+        story_points: 2
+        checklist_text: >
+          # Subtaken
+            - Visueel conceptueel datamodel conform de standaard vanuit Datamanagement
+            - Stakeholder akkoord op het model (alle relevante entiteiten zijn opgenomen en de attributen en relaties zijn compleet en correct)
+            - Documentatie en eindresultaat op OneDrive / Confluence / Wiki
+
+      - summary: Dataverkenning (+ mapping & aliasing)
+        description: Als informatie analist wil ik de data inhoudelijk verkennen, de betekenis ervan begrijpen en waar nodig de naamgeving aanpassen naar de gebruikelijke conventies binnen de Gemeente Amsterdam.
+        role: Informatie Analist
+        story_points: 3
+        checklist_text: >
+          # Subtaken
+            - Dataverkenning en mapping
+            - Naamgeving
+            - Documentatie en eindresultaat op OneDrive / Confluence / Wiki
+
+      - summary: Logisch informatiemodel (LIM) ontwerpen
+        description: "Als informatie analist wil ik het conceptueel informatiemodel vertalen naar een logisch informatiemodel: https://tamtam.amsterdam.nl/do/page?id=7105468-70616765."
+        role: Informatie Analist
+        story_points: 3
+        checklist_text: >
+          # Subtaken
+            - Bron of vraaggerelateerde schets af
+            - Ontwerp in tool (drawio, erasor, etc...)
+            - Documentatie en eindresultaat op OneDrive / Confluence / Wiki
+
+      - summary: Testen datakwaliteit bron
+        description: "Als informatie analist wil ik met de stakeholder vaststellen welke eisen we aan de kwaliteit van de data in de bron stellen. Definition of done: een lijst met kwaliteitseisen per entiteit die geimplementeerd is in een monitoringsysteem."
+        role: Informatie Analist
+        story_points: 4
+        checklist_text: >
+          # Subtaken
+            - Requirements datakwaliteit vaststellen met stakeholder
+            - Requirements vertalen naar monitoring
+            - Valideren & troubleshooten datakwaliteit bron
+
+      - summary: Testen datakwaliteit model
+        description: >
+          Als informatie analist wil ik valideren dat de vertaling van het logische informatiemodel naar een fysiek datamodel in Databricks correct is. Definition of done: requirements voor correct modelleren zijn opgenomen in een monitoringsysteem.
+        role: Informatie Analist
+        story_points: 3
+        checklist_text: >
+          # Subtaken
+            - Requirements datakwaliteit model vertalen naar monitoring
+            - Valideren & troubleshooten datakwaliteit model
+
+      # Stories voor Data Engineer
+      - summary: Data inladen (t/m brons)
+        description: Werk op een nieuwe branch in de repository (vanuit `dev`)!
+        role: Data Engineer
+        story_points: 8
+        checklist_text: >
+          # Subtaken
+            - folder in landingzone
+            - maak schema `bron_bronze_silver`
+            - EDA (verkenning en opzetten structuur)
+            - Ruwe data inladen/wegschrijven in originele format (landingzone)
+            - Vertaling naar delta tables in Unity Catalog
+            - Historisering toepassen (indien nodig)
+            - Indexeren (indien nodig)
+            - Type casting
+            - Valideren schema
+            - DQ checks
+          
+      - summary: Data opschonen en verwerken (zilver)
+        description: Bronze laag opschonen en wegschrijven naar zilver in de vorm van een dimensioneel model, vraag informatieanalist.
+        role: Data Engineer
+        story_points: 4
+        checklist_text: >
+          # Subtaken
+            - Dimensietabellen maken (indien nodig)
+            - Historisering toepassen (indien nodig)
+            - Aliasing
+            - Toepassing business logica
+            - Missende velden aanvullen?
+            - Structureren tabellen
+            - Partitioneren (optioneel)
+
+      - summary: Data verrijken (goud)
+        description: Toepassen extra business logica indien nodig.
+        role: Data Engineer
+        story_points: 4
+        checklist_text: >
+          # Subtaken
+            - maak schema `bron_gold`
+            - businessregels toepassen
+            - aggregaties
+            - filteren / slicen
+            - aliasing
+            - schema validation
+            - set read permissions
+
+      - summary: Maak Datacontract
+        description: Maak een json datacontract voor Data Management en Purview, gebruik onze python package als startpunt.
+        role: Data Engineer
+        story_points: 2
+        checklist_text: >
+          # Subtaken
+            - Metadata check
+            - Datacontract maken met package
+            - Documenteer en deel eindresultaat met team
+            - Documenteer en deel eindresultaat met stakeholders
+
+
+      - summary: Pipeline naar dev
+        description: Creeer een databricks job indien nodig.
+        role: Data Engineer
+        story_points: 2
+        checklist_text: >
+          # Subtaken
+            - Maak en test job in Databricks Worflows
+            - Include yaml file van job in repository
+            - Pull Request naar dev branch (peer review collega)
+            - Check CI/CD pipeline
+            - Run job in dev workspace en test resultaat
+            - Set schedule, notificaties en permissions
+            - Documenteer en deel eindresultaat met team
+
+      - summary: Pipeline naar prod
+        description: CICD / Asset Bundle naar production workspace
+        role: Data Engineer
+        story_points: 2
+        checklist_text: >
+          # Subtaken
+            - Pull Request naar main branch (peer review collega)
+            - Check CI/CD pipeline op prd
+            - Indien nodig: PIM request en run job in prd workspace en test resultaat
+            - Check read permissions team en stakeholders
+            - Documenteer en deel eindresultaat met team
+            - Documenteer en deel eindresultaat met stakeholders
+
+
+      # Stories voor BI-specialist
+      - summary: EDA & Ontwerp
+        description: Afhankelijk van informatieanalist en data engineer voor informatiemodellen en data (jobs).
+        role: BI-specialist
+        story_points: 3
+        checklist_text: >
+          # Subtaken
+            - Testen connectie en leesrechten PowerBI met Unity Catalog
+            - Identificatie feiten + dimensies
+            - Verdeel en groepeer de belangrijkste feiten en dimensies op een begrijpelijke manier.
+            - Check datakwaliteit feiten en dimensies
+            - Check definitielijst en conceptueel data model
+            - Ruwe schets van het dashboard
+
+      - summary: Ontwikkeling Dashboard
+        description: Ontwikkeling van de eerste versie van het dashboard in Power BI op basis van de ruwe schets, het datamodel en de data in Unity Catalog.
+        role: BI-specialist
+        story_points: 8
+        checklist_text: >
+          # Subtaken
+            - Schets omzetten in eerste ontwerp in Power BI
+            - Publiceer dashboard in testomgeving
+            - Testen dashboard met team en stakeholders
+          
+      - summary: Dashboard documentatie
+        description: Documenteren in Confluence
+        story_points: 2
+        role: BI-specialist
+        checklist_text: >
+          # Subtaken
+            - Schrijf interne documentatie voor het onderhouden en doorontwikkelen van het dashboard
+            - Deel documentatie met team
+            - Deel documentatie met stakeholders indien nodig
+          
+      - summary: Testen van het Dashboard
+        description: Testen van het dashboard
+        story_points: 2
+        role: BI-specialist
+        checklist_text: >
+          # Subtaken
+            - Valideer cijfers op dashboard met brondata
+            - Controleer alle filters en functionaliteit
+            - Documentatie controleren
+      
+      - summary: Dashboard naar productie brengen
+        description: Afhankelijk van data engineer en prd pipeline op Unity Catalog.
+        story_points: 2
+        role: BI-specialist
+        checklist_text: >
+          # Subtaken
+            - Verwerk de laatste feedback
+            - Publiceer dashboard in productieomgeving
+            - Check werking en toegang voor stakeholder
+            - Gebruikersdemo
+          

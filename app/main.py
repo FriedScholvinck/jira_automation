@@ -27,7 +27,7 @@ roles = OrderedDict([
 
 
 # make the default input dynamic, based on the selected project type
-yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data')] + ['Upload eigen .yaml file']
+yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data') if f[-5:] == '.yaml'] + ['Upload eigen .yaml file']
 
 # do not include voorbeeld_data.yaml in the list of yaml files
 if 'voorbeeld_data' in yaml_files:
@@ -75,6 +75,7 @@ username = os.getenv('JIRA_USERNAME')
 api_token = os.getenv('JIRA_API_TOKEN')
 project_key = os.getenv('JIRA_PROJECT_KEY')
 
+# je kunt de secrets ook managen via streamlit secrets
 # domain = st.secrets['JIRA_DOMAIN']
 # username = st.secrets['JIRA_USERNAME']
 # api_token = st.secrets['JIRA_API_TOKEN']
@@ -114,6 +115,7 @@ with sidebar.container(border=True):
     year = st.radio('Jaar', ['2024', '2025'], horizontal=False)
     quarter = st.radio('Kwartaal', ['Q1', 'Q2', 'Q3', 'Q4'], horizontal=False)
 
+# fill epic with user input
 description = st.text_area(
     'Omschrijving',
     epic.description.replace('directie', directie) + '\n\nOplevering: ' + f'{year} {quarter}',
@@ -124,12 +126,6 @@ description = st.text_area(
 if hasattr(epic, 'checklist_text'):
     if st.toggle('Show Definition of Done', value=False):
         st.text(epic.checklist_text)
-        # if '---' in epic.checklist_text:
-        #     lines = epic.checklist_text.split('---')[1:]
-        # else:
-        #     lines = epic.checklist_text.split('\n---\n')
-        # for line in lines:
-        #     st.text('\n-'.join(line.split('-')))
 
 # roles horizontally aligned, with a selectbox for each role
 cols = st.columns(len(roles))
@@ -138,7 +134,7 @@ for i, c in enumerate(cols):
 
 # refill story with user input
 epic.summary = summary
-epic.description = description
+epic.description = description + '\n\nMedewerkers:\n' + '\n'.join([f"{k}: {v[0]}" for k, v in roles.items()])
 epic.directie = directie
 epic.label = label if label_toggle else None
 epic.expected_completion_date = f'{year} {quarter}'
@@ -236,7 +232,10 @@ for role in roles:
 
 #     epic.stories = [story for n, story in enumerate(epic.stories) if n not in stories_to_skip]
 
-
+# for story in epic.stories:
+#     if hasattr(story, 'checklist_text'):
+#         st.write(story.checklist_text)
+        # st.text(story.checklist_text)
 
 # # vraag om wachtwoord zodat we niet gespamd worden met Jira issues
 if not check_password(st):

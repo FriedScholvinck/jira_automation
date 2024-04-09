@@ -6,22 +6,44 @@ epic:
     description: Omschrijving Epic
     label: LBL # default afkorting van de epic (projectcode)
     role: Business Analist # business analist is 'eigenaar' van het project
-    checklist_text: >
+    checklist_text: > # max 20 items in free version
       # Definition of Done
-        --- Requirements
-          - Example requirement
-        --- Documentation
-          - Example documentation
+        - Business waarde en waarde voor stad/BOB geverifieerd door Product Owner
+        - Duidelijk omschreven informatiebehoefte (SMART)
+        - Privacy & Security eisen zijn gewaarborgd
+        - Connectiviteit Databricks naar bronnen is geregeld
+        - Bronhouders en afnemers zijn vastgelegd via Datacontracten en Data Sharing Agreements
+
+        - Functionele en technische requirements zijn vastgelegd
+        - Functioneel Datamodel beschikbaar
+        - Conceptueel Datamodel beschikbaar
+        - Logisch Datamodel beschikbaar
+        
+        - Brons
+        - Zilver
+        - Goud
+        - Dataset naar de referentiedatabase
+        - Datacontract is gemaakt en ingeleverd
+
+        - Databricks job naar ontwikkelomgeving
+        - Databricks job naar productieomgeving
+        
+        - Dashboard MVP
+        - Dashboard definitief
+
+        - Definities zijn akkoord en geregistreerd in Purview en Unity Catalog
+        - Documentatie is toegankelijk in ADO en Confluence
+
     stories:
 
       - summary: Titel Story
         description: Omschrijving Story
         role: Business Analist # keuze uit Business Analist, Informatie Analist, Data Engineer, BI-specialist (zie main.py)
         story_points: 5
-        subtasks:
-          - summary: Titel Subtask
-            description: Omschrijving Subtask # description bij subtask niet verplicht
-          - summary: Titel Subtask
+        checklist_text: >
+          # Subtaken
+            - Requirements
+            - Documentatie
     
       - summary: Titel Story 2
         description: Omschrijving Story 2

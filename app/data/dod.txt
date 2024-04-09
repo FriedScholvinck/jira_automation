@@ -1,0 +1,43 @@
+# Definition of Done
+    --- Requirements (Business Analist)
+        - Heldere scope (SMART)
+        - Business waarde en waarde voor stad/BOB geverifieerd door Product Owner
+        - Duidelijk omschreven informatiebehoefte (SMART)
+        - Privacy & Security eisen zijn gewaarborgd
+        - Connectiviteit Databricks naar bronnen is geregeld
+        - Afnemers zijn vastgelegd via Datacontracten en Data Sharing Agreements
+    --- Data (Informatie Analist)
+        - Informatiebehoefte duidelijk omschreven (SMART)
+        - Functionele en technische requirements zijn vastgelegd
+        - Functioneel Datamodel beschikbaar
+        - Logisch Datamodel beschikbaar
+        - Conceptueel Datamodel beschikbaar
+        - Metadata beschikbaar
+        - Datakwaliteitseisen zijn vastgelegd
+    --- Medaillionarchitectuur (Data Engineer)
+        - Brons
+        - Zilver
+        - Goud
+        - Dataset naar de referentiedatabase
+        - Lineage met modellen
+        - Lineage met aantallen
+        - Datacontract is gemaakt en ingeleverd
+    --- DevOps principes (Data Engineer)
+        - Databricks job naar ontwikkelomgeving
+        - Databricks job naar productieomgeving
+        - Read permissions toegekend
+        - Documentatie
+    --- Dashboard (BI specialist)
+        - Dashboard mockup
+        - MVP ontwikkeld
+        - MVP voldoet aan standaarden en is getest
+        - Compliance en governance
+        - Dashboard naar productie
+        - Documentatie
+    --- Testen
+        - Product is getest door het team
+        - Output is geaccordeerd door Product Owner
+        - Product is getest door de business
+    --- Documentatie
+        - Definities zijn akkoord en geregistreerd in Purview en Unity Catalog
+        - Documentatie is toegankelijk in ADO en Confluence

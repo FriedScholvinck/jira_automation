@@ -2,83 +2,101 @@
 # sommige opties moeten ook overeen komen met de opties in het specifieke veld in Jira
 
 epic:
-  - summary: Doorontwikkeling Informatieproduct
-    description: Het doorontwikkelen van een informatieproduct.
-    label: "Bestaat er al een label?"
+  - summary: Doorontwikkeling [Informatieproduct]
+    description: Doorontwikkeling van een bestaand informatieproduct
+    label: KPIs
     role: Business Analist
+    checklist_text: > # max 20 regels in gratis versie
+      # Definition of Done
+        - Business waarde en waarde voor stad/BOB geverifieerd door Product Owner
+        - Duidelijk omschreven informatiebehoefte (SMART)
+        - Privacy & Security eisen zijn gewaarborgd
+        - Connectiviteit Databricks naar bronnen is geregeld
+        - Bronhouders en afnemers zijn vastgelegd via Datacontracten en Data Sharing Agreements
+
+        - Functionele en technische requirements zijn vastgelegd
+        - Functioneel Datamodel beschikbaar
+        - Conceptueel Datamodel beschikbaar
+        - Logisch Datamodel beschikbaar
+        
+        - Brons
+        - Zilver
+        - Goud
+        - Dataset naar de referentiedatabase
+        - Datacontract is gemaakt en ingeleverd
+
+        - Databricks job naar ontwikkelomgeving
+        - Databricks job naar productieomgeving
+        
+        - Dashboard MVP
+        - Dashboard definitief
+
+        - Definities zijn akkoord en geregistreerd in Purview en Unity Catalog
+        - Documentatie is toegankelijk in ADO en Confluence
+
     stories:
 
       # Stories voor Business Analist
-      - summary: Requirements voor Doorontwikkeling
-        description: xxx
+      - summary: Privacy en Security
+        description: Check de huidige quickscans op veranderingen wbt privacy en security
         role: Business Analist
         story_points: 2
-        subtasks:
-          - summary: Functionele Requirements opstellen
-          - summary: Privacy en Security check
+        checklist_text: >
+          # Subtaken
+            - Security (BIO) Quickscan
+            - Privacy Quickscan
+            - DPIA?
+            - Datacontract
+            - Metadata
 
       # Stories voor Informatie Analist
-      - summary: Informatiemodellen updaten
-        description: Conceptuele en Logische modellen updaten.
+      - summary: Datamodellen aanpassen
+        description: Functioneel, Conceptueel en Logisch datamodel aanpassen naar nieuwe wensen en eisen.
         role: Informatie Analist
         story_points: 2
-        subtasks:
-          - summary: Technische Requirements doorvoeren
-          
-      - summary: Testen Dashboard
-        description: Doorloop alle stappen in het testproces van een dashboard.
-        role: Informatie Analist
-        story_points: 2
-        
+        checklist_text: >
+          # Subtaken
+            - Stakeholder akkoord op het model (alle relevante entiteiten zijn opgenomen en de attributen en relaties zijn compleet en correct)
+            - Documentatie en eindresultaat op OneDrive / Confluence / Wiki
 
       # Stories voor Data Engineer
-      - summary: Doorontwikkeling pipeline
-        description: Werk op een nieuwe branch in de repository (vanuit `dev`)!
+      - summary: Nieuwe data inladen
+        description: Nieuwe data inladen t/m de gouden laag.
+        role: Data Engineer
+        story_points: 8
+        checklist_text: >
+          # Subtaken
+            - landingzone
+            - bronze
+            - silver
+            - gold
+            - pipeline naar dev
+            - pipeline naar prd
+            - referentiedatabase?
+
+
+      - summary: Metadata en Documentatie
+        description: Metadata, datacontract en overige documentatie updaten en inleveren.
         role: Data Engineer
         story_points: 2
-        subtasks:
-          - summary: Maak en test job in Databrics Worflows
+        checklist_text: >
+          # Subtaken
+            - Metadata check
+            - Datacontract updaten en inleveren
+            - Documenteer en deel eindresultaat met team
+            - Documenteer en deel eindresultaat met stakeholders
 
-      - summary: Pipeline naar dev
-        description: Pull Request naar dev branch
-        role: Data Engineer
-        story_points: 1
-        subtasks:
-          - summary: Maak en test job in Databrics Worflows
-          - summary: Include yaml file van job in repository
-          - summary: Pull Request naar dev branch
-          - summary: Check CI/CD pipeline
-      
-      - summary: Pipeline naar prod
-        description: CICD / Asset Bundle naar production workspace
-        role: Data Engineer
-        story_points: 1
-        subtasks:
-          - summary: Test pipeline in dev
-          - summary: Merge naar main branch
-          - summary: Check CI/CD pipeline op prd
-
-
-      # Stories voor BI-specialist
-      - summary: Doorontwikkeling dashboard
-        description: Ontwikkeling van de volgende versie van het dashboard in Tableau of Power BI.
+      - summary: Doorontwikkeling Dashboard
+        description: Doorontwikkeling van het bestaande dashboard
         role: BI-specialist
         story_points: 4
-        subtasks:
-          - summary: Publiceer dashboard in een test omgeving waar testers bij kunnen.
-
-      - summary: Dashboard naar productie brengen
-        description: Afhankelijk van data pipeline op prd workspace in Databricks!
-        story_points: 2
-        role: BI-specialist
-        subtasks:
-          - summary: Verwerk de laatste feedback
-          - summary: Valideer cijfers op dashboard met brondata
-          - summary: Controleer alle filters en functionaliteit
-          - summary: Publiceer dashboard in productieomgeving
-          - summary: Gebruikersdemo
-      
-      - summary: Documentatie
-        description: Documenteren in Confluence
-        story_points: 1
-        role: BI-specialist
+        checklist_text: >
+          # Subtaken
+            - Ontwerp nieuwe functionaliteiten
+            - Publiceer dashboard in testomgeving
+            - Testen dashboard met team en stakeholders
+            - Verwerk feedback
+            - Dashboard naar productie
+            - Documentatie en oplevering eindresultaat
+            - Demo / Review?
+          
