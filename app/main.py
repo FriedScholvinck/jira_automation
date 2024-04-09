@@ -6,12 +6,11 @@ import streamlit as st
 import yaml
 from custom_classes import Epic, JiraProcess, Story, SubTask
 from dotenv import load_dotenv
-from utils import check_password
+# from utils import check_password
 
 st.set_page_config(
     page_title="MOSS+",
-    page_icon='assets/amsterdam_logo.png',
-    # page_icon='app/assets/amsterdam_logo.png',
+    page_icon='app/assets/amsterdam_logo.png',
     layout="wide",
 )
 
@@ -25,7 +24,6 @@ roles = OrderedDict([
     ('Data Engineer', 'Robbin'),
     ('BI-specialist', 'Miguel')
 ])
-
 
 # make the default input dynamic, based on the selected project type
 yaml_files = [f.removesuffix('.yaml') for f in os.listdir('app/data') if f[-5:] == '.yaml'] + ['Upload eigen .yaml file']
@@ -239,8 +237,8 @@ for role in roles:
         # st.text(story.checklist_text)
 
 # # vraag om wachtwoord zodat we niet gespamd worden met Jira issues
-if not check_password(st):
-    st.stop()
+# if not check_password(st):
+#     st.stop()
 
 if st.button('Maak Jira Issues'):
     if existing_epic_toggle:
