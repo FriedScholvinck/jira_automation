@@ -16,7 +16,7 @@ The project is structured as follows:
 │   │   ├── default_issues.yaml
 │   ├── main.py (streamlit app)
 │   ├── requirements.txt
-│   ├── custom_classes.txt (jira api functionality)
+│   ├── custom_classes.py (jira api functionality)
 │   └── utils.py
 ├── .gitignore
 ├── README.md

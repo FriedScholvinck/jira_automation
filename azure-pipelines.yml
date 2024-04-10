@@ -11,47 +11,6 @@ variables:
   resourceGroup: rg-dpms-ont-weu-01
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.11'
-    addToPath: true
-
-- script: |
-    python -m venv venv
-    source venv/bin/activate
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
-
-# - script: |
-#     source venv/bin/activate
-#     python -m pytest
-#   displayName: 'Run tests'
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.Repository.LocalPath)'
-    includeRootFolder: false
-    archiveType: 'tar'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar.gz'
-    replaceExistingArchive: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar.gz'
-    artifactName: 'drop'
-    publishLocation: 'Container'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: $(azureSubscription)
-    appType: 'webAppLinux'
-    WebAppName: $(appName)
-    packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar.gz'
-    RuntimeStack: 'PYTHON|3.10'
-    StartupCommand: 'python -m streamlit run app/main.py --server.port 8000 --server.enableCORS false --server.enableXsrfProtection false'
-
 - task: AzureCLI@2
   inputs:
     azureSubscription: $(azureSubscription)
