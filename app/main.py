@@ -6,6 +6,7 @@ import streamlit as st
 import yaml
 from custom_classes import Epic, JiraProcess, Story, SubTask
 from dotenv import load_dotenv
+
 # from utils import check_password
 
 st.set_page_config(
@@ -49,9 +50,19 @@ if st.session_state['soort_project'] == 'Upload eigen .yaml file':
 
     uploaded_file = st.file_uploader("Upload eigen .yaml file", type=["yaml", "yml"])
     if uploaded_file is not None:
-        data = yaml.safe_load(uploaded_file)
+        try:
+            data = yaml.safe_load(uploaded_file)
+        except Exception as e:
+            st.error(f"Error loading YAML file: {str(e)}")
+            st.info('Falling back to default data (voorbeeld_data.yaml)')
+            data = yaml.safe_load(open('app/data/voorbeeld_data.yaml', 'r'))
 else:
-    data = yaml.safe_load(open('app/data/' + st.session_state['soort_project'] + '.yaml', 'r'))
+    try:
+        data = yaml.safe_load(open('app/data/' + st.session_state['soort_project'] + '.yaml', 'r'))
+    except Exception as e:
+        st.error(f"Error loading YAML file: {str(e)}")
+        data = yaml.safe_load(open('app/data/voorbeeld_data.yaml', 'r'))
+        st.info('Falling back to default data (voorbeeld_data.yaml)')
 
 # generically create epic (SAFe Feature), Stories and Subtask objects from the yaml file
 for epic_data in data.get('epic', []):

@@ -1,0 +1,4 @@
+JIRA_DOMAIN='gemeente-amsterdam'
+JIRA_USERNAME='f.scholvinck@amsterdam.nl'
+JIRA_API_TOKEN='API_TOKEN'
+JIRA_PROJECT_KEY='DSO'

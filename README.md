@@ -13,18 +13,16 @@ The project is structured as follows:
 ```
 ├── app
 │   ├── data
-│   │   ├── default_issues.yaml
+│   │   ├── *.yaml
 │   ├── main.py (streamlit app)
-│   ├── requirements.txt
 │   ├── custom_classes.py (jira api functionality)
 │   └── utils.py
 ├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
-
 ## Getting Started
-Clone the repository to your local machine and add a `.env` file to the root of the project. The `.env` file should contain the following variables. The api token can be generated in your Jira account settings.
+Clone the repository to your local machine and add a `.env` file to the root of the project. The `.env` file should contain the following variables. The API token can be generated in your Jira account settings (https://id.atlassian.com/manage-profile/security/api-tokens).
 
 ```
 JIRA_DOMAIN='your-domain'
@@ -39,7 +37,7 @@ password="your-password"
 ```
 
 ## Development
-Run the project locally using python 3.11.6 or docker. If you have docker installed, simply run `docker compose up` and check the app on `http://localhost:8501/`.
+Run the project locally using python 3.11 or docker. If you have docker installed, simply run `docker compose up` and check the app on `http://localhost:8501/`.
 
 For local development, create a virtual environment and install the requirements. For example:
 ```
@@ -53,11 +51,11 @@ Run the following command to start the streamlit app locally.
 streamlit run app/main.py
 ```
 
-## Deployment
+## Run the app locally on a managed windows laptop
+Download this repository as zipfile from Azure Repos. Unzip the file in a folder on your laptop. Download Python 3.11 or 3.12 from https://www.python.org/downloads/ (install it if you do not have an unmanaged laptop). Copy the path to this `python.exe` file, which should be something like this `/Users/{YOUR_USER_NAME}/AppData/Local/Programs/Python/Python312/python.exe`. If you were able to install Python on your machine and add it to Path (in environment variables), you can just use python as path.
 
-### Streamlit Cloud
-The app is deployed on Streamlit Cloud, which is connected to my GitHub account. It automatically deploys the app when a new commit is pushed to the main branch.
-Provide environment variables during deployment on Streamlit Cloud.
-
-### Azure
-For use in the infrastructure of the datateam, we deploy the app as a docker container on Azure through Azure Devops Pipelines.
+Open a command prompt and navigate to the folder where you unzipped the repository. Run the following commands:
+```
+{path_to_python.exe} -m pip install -r requirements.txt
+{path_to_python.exe} -m streamlit run .\app\main.py
+```
